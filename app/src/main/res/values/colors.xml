@@ -7,4 +7,11 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    // App colors
+    <color name="primary">#264653</color> //Charcoal
+    <color name="accent">#2A9D8F</color> //Persian Green
+    <color name="secondary">#E9C46A</color> //Saffron
+    <color name="accent2">#F4A261</color> //Sandy Brown
+    <color name="tertiary">#E76F51</color> //Burnt Sienna
 </resources>
