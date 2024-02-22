@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/settings_btn"
+        android:enabled="true"
+        android:icon="@drawable/output_onlinepngtools__6__1"
+        android:title="Settings"/>
+    <item
+        android:id="@+id/new_recipe_btn"
+        android:enabled="true"
+        android:icon="@drawable/output_onlinepngtools__5__1"
+        android:title=""
+        app:itemPaddingTop="50dp"/>
+    <item
+        android:id="@+id/profile_btn"
+        android:enabled="true"
+        android:icon="@drawable/output_onlinepngtools__4__1"
+        android:title="Profile"/>
+</menu>

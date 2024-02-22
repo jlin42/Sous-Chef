@@ -48,4 +48,34 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/carrot_512_1" />
 
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        app:backgroundTint="@color/accent"
+        app:itemIconTint="@color/white"
+        app:itemTextColor="@color/white"
+        app:itemPaddingTop="20dp"
+        app:itemPaddingBottom="20dp"
+        app:itemIconSize="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/bottom_navigation_menu" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/new_recipe_rect"
+                android:layout_width="129dp"
+                android:layout_height="60dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginVertical="7dp"
+                app:srcCompat="@drawable/rect_around_new_recipe" />
+
+        </RelativeLayout>
+
+    </com.google.android.material.bottomnavigation.BottomNavigationView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
