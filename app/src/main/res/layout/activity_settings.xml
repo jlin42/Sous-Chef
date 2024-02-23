@@ -5,46 +5,57 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/SousChef1"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/TitleBlock"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sous"
-        android:textColor="@color/accent"
-        android:textSize="34sp"
-        android:textStyle="italic"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="110dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="110dp"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/RecipeInputsBlock"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.319"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.039" />
+        app:layout_constraintVertical_bias="0.736">
 
-    <TextView
-        android:id="@+id/SousChef2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Chef"
-        android:textColor="@color/accent"
-        android:textSize="34sp"
-        android:textStyle="italic"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.692"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.04" />
+        <TextView
+            android:id="@+id/SousChef1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sous"
+            android:textColor="@color/accent"
+            android:textSize="34sp"
+            android:textStyle="italic"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/imageView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="47dp"
-        android:layout_height="46dp"
-        android:layout_marginTop="27dp"
-        android:layout_marginBottom="658dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/SousChef2"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/carrot_512_1" />
+        <TextView
+            android:id="@+id/SousChef2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chef"
+            android:textColor="@color/accent"
+            android:textSize="34sp"
+            android:textStyle="italic"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imageView"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="50dp"
+            android:layout_height="45dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/SousChef2"
+            app:layout_constraintStart_toEndOf="@+id/SousChef1"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/carrot_512_1" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
@@ -81,11 +92,11 @@
         android:id="@+id/orange_line"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="21dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/TitleBlock"
         app:srcCompat="@drawable/line_1" />
 
     <TextView
