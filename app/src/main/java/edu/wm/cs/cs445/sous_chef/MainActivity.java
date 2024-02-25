@@ -2,9 +2,12 @@ package edu.wm.cs.cs445.sous_chef;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,5 +36,12 @@ public class MainActivity extends AppCompatActivity {
         ArrayAdapter<String> starchAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, starches);
         starchTextView.setAdapter(starchAdapter);
 
+        Button createRecipe = (Button) findViewById(R.id.createRecipeButton);
+        createRecipe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, CreateActivity.class));
+            }
+        });
     }
 }
