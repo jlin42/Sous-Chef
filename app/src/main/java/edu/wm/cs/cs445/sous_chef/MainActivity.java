@@ -13,6 +13,7 @@ public class MainActivity extends AppCompatActivity {
     Button pantry;
     Button history;
     Button favorites;
+    Button create;
 
 
     @Override
@@ -23,26 +24,14 @@ public class MainActivity extends AppCompatActivity {
         pantry = findViewById(R.id.pantry);
         history = findViewById(R.id.history);
         favorites = findViewById(R.id.favorites);
+        create = findViewById(R.id.createRecipeButton);
 
-        pantry.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, PantryActivity.class));
-            }
-        });
+        pantry.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, PantryActivity.class)));
 
-        history.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, HistoryActivity.class));
-            }
-        });
+        history.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, HistoryActivity.class)));
 
-        favorites.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, FavoriteRecipesActivity.class));
-            }
-        });
+        favorites.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, FavoriteRecipesActivity.class)));
+
+        create.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, CreateActivity.class)));
     }
 }
