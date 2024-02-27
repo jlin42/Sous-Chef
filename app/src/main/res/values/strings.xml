@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Sous-Chef</string>
+
+    <!-- Placeholder values - used in testing for creating the RecyclerView recipe history screens -->
+    <string-array name="recipe_card_full_txt">
+        <item>Chicken Pot Pie</item>
+        <item>Chicken, bread crumbs, assorted veggies, …</item>
+        <item>30min</item>
+    </string-array>
 </resources>
