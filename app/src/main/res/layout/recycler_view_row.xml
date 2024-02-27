@@ -62,7 +62,7 @@
                 app:layout_constraintEnd_toEndOf="parent"/>
 
             <ImageView
-                android:id="@+id/favorite_recipe_btn"
+                android:id="@+id/history"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:src="@drawable/star"

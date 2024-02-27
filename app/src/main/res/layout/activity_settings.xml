@@ -111,7 +111,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/recipe_history_btn"
+        android:id="@+id/pantry"
         android:layout_width="263dp"
         android:layout_height="53dp"
         android:layout_marginTop="36dp"
@@ -131,7 +131,7 @@
         app:strokeWidth="2dp" />
 
     <Button
-        android:id="@+id/favorite_recipe_btn"
+        android:id="@+id/history"
         android:layout_width="263dp"
         android:layout_height="53dp"
         android:layout_marginTop="16dp"
@@ -145,12 +145,12 @@
         app:cornerRadius="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recipe_history_btn"
+        app:layout_constraintTop_toBottomOf="@+id/pantry"
         app:strokeColor="#E9C46A"
         app:strokeWidth="2dp" />
 
     <Button
-        android:id="@+id/food_pref_btn"
+        android:id="@+id/favorites"
         android:layout_width="263dp"
         android:layout_height="53dp"
         android:layout_marginTop="16dp"
@@ -164,7 +164,7 @@
         app:cornerRadius="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/favorite_recipe_btn"
+        app:layout_constraintTop_toBottomOf="@+id/history"
         app:strokeColor="#E9C46A"
         app:strokeWidth="2dp" />
 
