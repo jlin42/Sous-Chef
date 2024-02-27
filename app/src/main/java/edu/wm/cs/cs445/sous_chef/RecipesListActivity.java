@@ -2,6 +2,7 @@ package edu.wm.cs.cs445.sous_chef;
 
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class RecipesListActivity extends AppCompatActivity {
