@@ -66,6 +66,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/taskbar"
         android:layout_width="match_parent"
         android:layout_height="90dp"
         app:backgroundTint="@color/accent"
@@ -96,12 +97,25 @@
     </com.google.android.material.bottomnavigation.BottomNavigationView>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyc_view"
-        android:layout_width="421dp"
-        android:layout_height="518dp"
+        android:id="@+id/recyclerview"
+        android:layout_width="419dp"
+        android:layout_height="500dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:listitem="@layout/recycler_view_row"/>
+        app:layout_constraintTop_toBottomOf="@id/recipe_found_text"
+        app:layout_constraintBottom_toTopOf="@id/taskbar"
+        tools:listitem="@layout/recycler_view_row" />
+
+    <TextView
+        android:id="@+id/recipe_found_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="96dp"
+        android:text="Recipes Found"
+        android:textColor="@color/accent"
+        android:textSize="34sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
