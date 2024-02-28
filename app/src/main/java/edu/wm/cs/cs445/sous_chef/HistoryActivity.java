@@ -33,19 +33,19 @@ public class HistoryActivity extends AppCompatActivity {
         // Adds 4 recipes
         // use recipeViewModel.deleteAll() to clear them if needed
         Recipe recipe = new Recipe("Chicken Pot Pie", "Chicken, bread crumbs, assorted veggies, ...",
-                "30min", false, "recipe link");
+                "30m", false, "recipe link");
         recipeViewModel.insert(recipe);
 
         recipe = new Recipe("Meatloaf", "Ground beef, bread crumbs, ketchup, onions, ...",
-                "30min", false, "link");
+                "30m", false, "link");
         recipeViewModel.insert(recipe);
 
         recipe = new Recipe("Mac and Cheese", "Macaroni noodles, milk, butter, flour, cheese",
-                "1hr", true, "link");
+                "1h", true, "link");
         recipeViewModel.insert(recipe);
 
         recipe = new Recipe("Easy Weeknight Spaghetti and Meat Sauce", "Spaghetti noodles, jarred sauce, ground beef, onions, garlic, ...",
-                "2hr30m", false, "link");
+                "2h30m", false, "link");
         recipeViewModel.insert(recipe);
 
     }

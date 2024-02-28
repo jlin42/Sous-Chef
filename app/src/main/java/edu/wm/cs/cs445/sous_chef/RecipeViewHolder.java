@@ -1,5 +1,6 @@
 package edu.wm.cs.cs445.sous_chef;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +36,7 @@ class RecipeViewHolder extends RecyclerView.ViewHolder {
         recipe_time.setText(time);
         // If the recipe is one of the users favorites, color the star to be gold
         if (favorite){
-            recipe_saved.setColorFilter(R.color.secondary);
+            recipe_saved.setColorFilter(Color.argb(255, 255, 215, 0));
         }
     }
 
