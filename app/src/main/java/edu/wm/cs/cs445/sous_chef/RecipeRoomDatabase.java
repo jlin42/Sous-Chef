@@ -11,15 +11,20 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/*
+ * The first layer above the SQLite database
+ * Uses the DAO to issue SQL queries to the DB
+ * Does so asynchronously for performance
+ */
 @Database(entities = {Recipe.class}, version=1, exportSchema=false)
 public abstract class RecipeRoomDatabase extends RoomDatabase {
     public abstract RecipeDAO recipeDAO();
-
     private static volatile RecipeRoomDatabase INSTANCE;
     public static final int NUMBER_OF_THREADS = 4;
     static final ExecutorService databaseWriteExecutor =
             Executors.newFixedThreadPool(NUMBER_OF_THREADS);
 
+    // Creates and returns Room database instance
     static RecipeRoomDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {
             synchronized (RecipeRoomDatabase.class) {
@@ -32,11 +37,11 @@ public abstract class RecipeRoomDatabase extends RoomDatabase {
         }
         return INSTANCE;
     }
-    //TODO - there may be issues here? or may not be necessary
+    //TODO -
     // The purpose of this in the tutorial is to clear the database and
     // fill it with sample data
-    // Tried to use this to fill table with sample data, but it didn't work
-    //So currently this does not ever get called - delete it?
+    // Tried to do this, but it didn't work
+    // Currently this does not ever get called - but leaving it for now as a reference
     private static RoomDatabase.Callback sRoomDatabaseCallback = new RoomDatabase.Callback() {
         @Override
         public void onCreate(@NonNull SupportSQLiteDatabase db) {

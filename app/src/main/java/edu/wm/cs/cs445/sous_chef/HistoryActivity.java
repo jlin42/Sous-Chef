@@ -12,7 +12,6 @@ public class HistoryActivity extends AppCompatActivity {
 
     private RecipeViewModel recipeViewModel;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +50,7 @@ public class HistoryActivity extends AppCompatActivity {
 
     }
 
+    // this was used in the tutorial "Android Room with a view" but don't think it is necessary here?
     //public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
     //}

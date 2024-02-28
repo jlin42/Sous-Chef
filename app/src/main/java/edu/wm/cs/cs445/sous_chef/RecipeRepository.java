@@ -6,10 +6,17 @@ import androidx.lifecycle.LiveData;
 
 import java.util.List;
 
+/*
+ * Used to communicate with the DAO, which then interacts with the DB
+ * This isn't necessary to communicate with the DAO but it makes code more readable
+ * Generally this is supposed to coordinate multiple sources of data, like some local some server
+ */
 class RecipeRepository {
     private RecipeDAO recipeDAO;
+    // LiveData -> the data is automatically updated when DB is updated
     private LiveData<List<Recipe>> allRecipes;
 
+    //
     RecipeRepository(Application application) {
         RecipeRoomDatabase db = RecipeRoomDatabase.getDatabase(application);
         recipeDAO = db.recipeDAO();
@@ -31,6 +38,8 @@ class RecipeRepository {
         });
     }
 
+    // Shouldn't be necessary after testing is done
+    // Removes all recipe entries from the DB
     void deleteAll() {
         RecipeRoomDatabase.databaseWriteExecutor.execute(() -> {
             recipeDAO.deleteAll();

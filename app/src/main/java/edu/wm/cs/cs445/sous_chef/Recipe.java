@@ -5,18 +5,35 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+/*
+ * This class acts as the layout of the SQLite table
+ * Each of these declarations is a column in the table
+ * Each "recipe object" is a row in this table
+ */
+
+// Entity = an SQLite table
 @Entity(tableName="recipe_table")
 public class Recipe {
+    // The title, i.e. "Chicken Pot Pie"
+    // PrimaryKey = what the database identifies this row as being
     @PrimaryKey
     @NonNull
-    @ColumnInfo(name="recipe")
     private String recipe;
+    // "Chicken, bread crumbs, ..."
     @NonNull
     private String recipe_description;
+    // The time text in the top right
+    // Format: "2h10m"
+    // because the text box is short so keep the abbreviations small
     @NonNull
     private String recipe_time;
+    // Associated with the star ImageView
+    // true = color in star, false = leave it white
     @NonNull
     private Boolean recipe_saved;
+    // Could be useful for the "VIEW" button
+    // Also might be needed for deciding if this recipe should go into the
+    // users recipe history
     @NonNull
     private String recipe_link;
 

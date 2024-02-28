@@ -7,11 +7,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
+/*
+ * Grabs the views from the recycler_view_row layout file
+ */
 class RecipeViewHolder extends RecyclerView.ViewHolder {
     private final TextView recipe_name;
     private final TextView recipe_description;
@@ -37,6 +39,7 @@ class RecipeViewHolder extends RecyclerView.ViewHolder {
         }
     }
 
+    // Inflates the layout, giving a look to the rows
     static RecipeViewHolder create(ViewGroup parent){
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.recycler_view_row, parent, false);
@@ -54,6 +57,8 @@ class RecipeListAdapter extends ListAdapter<Recipe, RecipeViewHolder> {
         return RecipeViewHolder.create(parent);
     }
 
+    // Assigning values to the views created in recycler_view_row.xml, based
+    // on the current position of the recycler view
     @Override
     public void onBindViewHolder(RecipeViewHolder holder, int position){
         Recipe current = getItem(position);
