@@ -33,6 +33,11 @@ public interface RecipeDAO {
     @Query("SELECT * FROM recipe_table")
     LiveData<List<Recipe>> getRecipes();
 
+    // WIP
+    // Used for Saved Recipes screen
+    @Query("SELECT * FROM recipe_table WHERE recipe_saved = true")
+    LiveData<List<Recipe>> getSavedRecipes();
+
     //TODO - implement a @Delete method
     //TODO - only store the first 10-ish recipes, when inserting check how many are currently stored
 }
