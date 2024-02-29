@@ -48,8 +48,8 @@ public class CreateActivity extends AppCompatActivity {
             String newFilter = ingredientsTextView.getText().toString();
             Log.v("test", "test");
             if (ingredientsList.contains(newFilter)) {
-                filtersList.add(String.valueOf(ingredientsTextView.getText()));
-                //TODO: Implement code to add from input to filterview
+                filtersList.add(ingredientsTextView.getText().toString());
+                //TODO: Implement code to add from input to filterview.
                 inputAdapter.notifyDataSetChanged();
                 ingredientsTextView.setText("");
             } else {
