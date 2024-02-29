@@ -17,6 +17,10 @@ public class HistoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
 
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.base_container, new BaseActivity())
+                .commit();
+
 
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
         final RecipeListAdapter adapter = new RecipeListAdapter(new RecipeListAdapter.RecipeDiff());

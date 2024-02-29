@@ -22,6 +22,10 @@ public class CreateActivity extends AppCompatActivity {
         super.onCreate(saveInstanceState);
         setContentView(R.layout.activity_create);
 
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.base_container, new BaseActivity())
+                .commit();
+
         Button infoBtn = (Button) findViewById(R.id.createRecipeButton);
         infoBtn.setOnClickListener(v -> {
             Toast inputInfo = Toast.makeText(CreateActivity.this, "Input ingredients to filter with. Leave blank to search with all of your ingredients", Toast.LENGTH_LONG);

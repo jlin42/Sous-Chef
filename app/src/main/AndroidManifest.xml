@@ -23,8 +23,10 @@
         </activity>
 
         <activity android:name=".CreateActivity"/>
-
         <activity android:name=".HistoryActivity" />
+        <activity android:name=".PantryActivity"/>
+        <activity android:name=".RecipesListActivity"/>
+        <activity android:name=".FavoriteRecipesActivity"/>
 
     </application>
 
