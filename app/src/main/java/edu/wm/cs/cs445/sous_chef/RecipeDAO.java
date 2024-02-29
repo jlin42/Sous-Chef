@@ -2,6 +2,7 @@ package edu.wm.cs.cs445.sous_chef;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
@@ -21,6 +22,9 @@ public interface RecipeDAO {
     // do not try to add this to the DB
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(Recipe recipe);
+
+    @Delete
+    void delete(Recipe recipe);
 
     // Shouldn't be necessary after testing is done
     // Removes all recipe entries from the DB

@@ -21,12 +21,14 @@ public class FavoriteRecipesActivity extends AppCompatActivity {
                 .commit();
 
 
+        recipeViewModel = new ViewModelProvider(this).get(RecipeViewModel.class);
+
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
-        final RecipeListAdapter adapter = new RecipeListAdapter(new RecipeListAdapter.RecipeDiff());
+        final RecipeListAdapter adapter = new RecipeListAdapter(new RecipeListAdapter.RecipeDiff(),
+                recipeViewModel);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        recipeViewModel = new ViewModelProvider(this).get(RecipeViewModel.class);
         recipeViewModel.getSavedRecipes().observe(this, recipes -> {
             //update cached copy of recipes in the adapter
             adapter.submitList(recipes);
