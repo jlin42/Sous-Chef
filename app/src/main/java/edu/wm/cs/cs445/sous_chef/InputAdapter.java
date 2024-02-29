@@ -1,5 +1,6 @@
 package edu.wm.cs.cs445.sous_chef;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,10 +10,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class InputAdapter extends RecyclerView.Adapter<InputAdapter.ViewHolder> {
 
     private ArrayList<String> filtersList;
+
+    private int position = 0;
 
     public InputAdapter(ArrayList<String> filtersList) {
         this.filtersList = filtersList;
@@ -25,10 +29,17 @@ public class InputAdapter extends RecyclerView.Adapter<InputAdapter.ViewHolder> 
         return new ViewHolder(view);
     }
 
+
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         String filter = filtersList.get(position);
         holder.bind(filter);
+    }
+
+    public void addInput(String input) {
+        filtersList.add(input);
+        this.notifyItemInserted(position);
+        position += 1;
     }
 
     @Override
@@ -37,15 +48,15 @@ public class InputAdapter extends RecyclerView.Adapter<InputAdapter.ViewHolder> 
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView filterTextView;
+        TextView filterView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            filterTextView = itemView.findViewById(R.id.ingredientInputs);
+            filterView = itemView.findViewById(R.id.ingredient_input);
         }
 
         public void bind(String filter) {
-            filterTextView.setText(filter);
+            filterView.setText(filter);
         }
     }
 }

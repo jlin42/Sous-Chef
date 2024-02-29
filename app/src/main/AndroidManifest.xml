@@ -22,7 +22,9 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".CreateActivity"/>
+        <activity
+            android:name=".CreateActivity"
+            android:windowSoftInputMode="adjustNothing"/>
         <activity android:name=".HistoryActivity" />
         <activity android:name=".PantryActivity"/>
         <activity android:name=".RecipesListActivity"/>

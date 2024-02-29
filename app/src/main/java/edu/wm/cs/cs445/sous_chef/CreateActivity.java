@@ -19,6 +19,9 @@ import java.util.List;
 public class CreateActivity extends AppCompatActivity {
     RecyclerView inputBox;
     InputAdapter inputAdapter;
+    AutoCompleteTextView ingredientsTextView;
+    Button addFilter;
+
     @Override
     protected void onCreate(Bundle saveInstanceState) {
         super.onCreate(saveInstanceState);
@@ -28,7 +31,7 @@ public class CreateActivity extends AppCompatActivity {
                 .replace(R.id.base_container, new BaseFrame())
                 .commit();
 
-        AutoCompleteTextView ingredientsTextView = (AutoCompleteTextView) findViewById(R.id.ingredients_autocomplete);
+        ingredientsTextView = (AutoCompleteTextView) findViewById(R.id.ingredients_autocomplete);
         String ingredients[] = getResources().getStringArray(R.array.user_ingredients);
         ArrayAdapter<String> ingredientsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, ingredients);
         ingredientsTextView.setAdapter(ingredientsAdapter);
@@ -43,14 +46,16 @@ public class CreateActivity extends AppCompatActivity {
         inputBox.setLayoutManager(new LinearLayoutManager(this));
 
 
-        Button addFilter = (Button) findViewById(R.id.addFilterBtn);
+        addFilter = (Button) findViewById(R.id.addFilterBtn);
         addFilter.setOnClickListener(v -> {
             String newFilter = ingredientsTextView.getText().toString();
             Log.v("test", "test");
             if (ingredientsList.contains(newFilter)) {
-                filtersList.add(String.valueOf(ingredientsTextView.getText()));
+//                filtersList.add(String.valueOf(ingredientsTextView.getText()));
                 //TODO: Implement code to add from input to filterview
-                inputAdapter.notifyDataSetChanged();
+                inputAdapter.addInput(String.valueOf(ingredientsTextView.getText()));
+
+//                inputAdapter.notifyDataSetChanged();
                 ingredientsTextView.setText("");
             } else {
                 Toast ingredNotFound = Toast.makeText(CreateActivity.this, "Ingredient is not in your list", Toast.LENGTH_SHORT);
