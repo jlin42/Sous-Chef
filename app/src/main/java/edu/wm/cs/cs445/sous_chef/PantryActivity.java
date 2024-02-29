@@ -12,7 +12,7 @@ public class PantryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pantry);
 
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.base_container, new BaseActivity())
+                .replace(R.id.base_container, new BaseFrame())
                 .commit();
     }
 }

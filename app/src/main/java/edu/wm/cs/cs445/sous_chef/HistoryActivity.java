@@ -1,6 +1,5 @@
 package edu.wm.cs.cs445.sous_chef;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,7 +17,7 @@ public class HistoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_history);
 
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.base_container, new BaseActivity())
+                .replace(R.id.base_container, new BaseFrame())
                 .commit();
 
 
