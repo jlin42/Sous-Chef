@@ -29,4 +29,6 @@ public class RecipeViewModel extends AndroidViewModel {
 
     public void insert(Recipe recipe) { repository.insert(recipe); }
     public void deleteAll() { repository.deleteAll(); }
+
+    public void delete(Recipe recipe) { repository.delete(recipe); }
 }
