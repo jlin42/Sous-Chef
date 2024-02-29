@@ -27,6 +27,7 @@
         <activity android:name=".PantryActivity"/>
         <activity android:name=".RecipesListActivity"/>
         <activity android:name=".FavoriteRecipesActivity"/>
+        <activity android:name=".SettingsActivity"/>
 
     </application>
 

@@ -73,7 +73,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView2"
+        app:layout_constraintBottom_toTopOf="@+id/base_container"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -116,13 +116,15 @@
             android:id="@+id/ingredientInfoButton"
             android:layout_width="32dp"
             android:layout_height="32dp"
+            android:layout_marginStart="80dp"
             android:layout_marginEnd="52dp"
             android:background="#00000000"
             android:foreground="@android:drawable/ic_dialog_info"
             android:foregroundTint="@color/primary"
             android:src="@android:drawable/ic_dialog_info"
             app:layout_constraintBottom_toTopOf="@+id/ingredients_autocomplete"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/selectIngredients" />
 
         <Button
             android:id="@+id/addFilterBtn"
@@ -156,12 +158,21 @@
     <FrameLayout
         android:id="@+id/base_container"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="90dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-<!--    <androidx.recyclerview.widget.RecyclerView-->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/ingredientInputs"
+        android:layout_width="409dp"
+        android:layout_height="371dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginBottom="1dp"
+        app:layout_constraintBottom_toTopOf="@+id/base_container"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!--    <androidx.recyclerview.widget.RecyclerView-->
 <!--        android:id="@+id/SelectedFilters"-->
 <!--        android:layout_width="360dp"-->
 <!--        android:layout_height="320dp"-->

@@ -5,17 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/orange_line"
-        android:layout_width="wrap_content"
-        android:layout_height="2dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TitleBlock"
-        app:srcCompat="@drawable/line_1" />
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/TitleBlock"
         android:layout_width="wrap_content"
@@ -65,29 +54,82 @@
             app:srcCompat="@drawable/carrot_512_1" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <TextView
-        android:id="@+id/favorite_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="90dp"
-        android:text="Saved Recipes"
-        android:textColor="@color/accent"
-        android:textSize="34sp"
+    <View
+        android:id="@+id/logoLineView"
+        android:layout_width="220dp"
+        android:layout_height="2dp"
+        android:layout_marginStart="95dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="95dp"
+        android:background="@color/tertiary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/TitleBlock" />
 
-    <TextView
-        android:id="@+id/caption"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="45dp"
-        android:text="Click the star on recipes to add them to your favorites!"
-        android:textColor="@color/primary"
-        android:textSize="16sp"
+        android:layout_marginTop="64dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/favorite_text" />
+        app:layout_constraintTop_toBottomOf="@+id/logoLineView">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            tools:layout_editor_absoluteX="-1dp"
+            tools:layout_editor_absoluteY="-1dp">
+
+            <CheckBox
+                android:id="@+id/check_noSpice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layoutDirection="rtl"
+                android:paddingRight="150dp"
+                android:text="No Spice"
+                android:textAlignment="textStart"
+                android:textColor="@color/accent2"
+                android:textSize="24sp" />
+
+            <CheckBox
+                android:id="@+id/check_glutenFree"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layoutDirection="rtl"
+                android:paddingRight="150dp"
+                android:text="Gluten Free"
+                android:textAlignment="textStart"
+                android:textColor="@color/accent2"
+                android:textSize="24sp" />
+
+            <CheckBox
+                android:id="@+id/check_vegetarian"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layoutDirection="rtl"
+                android:paddingRight="150dp"
+                android:text="Vegetarian"
+                android:textAlignment="textStart"
+                android:textColor="@color/accent2"
+                android:textSize="24sp" />
+
+            <CheckBox
+                android:id="@+id/check_vegan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layoutDirection="rtl"
+                android:paddingRight="150dp"
+                android:text="Vegan"
+                android:textAlignment="textStart"
+                android:textColor="@color/accent2"
+                android:textSize="24sp" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <FrameLayout
         android:id="@+id/base_container"
@@ -96,16 +138,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerview"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/caption"
-        app:layout_constraintBottom_toTopOf="@id/base_container"
-        tools:listitem="@layout/recycler_view_row" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
