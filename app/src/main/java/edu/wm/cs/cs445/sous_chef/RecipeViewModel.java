@@ -15,13 +15,17 @@ import java.util.List;
 public class RecipeViewModel extends AndroidViewModel {
     private RecipeRepository repository;
     private final LiveData<List<Recipe>> allRecipes;
+    private final LiveData<List<Recipe>> savedRecipes;
     public RecipeViewModel(Application application) {
         super(application);
         repository = new RecipeRepository(application);
         allRecipes = repository.getAllRecipes();
+        savedRecipes = repository.getSavedRecipes();
     }
 
     LiveData<List<Recipe>> getAllRecipes() { return allRecipes; }
+
+    LiveData<List<Recipe>> getSavedRecipes() { return savedRecipes; }
 
     public void insert(Recipe recipe) { repository.insert(recipe); }
     public void deleteAll() { repository.deleteAll(); }
