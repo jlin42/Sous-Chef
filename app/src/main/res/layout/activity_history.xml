@@ -94,7 +94,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/history_text"
-        app:layout_constraintBottom_toTopOf="@id/taskbar"
+        app:layout_constraintBottom_toTopOf="@id/base_container"
         tools:listitem="@layout/recycler_view_row" />
 
 
