@@ -37,7 +37,9 @@ public class CreateActivity extends AppCompatActivity {
         addFilter.setOnClickListener(v -> {
             String newFilter = ingredientsTextView.getText().toString();
             if (ingredientsList.contains(newFilter)) {
+                filtersList.add(String.valueOf(ingredientsTextView.getText()));
                 //TODO: Implement code to add from input to filterview
+                ingredientsTextView.setText("");
             } else {
                 Toast ingredNotFound = Toast.makeText(CreateActivity.this, "Ingredient is not in your list", Toast.LENGTH_SHORT);
                 ingredNotFound.show();
