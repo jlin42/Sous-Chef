@@ -50,4 +50,10 @@ class RecipeRepository {
             recipeDAO.deleteAll();
         });
     }
+
+    void delete(Recipe recipe) {
+        RecipeRoomDatabase.databaseWriteExecutor.execute(() -> {
+            recipeDAO.delete(recipe);
+        });
+    }
 }
