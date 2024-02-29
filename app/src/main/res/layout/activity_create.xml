@@ -80,22 +80,6 @@
         app:layout_constraintTop_toBottomOf="@+id/logoLineView"
         app:layout_constraintVertical_bias="0.0">
 
-        <Button
-            android:id="@+id/addFilterBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/tertiary"
-            android:backgroundTintMode="add"
-            android:fontFamily="sans-serif-medium"
-            android:text="Add to Filter"
-            app:keyboardShouldPersistTaps = "always"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.835"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ingredients_autocomplete"
-            app:layout_constraintVertical_bias="0.0" />
-
         <TextView
             android:id="@+id/selectIngredients"
             android:layout_width="wrap_content"
@@ -142,6 +126,21 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/selectIngredients" />
 
+        <Button
+            android:id="@+id/addFilterBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/tertiary"
+            android:backgroundTintMode="add"
+            android:fontFamily="sans-serif-medium"
+            android:text="Add to Filter"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.835"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ingredients_autocomplete"
+            app:layout_constraintVertical_bias="0.0" />
+
         <TextView
             android:id="@+id/recipeFinder"
             android:layout_width="wrap_content"
@@ -168,18 +167,19 @@
         android:id="@+id/ingredientInputs"
         android:layout_width="409dp"
         android:layout_height="371dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginBottom="1dp"
         app:layout_constraintBottom_toTopOf="@+id/base_container"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <!--    <androidx.recyclerview.widget.RecyclerView-->
-<!--        android:id="@+id/SelectedFilters"-->
-<!--        android:layout_width="360dp"-->
-<!--        android:layout_height="320dp"-->
-<!--        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />-->
+    <!--        android:id="@+id/SelectedFilters"-->
+    <!--        android:layout_width="360dp"-->
+    <!--        android:layout_height="320dp"-->
+    <!--        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />-->
 
 
 
