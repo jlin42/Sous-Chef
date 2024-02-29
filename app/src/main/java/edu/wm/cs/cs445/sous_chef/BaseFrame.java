@@ -1,5 +1,7 @@
 package edu.wm.cs.cs445.sous_chef;
 
+import static androidx.core.app.ShareCompat.getCallingActivity;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -24,14 +26,22 @@ public class BaseFrame extends Fragment {
         bottomNav.setOnNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.home_btn:
-                    startActivity(new Intent(getActivity(), MainActivity.class));
-                    return true;
+                    if (!(getActivity() instanceof MainActivity)) {
+                        startActivity(new Intent(getActivity(), MainActivity.class));
+                        return true;
+                    }
+                    break;
                 case R.id.create_btn:
-                    startActivity(new Intent(getActivity(), CreateActivity.class));
-                    return true;
+                    if (!(getActivity() instanceof CreateActivity)) {
+                        startActivity(new Intent(getActivity(), CreateActivity.class));
+                        return true;
+                    }
+                    break;
                 case R.id.settings_btn:
-                    startActivity(new Intent(getActivity(), SettingsActivity.class));
-                    return true;
+                    if (!(getActivity() instanceof SettingsActivity)) {
+                        startActivity(new Intent(getActivity(), SettingsActivity.class));
+                        return true;
+                    }
             }
             return false;
         });
