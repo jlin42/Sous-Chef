@@ -84,15 +84,14 @@
             android:id="@+id/selectIngredients"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="52dp"
-            android:layout_marginBottom="24dp"
+            android:layout_marginEnd="80dp"
+            android:layout_marginBottom="20dp"
             android:text="Select Required Ingredients"
             android:textColor="@color/primary"
             android:textSize="16sp"
             app:layout_constraintBottom_toTopOf="@id/ingredients_autocomplete"
-            app:layout_constraintEnd_toStartOf="@+id/ingredientInfoButton"
-            app:layout_constraintHorizontal_bias="0.012"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/ingredientInfoButton" />
 
         <AutoCompleteTextView
             android:id="@+id/ingredients_autocomplete"
@@ -114,17 +113,17 @@
 
         <ImageButton
             android:id="@+id/ingredientInfoButton"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_marginStart="80dp"
-            android:layout_marginEnd="52dp"
+            android:layout_marginBottom="1dp"
             android:background="#00000000"
             android:foreground="@android:drawable/ic_dialog_info"
             android:foregroundTint="@color/primary"
             android:src="@android:drawable/ic_dialog_info"
             app:layout_constraintBottom_toTopOf="@+id/ingredients_autocomplete"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/selectIngredients" />
+            app:layout_constraintRight_toLeftOf="@+id/selectIngredients"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <Button
             android:id="@+id/addFilterBtn"

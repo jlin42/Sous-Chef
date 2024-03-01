@@ -2,9 +2,12 @@ package edu.wm.cs.cs445.sous_chef;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -46,11 +49,16 @@ public class CreateActivity extends AppCompatActivity {
         Button addFilter = (Button) findViewById(R.id.addFilterBtn);
         addFilter.setOnClickListener(v -> {
             String newFilter = ingredientsTextView.getText().toString();
-            Log.v("test", "test");
             if (ingredientsList.contains(newFilter)) {
                 filtersList.add(String.valueOf(ingredientsTextView.getText()));
                 //TODO: Implement code to add from input to filterview
                 inputAdapter.notifyDataSetChanged();
+                if (inputAdapter.getItemCount() > 0) {
+                    TextView reminder = findViewById(R.id.selectIngredients);
+                    ImageView reminderIcon = findViewById(R.id.ingredientInfoButton);
+                    reminderIcon.setVisibility(View.INVISIBLE);
+                    reminder.setVisibility(View.INVISIBLE);
+                }
                 ingredientsTextView.setText("");
             } else {
                 Toast ingredNotFound = Toast.makeText(CreateActivity.this, "Ingredient is not in your list", Toast.LENGTH_SHORT);

@@ -16,8 +16,6 @@ public class InputAdapter extends RecyclerView.Adapter<InputAdapter.ViewHolder> 
 
     private ArrayList<String> filtersList;
 
-    private int position = 0;
-
     public InputAdapter(ArrayList<String> filtersList) {
         this.filtersList = filtersList;
     }
@@ -34,12 +32,6 @@ public class InputAdapter extends RecyclerView.Adapter<InputAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         String filter = filtersList.get(position);
         holder.bind(filter);
-    }
-
-    public void addInput(String input) {
-        filtersList.add(input);
-        this.notifyItemInserted(position);
-        position += 1;
     }
 
     @Override
