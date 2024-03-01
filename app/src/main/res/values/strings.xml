@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Sous-Chef</string>
-    <string name="replace_me">REPLACE_ME</string> <!-- placeholder -->
+    <string name="replace_me">REPLACE_ME</string>
+    <string name="ingredInputInfo">Press for info on how to input ingredients</string> <!-- placeholder -->
 
 </resources>

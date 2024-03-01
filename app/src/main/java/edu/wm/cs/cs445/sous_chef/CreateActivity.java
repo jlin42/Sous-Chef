@@ -1,13 +1,11 @@
 package edu.wm.cs.cs445.sous_chef;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -50,21 +48,22 @@ public class CreateActivity extends AppCompatActivity {
         addFilter.setOnClickListener(v -> {
             String newFilter = ingredientsTextView.getText().toString();
             if (ingredientsList.contains(newFilter)) {
-                filtersList.add(String.valueOf(ingredientsTextView.getText()));
-                //TODO: Implement code to add from input to filterview
-                inputAdapter.notifyDataSetChanged();
-                if (inputAdapter.getItemCount() > 0) {
-                    TextView reminder = findViewById(R.id.selectIngredients);
-                    ImageView reminderIcon = findViewById(R.id.ingredientInfoButton);
-                    reminderIcon.setVisibility(View.INVISIBLE);
-                    reminder.setVisibility(View.INVISIBLE);
+                if (!filtersList.contains(newFilter)) {
+                    filtersList.add(String.valueOf(ingredientsTextView.getText()));
+                    inputAdapter.notifyDataSetChanged();
+                    ingredientsTextView.setText("");
+                } else {
+                    Toast alreadyAdded = Toast.makeText(CreateActivity.this, "Ingredient is already in your current filter", Toast.LENGTH_SHORT);
+                    alreadyAdded.show();
                 }
-                ingredientsTextView.setText("");
             } else {
                 Toast ingredNotFound = Toast.makeText(CreateActivity.this, "Ingredient is not in your list", Toast.LENGTH_SHORT);
                 ingredNotFound.show();
             }
-
         });
+
+        Button findRecipe = (Button) findViewById(R.id.findRecipeBtn);
+        //TODO: Add bundle with selected filters and grab preferences from SettingsActivity to make api call for RecipesListActivity
+        findRecipe.setOnClickListener(v -> startActivity(new Intent(CreateActivity.this, RecipesListActivity.class)));
     }
 }
