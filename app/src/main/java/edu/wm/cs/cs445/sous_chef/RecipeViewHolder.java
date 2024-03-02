@@ -64,16 +64,11 @@ class RecipeViewHolder extends RecyclerView.ViewHolder implements View.OnClickLi
         if (favorite){
             recipe_saved.setColorFilter(Color.argb(255, 255, 215, 0));
         }
+        // Otherwise, set the color to be white
+        else {
+            recipe_saved.setColorFilter(Color.argb(255, 255, 255, 255));
+        }
     }
-
-    /*
-    // Inflates the layout, giving a look to the rows
-    static RecipeViewHolder create(ViewGroup parent){
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.recycler_view_row, parent, false);
-        return new RecipeViewHolder(view);
-    }
-     */
 }
 
 class RecipeListAdapter extends ListAdapter<Recipe, RecipeViewHolder> {
@@ -95,7 +90,6 @@ class RecipeListAdapter extends ListAdapter<Recipe, RecipeViewHolder> {
             @Override
             public void onDelete(int p) {
                 Recipe current = getItem(p);
-                //notifyItemRemoved(p);
 
                 //REMOVE ITEM FROM DATABASE
                 recipeViewModel.delete(current);
@@ -105,6 +99,11 @@ class RecipeListAdapter extends ListAdapter<Recipe, RecipeViewHolder> {
             public void onSave(int p) {
                 Recipe current = getItem(p);
 
+                // update this recipe to switch it between being saved or not saved
+                // updateSaved takes the recipe to be changed and the Boolean value
+                // that it WILL be set to - so send it the opposite of what
+                // the recipe's saved value currently is
+                recipeViewModel.updateSaved(current, !current.getRecipe_saved());
             }
         });
         return holder;

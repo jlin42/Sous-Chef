@@ -28,6 +28,8 @@ public class RecipeViewModel extends AndroidViewModel {
     LiveData<List<Recipe>> getSavedRecipes() { return savedRecipes; }
 
     public void insert(Recipe recipe) { repository.insert(recipe); }
+    public void updateSaved(Recipe recipe, Boolean recipeSaved) { repository.updateSaved(
+                                                                  recipe, recipeSaved); }
     public void deleteAll() { repository.deleteAll(); }
 
     public void delete(Recipe recipe) { repository.delete(recipe); }

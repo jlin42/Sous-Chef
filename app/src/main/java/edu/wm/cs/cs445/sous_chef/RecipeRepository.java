@@ -43,6 +43,12 @@ class RecipeRepository {
         });
     }
 
+    void updateSaved(Recipe recipe, Boolean recipeSaved){
+        RecipeRoomDatabase.databaseWriteExecutor.execute(() -> {
+            recipeDAO.updateSaved(recipe.getRecipe(), recipeSaved);
+        });
+    }
+
     // Shouldn't be necessary after testing is done
     // Removes all recipe entries from the DB
     void deleteAll() {

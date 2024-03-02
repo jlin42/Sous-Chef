@@ -6,6 +6,8 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.TypeConverter;
+import androidx.room.Update;
 
 import java.util.List;
 
@@ -26,6 +28,10 @@ public interface RecipeDAO {
     @Delete
     void delete(Recipe recipe);
 
+    @Query("UPDATE recipe_table SET recipe_saved = :recipeSaved WHERE recipe = :recipe")
+    void updateSaved(String recipe, Boolean recipeSaved);
+    
+
     // Shouldn't be necessary after testing is done
     // Removes all recipe entries from the DB
     @Query("DELETE FROM recipe_table")
@@ -37,7 +43,6 @@ public interface RecipeDAO {
     @Query("SELECT * FROM recipe_table")
     LiveData<List<Recipe>> getRecipes();
 
-    // WIP
     // Used for Saved Recipes screen
     @Query("SELECT * FROM recipe_table WHERE recipe_saved = true")
     LiveData<List<Recipe>> getSavedRecipes();
