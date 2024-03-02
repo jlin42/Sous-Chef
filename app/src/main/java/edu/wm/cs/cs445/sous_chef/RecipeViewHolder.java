@@ -91,6 +91,10 @@ class RecipeListAdapter extends ListAdapter<Recipe, RecipeViewHolder> {
             public void onDelete(int p) {
                 Recipe current = getItem(p);
 
+                // may be unnecessary - remove recipe from 'saved' before
+                // removing it from the database entirely
+                recipeViewModel.updateSaved(current, false);
+
                 //REMOVE ITEM FROM DATABASE
                 recipeViewModel.delete(current);
             }
@@ -99,12 +103,23 @@ class RecipeListAdapter extends ListAdapter<Recipe, RecipeViewHolder> {
             public void onSave(int p) {
                 Recipe current = getItem(p);
 
+                // check if recipe is a 'new' recipe
+                // if it is, remove it from the 'new' section
+                // so it can be added to the 'saved' section
+                if (current.getNew_recipe()){
+                    recipeViewModel.updateNewRecipe(current, false);
+                }
+
                 // update this recipe to switch it between being saved or not saved
                 // updateSaved takes the recipe to be changed and the Boolean value
                 // that it WILL be set to - so send it the opposite of what
                 // the recipe's saved value currently is
                 recipeViewModel.updateSaved(current, !current.getRecipe_saved());
+
             }
+
+            //TODO
+            // create listener for VIEW button
         });
         return holder;
     }

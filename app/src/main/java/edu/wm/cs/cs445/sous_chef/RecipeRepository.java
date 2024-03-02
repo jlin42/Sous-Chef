@@ -16,6 +16,7 @@ class RecipeRepository {
     // LiveData -> the data is automatically updated when DB is updated
     private LiveData<List<Recipe>> allRecipes;
     private LiveData<List<Recipe>> savedRecipes;
+    private LiveData<List<Recipe>> newRecipes;
 
     //
     RecipeRepository(Application application) {
@@ -23,6 +24,7 @@ class RecipeRepository {
         recipeDAO = db.recipeDAO();
         allRecipes = recipeDAO.getRecipes();
         savedRecipes = recipeDAO.getSavedRecipes();
+        newRecipes = recipeDAO.getNewRecipes();
     }
 
     // Room executes all queries on a separate thread
@@ -31,8 +33,11 @@ class RecipeRepository {
         return allRecipes;
     }
 
-    // WIP
+    //
     LiveData<List<Recipe>> getSavedRecipes() { return savedRecipes; }
+
+    //
+    LiveData<List<Recipe>> getNewRecipes() { return newRecipes; }
 
     // Must be called on a non-UI thread
     // Room operations cannot be called on UI
@@ -40,6 +45,12 @@ class RecipeRepository {
     void insert(Recipe recipe) {
         RecipeRoomDatabase.databaseWriteExecutor.execute(() -> {
             recipeDAO.insert(recipe);
+        });
+    }
+
+    void updateNewRecipe(Recipe recipe, Boolean newRecipe) {
+        RecipeRoomDatabase.databaseWriteExecutor.execute(() -> {
+            recipeDAO.updateNewRecipe(recipe.getRecipe(), newRecipe);
         });
     }
 

@@ -38,25 +38,20 @@ public class HistoryActivity extends AppCompatActivity {
         // Adds 4 recipes
         // use recipeViewModel.deleteAll() to clear them if needed
         Recipe recipe = new Recipe("Chicken Pot Pie", "Chicken, bread crumbs, assorted veggies, ...",
-                "30m", false, "recipe link");
+                "30m", false, "recipe link", false);
         recipeViewModel.insert(recipe);
 
         recipe = new Recipe("Meatloaf", "Ground beef, bread crumbs, ketchup, onions, ...",
-                "30m", false, "link");
+                "30m", false, "link", false);
         recipeViewModel.insert(recipe);
 
         recipe = new Recipe("Mac and Cheese", "Macaroni noodles, milk, butter, flour, cheese",
-                "1h", true, "link");
+                "1h", true, "link", false);
         recipeViewModel.insert(recipe);
 
         recipe = new Recipe("Easy Weeknight Spaghetti and Meat Sauce", "Spaghetti noodles, jarred sauce, ground beef, onions, garlic, ...",
-                "2h30m", false, "link");
+                "2h30m", false, "link", false);
         recipeViewModel.insert(recipe);
 
     }
-
-    // this was used in the tutorial "Android Room with a view" but don't think it is necessary here?
-    //public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-    //}
 }

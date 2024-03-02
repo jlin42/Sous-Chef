@@ -28,9 +28,12 @@ public interface RecipeDAO {
     @Delete
     void delete(Recipe recipe);
 
+    // Switch whether or not this recipe is 'saved'
     @Query("UPDATE recipe_table SET recipe_saved = :recipeSaved WHERE recipe = :recipe")
     void updateSaved(String recipe, Boolean recipeSaved);
-    
+
+    @Query("UPDATE recipe_table SET new_recipe = :newRecipe WHERE recipe = :recipe")
+    void updateNewRecipe(String recipe, Boolean newRecipe);
 
     // Shouldn't be necessary after testing is done
     // Removes all recipe entries from the DB
@@ -40,13 +43,15 @@ public interface RecipeDAO {
     // Returns a LiveData list of the rows in the DB
     // LiveData - updates the associated view when a change in the DB occurs
     // Could sort these by adding "ORDER BY [sort]" into query
-    @Query("SELECT * FROM recipe_table")
+    @Query("SELECT * FROM recipe_table WHERE new_recipe = false")
     LiveData<List<Recipe>> getRecipes();
 
     // Used for Saved Recipes screen
-    @Query("SELECT * FROM recipe_table WHERE recipe_saved = true")
+    @Query("SELECT * FROM recipe_table WHERE recipe_saved = true AND new_recipe = false")
     LiveData<List<Recipe>> getSavedRecipes();
 
-    //TODO - implement a @Delete method
-    //TODO - only store the first 10-ish recipes, when inserting check how many are currently stored
+    // Used for Recipe List screen - returns only the recipes which
+    // have been marked as 'new'
+    @Query("SELECT * FROM recipe_table WHERE new_recipe = true")
+    LiveData<List<Recipe>> getNewRecipes();
 }

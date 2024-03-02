@@ -4,15 +4,48 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class RecipesListActivity extends AppCompatActivity {
 
+    RecipeViewModel recipeViewModel;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipes_list);
 
         // TODO - figure out how to connect JSON output from API to RecyclerView
+        // Add recipes to database (like how they are added in the history java file),
+        // marking the "new_recipe" field as true. These recipes will only be shown in this screen
+
+        recipeViewModel = new ViewModelProvider(this).get(RecipeViewModel.class);
+
+        RecyclerView recyclerView = findViewById(R.id.recyclerview);
+        final RecipeListAdapter adapter = new RecipeListAdapter(new RecipeListAdapter.RecipeDiff(),
+                recipeViewModel);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+
+        recipeViewModel.getNewRecipes().observe(this, recipes -> {
+            //update cached copy of recipes in the adapter
+            adapter.submitList(recipes);
+        });
+
+        // How to add to the recipe list screen:
+        // Format: String recipe_name,
+        //         String recipe_description,
+        //         String recipe_time,
+        //         Boolean recipe_saved, (<- true for recipes on favorite_recipes screen, false otherwise)
+        //         String recipe_link,
+        //         Boolean new_recipe (<- true for recipes on the recipe_list screen, false otherwise)
+        /*
+        Recipe recipe = new Recipe("Chicken Pot Pie", "Chicken, bread crumbs, assorted veggies, ...",
+                "30m", false, "recipe link", false);
+        recipeViewModel.insert(recipe);
+         */
 
     }
 }
