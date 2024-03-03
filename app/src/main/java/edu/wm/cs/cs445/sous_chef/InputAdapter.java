@@ -4,6 +4,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -32,6 +33,9 @@ public class InputAdapter extends RecyclerView.Adapter<InputAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         String filter = filtersList.get(position);
         holder.bind(filter);
+        holder.trashBtn.setOnClickListener((View.OnClickListener) v -> {
+            removeAt(position);//i is your adapter position
+        });
     }
 
     @Override
@@ -39,12 +43,26 @@ public class InputAdapter extends RecyclerView.Adapter<InputAdapter.ViewHolder> 
         return filtersList.size();
     }
 
+    public void removeAt(int position) {
+        filtersList.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, filtersList.size());
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView filterView;
+        ImageView trashBtn;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             filterView = itemView.findViewById(R.id.ingredient_input);
+            trashBtn = itemView.findViewById(R.id.trash_recipe_btn);
+//            trashBtn.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    itemView.
+//                }
+//            });
         }
 
         public void bind(String filter) {

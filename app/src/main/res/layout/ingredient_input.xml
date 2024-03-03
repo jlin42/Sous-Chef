@@ -31,6 +31,7 @@
             android:layout_height="32dp"
             android:layout_alignParentRight="true"
             android:layout_marginRight="12dp"
+            android:onClick="trashBtnClicked"
             android:src="@drawable/bin"
             app:tint="@color/white" />
 

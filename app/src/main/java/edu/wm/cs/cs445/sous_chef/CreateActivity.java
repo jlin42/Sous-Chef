@@ -3,6 +3,7 @@ package edu.wm.cs.cs445.sous_chef;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -20,6 +21,8 @@ import java.util.List;
 public class CreateActivity extends AppCompatActivity {
     RecyclerView inputBox;
     InputAdapter inputAdapter;
+    ArrayList<String> filtersList;
+    List<String> ingredientsList;
     @Override
     protected void onCreate(Bundle saveInstanceState) {
         super.onCreate(saveInstanceState);
@@ -35,8 +38,8 @@ public class CreateActivity extends AppCompatActivity {
         ingredientsTextView.setAdapter(ingredientsAdapter);
 
         // Holds inputs
-        ArrayList<String> filtersList = new ArrayList<>();
-        List<String> ingredientsList = Arrays.asList(ingredients);
+        filtersList = new ArrayList<>();
+        ingredientsList = Arrays.asList(ingredients);
 
         inputBox = findViewById(R.id.ingredientInputs);
         inputAdapter = new InputAdapter(filtersList);
@@ -65,5 +68,9 @@ public class CreateActivity extends AppCompatActivity {
         Button findRecipe = (Button) findViewById(R.id.findRecipeBtn);
         //TODO: Add bundle with selected filters and grab preferences from SettingsActivity to make api call for RecipesListActivity
         findRecipe.setOnClickListener(v -> startActivity(new Intent(CreateActivity.this, RecipesListActivity.class)));
+    }
+
+    public void trashBtnClicked(View view) {
+
     }
 }
