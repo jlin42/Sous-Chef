@@ -69,8 +69,4 @@ public class CreateActivity extends AppCompatActivity {
         //TODO: Add bundle with selected filters and grab preferences from SettingsActivity to make api call for RecipesListActivity
         findRecipe.setOnClickListener(v -> startActivity(new Intent(CreateActivity.this, RecipesListActivity.class)));
     }
-
-    public void trashBtnClicked(View view) {
-
-    }
 }

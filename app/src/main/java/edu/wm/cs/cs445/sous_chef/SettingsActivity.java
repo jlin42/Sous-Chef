@@ -44,6 +44,10 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceBundle);
         setContentView(R.layout.activity_settings);
 
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.base_container, new BaseFrame())
+                .commit();
+
         pref_noSpice = findViewById(R.id.check_noSpice);
         Log.v("SettingsActivity:", "No Spices CheckBox initialized");
         pref_glutenFree = findViewById(R.id.check_glutenFree);
