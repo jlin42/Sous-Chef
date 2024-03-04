@@ -67,6 +67,16 @@ public class CreateActivity extends AppCompatActivity {
 
         Button findRecipe = (Button) findViewById(R.id.findRecipeBtn);
         //TODO: Add bundle with selected filters and grab preferences from SettingsActivity to make api call for RecipesListActivity
-        findRecipe.setOnClickListener(v -> startActivity(new Intent(CreateActivity.this, RecipesListActivity.class)));
+        findRecipe.setOnClickListener(v -> {
+            if (inputAdapter.getItemCount() == 0) {
+                Toast addIngred = Toast.makeText(CreateActivity.this, "Please add ingredients", Toast.LENGTH_SHORT);
+                addIngred.show();
+            } else {
+                Intent recipeIntent = new Intent(CreateActivity.this, RecipesListActivity.class);
+                recipeIntent.putExtra("ingredients", filtersList);
+                startActivity(recipeIntent);
+            }
+
+        });
     }
 }

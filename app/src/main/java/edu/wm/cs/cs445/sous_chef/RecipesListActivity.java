@@ -1,12 +1,15 @@
 package edu.wm.cs.cs445.sous_chef;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
 
 public class RecipesListActivity extends AppCompatActivity {
 
@@ -15,6 +18,15 @@ public class RecipesListActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipes_list);
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.base_container, new BaseFrame())
+                .commit();
+
+        // Receive ingredients data
+
+        ArrayList<String> ingredients = (ArrayList<String>) getIntent().getSerializableExtra("ingredients");
+        Log.v("w",String.valueOf(ingredients));
 
         // TODO - figure out how to connect JSON output from API to RecyclerView
         // Add recipes to database (like how they are added in the history java file),
