@@ -76,7 +76,7 @@ public class SettingsActivity extends AppCompatActivity {
                 alrg_dairy, alrg_eggs, alrg_peanuts, alrg_shellfish
         };
 
-        prefsSelected = loadPrefs();
+        prefsSelected = new int[8];
 
         int prefs[] = loadPrefs();
         Log.i("Preferences in storage: ", Arrays.toString(prefs));
