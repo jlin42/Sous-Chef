@@ -9,7 +9,11 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class RecipesListActivity extends AppCompatActivity {
 
@@ -23,10 +27,13 @@ public class RecipesListActivity extends AppCompatActivity {
                 .replace(R.id.base_container, new BaseFrame())
                 .commit();
 
-        // Receive ingredients data
-
+        // Retrieve ingredients data
         ArrayList<String> ingredients = (ArrayList<String>) getIntent().getSerializableExtra("ingredients");
-        Log.v("w",String.valueOf(ingredients));
+        Log.v("filters",String.valueOf(ingredients));
+
+        // Retrieve preferences
+        int prefs[] = loadPrefs();
+        Log.v("preferences", Arrays.toString(prefs));
 
         // TODO - figure out how to connect JSON output from API to RecyclerView
         // Add recipes to database (like how they are added in the history java file),
@@ -59,5 +66,22 @@ public class RecipesListActivity extends AppCompatActivity {
         recipeViewModel.insert(recipe);
          */
 
+    }
+
+    private int[] loadPrefs() {
+        String filename = "preferences.txt";
+        int[] prefs = null;
+
+        try {
+            FileInputStream fStream = openFileInput(filename);
+            ObjectInputStream oStream = new ObjectInputStream(fStream);
+            prefs = (int[]) oStream.readObject();
+            oStream.close();
+            fStream.close();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return prefs;
     }
 }

@@ -1,11 +1,17 @@
 package edu.wm.cs.cs445.sous_chef;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.CheckBox;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Arrays;
 
 public class SettingsActivity extends AppCompatActivity {
@@ -65,104 +71,62 @@ public class SettingsActivity extends AppCompatActivity {
         alrg_dairy = findViewById(R.id.allergy_dairy);
         Log.v("SettingsActivity:", "Dairy Allergy CheckBox initialized");
 
+        CheckBox[] options = {
+                pref_noSpice, pref_glutenFree, pref_vegan, pref_vegetarian,
+                alrg_dairy, alrg_eggs, alrg_peanuts, alrg_shellfish
+        };
 
-        prefsSelected = new int[8];
+        prefsSelected = loadPrefs();
 
-        pref_noSpice.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            msg = "No Spices ";
-            if (pref_noSpice.isChecked()) {
-                if (prefsSelected[0] != 1) { prefsSelected[0] = 1; }
-                Log.v("SettingsActivity:", msg + "was added to recipe preferences.");
-            } else {
-                if (prefsSelected[0] != 0) { prefsSelected[0] = 0; }
-                Log.v("SettingsActivity:", msg + "was removed to recipe preferences.");
-            }
-            Log.v("SettingsActivity:", "Prefs Array: " + Arrays.toString(prefsSelected));
-        });
+        int prefs[] = loadPrefs();
+        Log.i("Preferences in storage: ", Arrays.toString(prefs));
 
-        pref_glutenFree.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            msg = "Gluten Free ";
-            if (pref_glutenFree.isChecked()) {
-                if (prefsSelected[1] != 1) { prefsSelected[1] = 1; }
-                Log.v("SettingsActivity:", msg + "was added to recipe preferences.");
-            } else {
-                if (prefsSelected[1] != 0) { prefsSelected[1] = 0; }
-                Log.v("SettingsActivity:", msg + "was removed to recipe preferences.");
-            }
-            Log.v("SettingsActivity:", "Prefs Array: " + Arrays.toString(prefsSelected));
-        });
+        // Set onClickListeners and also load from storage
+        for (int i = 0; i < prefs.length; i++) {
+            int index = i;
+            options[i].setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if (options[index].isChecked()) {
+                    if (prefsSelected[index] != 1) { prefsSelected[index] = 1; }
+                } else {
+                    if (prefsSelected[index] != 0) { prefsSelected[index] = 0; }
+                }
+                storePref();
+            });
+            options[i].setChecked(prefs[i] == 1);
+        }
 
-        pref_vegetarian.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            msg = "Vegetarian ";
-            if (pref_vegetarian.isChecked()) {
-                if (prefsSelected[2] != 1) { prefsSelected[2] = 1; }
-                Log.v("SettingsActivity:", msg + "was added to recipe preferences.");
-            } else {
-                if (prefsSelected[2] != 0) { prefsSelected[2] = 0; }
-                Log.v("SettingsActivity:", msg + "was removed to recipe preferences.");
-            }
-            Log.v("SettingsActivity:", "Prefs Array: " + Arrays.toString(prefsSelected));
-        });
+    }
+    // Preferences storage
+    private void storePref() {
+        String filename ="preferences.txt";
+        Log.i("preferences: ", Arrays.toString(prefsSelected));
 
-        pref_vegan.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            msg = "Vegan ";
-            if (pref_vegan.isChecked()) {
-                if (prefsSelected[3] != 1) { prefsSelected[3] = 1; }
-                Log.v("SettingsActivity:", msg + "was added to recipe preferences.");
-            } else {
-                if (prefsSelected[3] != 0) { prefsSelected[3] = 0; }
-                Log.v("SettingsActivity:", msg + "was removed to recipe preferences.");
-            }
-            Log.v("SettingsActivity:", "Prefs Array: " + Arrays.toString(prefsSelected));
-        });
+        try {
+            FileOutputStream fStream = openFileOutput(filename, Context.MODE_PRIVATE);
+            ObjectOutputStream oStream = new ObjectOutputStream(fStream);
+            oStream.writeObject(prefsSelected);
+            oStream.close();
+            fStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-        alrg_peanuts.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            msg = "Peanut Allergy ";
-            if (alrg_peanuts.isChecked()) {
-                if (prefsSelected[4] != 1) { prefsSelected[4] = 1; }
-                Log.v("SettingsActivity:", msg + "was added to recipe preferences.");
-            } else {
-                if (prefsSelected[4] != 0) { prefsSelected[4] = 0; }
-                Log.v("SettingsActivity:", msg + "was removed to recipe preferences.");
-            }
-            Log.v("SettingsActivity:", "Prefs Array: " + Arrays.toString(prefsSelected));
-        });
+    private int[] loadPrefs() {
+        String filename = "preferences.txt";
+        int[] prefs = null;
 
-        alrg_shellfish.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            msg = "Shellfish Allergy ";
-            if (alrg_shellfish.isChecked()) {
-                if (prefsSelected[5] != 1) { prefsSelected[5] = 1; }
-                Log.v("SettingsActivity:", msg + "was added to recipe preferences.");
-            } else {
-                if (prefsSelected[5] != 0) { prefsSelected[5] = 0; }
-                Log.v("SettingsActivity:", msg + "was removed to recipe preferences.");
-            }
-            Log.v("SettingsActivity:", "Prefs Array: " + Arrays.toString(prefsSelected));
-        });
+        try {
+            FileInputStream fStream = openFileInput(filename);
+            ObjectInputStream oStream = new ObjectInputStream(fStream);
+            prefs = (int[]) oStream.readObject();
+            oStream.close();
+            fStream.close();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
 
-        alrg_eggs.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            msg = "Egg Allergy ";
-            if (alrg_eggs.isChecked()) {
-                if (prefsSelected[6] != 1) { prefsSelected[6] = 1; }
-                Log.v("SettingsActivity:", msg + "was added to recipe preferences.");
-            } else {
-                if (prefsSelected[6] != 0) { prefsSelected[6] = 0; }
-                Log.v("SettingsActivity:", msg + "was removed to recipe preferences.");
-            }
-            Log.v("SettingsActivity:", "Prefs Array: " + Arrays.toString(prefsSelected));
-        });
-
-        alrg_dairy.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            msg = "Dairy Allergy ";
-            if (alrg_dairy.isChecked()) {
-                if (prefsSelected[7] != 1) { prefsSelected[7] = 1; }
-                Log.v("SettingsActivity:", msg + "was added to recipe preferences.");
-            } else {
-                if (prefsSelected[7] != 0) { prefsSelected[7] = 0; }
-                Log.v("SettingsActivity:", msg + "was removed to recipe preferences.");
-            }
-            Log.v("SettingsActivity:", "Prefs Array: " + Arrays.toString(prefsSelected));
-        });
+        return prefs;
     }
 
 }
