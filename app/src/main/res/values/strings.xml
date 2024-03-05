@@ -3,6 +3,8 @@
     <string name="replace_me">REPLACE_ME</string>
     <string name="ingredInputInfo">Press for info on how to input ingredients</string>
     <string name="pantry_file_key">edu.wm.cs.cs445.sous_chef_PANTRY_FILE_KEY</string>
-    <string name="pantry_ingredients_key">edu.wm.cs.cs445.sous_chef_PANTRY_INGREDIENTS_KEY</string><!-- placeholder -->
+    <string name="pantry_ingredients_key">edu.wm.cs.cs445.sous_chef_PANTRY_INGREDIENTS_KEY</string>
+    <string name="settings_file_key">edu.wm.cs.cs445.sous_chef_SETTINGS_FILE_KEY</string>
+    <string name="settings_prefs_key">edu.wm.cs.cs445.sous_chef_SETTINGS_PREFS_KEY</string><!-- placeholder -->
 
 </resources>
