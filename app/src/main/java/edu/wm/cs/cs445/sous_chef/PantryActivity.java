@@ -18,11 +18,11 @@ import java.util.Arrays;
 
 public class PantryActivity extends AppCompatActivity {
 
-    RecyclerView inputBox;
-    InputAdapter inputAdapter;
-    ArrayList<String> pantryIngredients;
-    SharedPreferences pantryPrefs;
-    SharedPreferences.Editor editor;
+    private RecyclerView inputBox;
+    private InputAdapter inputAdapter;
+    private ArrayList<String> pantryIngredients;
+    private SharedPreferences pantryPrefs;
+    private SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
