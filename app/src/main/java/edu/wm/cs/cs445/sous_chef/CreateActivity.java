@@ -1,7 +1,10 @@
 package edu.wm.cs.cs445.sous_chef;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -33,7 +36,27 @@ public class CreateActivity extends AppCompatActivity {
                 .commit();
 
         AutoCompleteTextView ingredientsTextView = (AutoCompleteTextView) findViewById(R.id.ingredients_autocomplete);
-        String ingredients[] = getResources().getStringArray(R.array.user_ingredients);
+
+        /* TODO: connect autofill to array from pantryactivity
+         *  This is what I have so far for trying to read the sharedpreferences saved from PantryActivity
+         *  into here and using that as the autocomplete options for the input box.  Right now it does
+         *  not work and keeps returnAing the default value "".  As a fix this bug is handled by using the
+         *  user_ingredients array that is hardcoded into the xml.
+         */
+
+        SharedPreferences pantryPrefs = CreateActivity.this.getSharedPreferences(getString(R.string.pantry_key), Context.MODE_PRIVATE);
+        String loadedPrefs = pantryPrefs.getString(getString(R.string.pantry_key), "");
+        String[] ingredients;
+        if (!loadedPrefs.equals("")) {
+            ingredients = loadedPrefs.split(",");
+        } else {
+            //This is just a temporary fix to populate the input autocomplete suggestions until
+            // a debug pantry can be created
+            Log.v("create:", "didnt pull pantry properly");
+            ingredients = getResources().getStringArray(R.array.user_ingredients);
+        }
+        //String ingredients[] = getResources().getStringArray(R.array.user_ingredients);
+
         ArrayAdapter<String> ingredientsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, ingredients);
         ingredientsTextView.setAdapter(ingredientsAdapter);
 
