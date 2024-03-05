@@ -1,5 +1,7 @@
 package edu.wm.cs.cs445.sous_chef;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -16,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class RecipesListActivity extends AppCompatActivity {
+    SharedPreferences settingsPrefs;
 
     RecipeViewModel recipeViewModel;
     @Override
@@ -26,6 +29,9 @@ public class RecipesListActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.base_container, new BaseFrame())
                 .commit();
+
+        settingsPrefs = RecipesListActivity.this.getSharedPreferences(
+                getString(R.string.settings_file_key), Context.MODE_PRIVATE);
 
         // Retrieve ingredients data
         ArrayList<String> ingredients = (ArrayList<String>) getIntent().getSerializableExtra("ingredients");
@@ -69,18 +75,38 @@ public class RecipesListActivity extends AppCompatActivity {
     }
 
     private int[] loadPrefs() {
-        String filename = "preferences.txt";
-        int[] prefs = null;
+//        String filename = "preferences.txt";
+//        int[] prefs = null;
+//
+//        try {
+//            FileInputStream fStream = openFileInput(filename);
+//            ObjectInputStream oStream = new ObjectInputStream(fStream);
+//            prefs = (int[]) oStream.readObject();
+//            oStream.close();
+//            fStream.close();
+//        } catch (IOException | ClassNotFoundException e) {
+//            e.printStackTrace();
+//        }
 
-        try {
-            FileInputStream fStream = openFileInput(filename);
-            ObjectInputStream oStream = new ObjectInputStream(fStream);
-            prefs = (int[]) oStream.readObject();
-            oStream.close();
-            fStream.close();
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+        //Tries to load any saved preferences, returns empty string if not found
+        String loadedSettingPrefs = settingsPrefs.getString(getString(R.string.settings_prefs_key), "");
+        int[] prefs = new int[8];
+
+        //If loaded settings string is empty, just return a default array
+        if (loadedSettingPrefs.equals("")) {
+            Log.i("SettingsActivity:", "No saved preferences found");
+            return prefs;
         }
+        if (loadedSettingPrefs.length() != 8) {
+            Log.i("SettingsActivity:", "Error with saved preferences");
+            return prefs;
+        }
+
+        for (int i = 0; i < prefs.length; i++) {
+            prefs[i] = loadedSettingPrefs.charAt(i) - '0';
+        }
+
+        Log.i("SettingsActivity:", "Preferences loaded from string: " + loadedSettingPrefs);
 
         return prefs;
     }
