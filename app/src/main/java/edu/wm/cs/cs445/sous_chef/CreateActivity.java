@@ -42,17 +42,18 @@ public class CreateActivity extends AppCompatActivity {
         ingredientsList = Arrays.asList(ingredients);
 
         inputBox = findViewById(R.id.ingredientInputs);
-        inputAdapter = new InputAdapter(filtersList);
+        inputAdapter = new InputAdapter(filtersList, CreateActivity.this);
         inputBox.setAdapter(inputAdapter);
         inputBox.setLayoutManager(new LinearLayoutManager(this));
 
 
         Button addFilter = (Button) findViewById(R.id.addFilterBtn);
         addFilter.setOnClickListener(v -> {
-            String newFilter = ingredientsTextView.getText().toString();
+            //First letter capitalized, all else lowercase
+            String newFilter = ingredientsTextView.getText().toString().toUpperCase().charAt(0) + ingredientsTextView.getText().toString().toLowerCase().substring(1);
             if (ingredientsList.contains(newFilter)) {
                 if (!filtersList.contains(newFilter)) {
-                    filtersList.add(String.valueOf(ingredientsTextView.getText()));
+                    filtersList.add((ingredientsTextView.getText().toString()));
                     inputAdapter.notifyDataSetChanged();
                     ingredientsTextView.setText("");
                 } else {
@@ -69,8 +70,14 @@ public class CreateActivity extends AppCompatActivity {
         //TODO: Add bundle with selected filters and grab preferences from SettingsActivity to make api call for RecipesListActivity
         findRecipe.setOnClickListener(v -> {
             if (inputAdapter.getItemCount() == 0) {
-                Toast addIngred = Toast.makeText(CreateActivity.this, "Please add ingredients", Toast.LENGTH_SHORT);
-                addIngred.show();
+                //If user selects no filters, then the api call does not need to check the unused ingredients
+                //The filters are the just ingredients that cannot be listed as unused
+                Intent recipeIntent = new Intent(CreateActivity.this, RecipesListActivity.class);
+
+                //passing a new arraylist is probably a temporary fix, but just checking if the list.size() > 0
+                // on the recipes end would also make this solution work
+                recipeIntent.putExtra("ingredients", new ArrayList<String>());
+                startActivity(recipeIntent);
             } else {
                 Intent recipeIntent = new Intent(CreateActivity.this, RecipesListActivity.class);
                 recipeIntent.putExtra("ingredients", filtersList);

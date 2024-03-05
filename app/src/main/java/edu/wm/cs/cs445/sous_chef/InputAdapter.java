@@ -1,5 +1,6 @@
 package edu.wm.cs.cs445.sous_chef;
 
+import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,9 +17,11 @@ import java.util.List;
 public class InputAdapter extends RecyclerView.Adapter<InputAdapter.ViewHolder> {
 
     private ArrayList<String> filtersList;
+    private Context curContext;
 
-    public InputAdapter(ArrayList<String> filtersList) {
+    public InputAdapter(ArrayList<String> filtersList, Context curContext) {
         this.filtersList = filtersList;
+        this.curContext = curContext;
     }
 
     @NonNull

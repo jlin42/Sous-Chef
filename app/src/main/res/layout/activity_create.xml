@@ -103,7 +103,7 @@
             android:background="@drawable/textbox_border_background"
             android:backgroundTint="@color/primary"
             android:backgroundTintMode="src_atop"
-            android:hint="Input Ingredient"
+            android:hint="Search Your Pantry"
             android:inputType="textAutoCorrect"
             android:padding="10dp"
             app:layout_constraintEnd_toEndOf="parent"
