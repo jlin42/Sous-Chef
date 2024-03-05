@@ -10,13 +10,13 @@
     <item
         android:id="@+id/create_btn"
         android:enabled="true"
-        android:icon="@drawable/output_onlinepngtools__5__1"
+        android:icon="@drawable/plus"
         android:title=""
         app:itemPaddingTop="50dp"/>
 
     <item
         android:id="@+id/settings_btn"
         android:enabled="true"
-        android:icon="@drawable/output_onlinepngtools__6__1"
+        android:icon="@drawable/settings"
         android:title="Settings"/>
 </menu>
