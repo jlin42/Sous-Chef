@@ -29,7 +29,7 @@ public class HistoryActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
 
-        recipeViewModel.getAllRecipes().observe(this, recipes -> {
+        recipeViewModel.getRecipeHistory().observe(this, recipes -> {
             //update cached copy of recipes in the adapter
             adapter.submitList(recipes);
         });
@@ -38,19 +38,19 @@ public class HistoryActivity extends AppCompatActivity {
         // Adds 4 recipes
         // use recipeViewModel.deleteAll() to clear them if needed
         Recipe recipe = new Recipe("Chicken Pot Pie", "Chicken, bread crumbs, assorted veggies, ...",
-                "30m", false, "recipe link", false);
+                "30m", false, "recipe link", false, true);
         recipeViewModel.insert(recipe);
 
         recipe = new Recipe("Meatloaf", "Ground beef, bread crumbs, ketchup, onions, ...",
-                "30m", false, "link", false);
+                "30m", false, "link", false, true);
         recipeViewModel.insert(recipe);
 
         recipe = new Recipe("Mac and Cheese", "Macaroni noodles, milk, butter, flour, cheese",
-                "1h", true, "link", false);
+                "1h", true, "link", false, true);
         recipeViewModel.insert(recipe);
 
         recipe = new Recipe("Easy Weeknight Spaghetti and Meat Sauce", "Spaghetti noodles, jarred sauce, ground beef, onions, garlic, ...",
-                "2h30m", false, "link", false);
+                "2h30m", false, "link", false, true);
         recipeViewModel.insert(recipe);
 
     }

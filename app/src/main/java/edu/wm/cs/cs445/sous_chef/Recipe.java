@@ -48,16 +48,23 @@ public class Recipe {
     @NonNull
     private Boolean new_recipe;
 
+    // If recipe should be visible on recipe history screen
+    // True if the user has clicked "VIEW" button
+    @NonNull
+    private boolean recipe_in_history;
+
 
     public Recipe(@NonNull String recipe, @NonNull String recipe_description,
                   @NonNull String recipe_time, @NonNull Boolean recipe_saved,
-                  @NonNull String recipe_link, @NonNull Boolean new_recipe) {
+                  @NonNull String recipe_link, @NonNull Boolean new_recipe,
+                  @NonNull Boolean recipe_in_history) {
         this.recipe = recipe;
         this.recipe_description = recipe_description;
         this.recipe_time = recipe_time;
         this.recipe_saved = recipe_saved;
         this.recipe_link = recipe_link;
         this.new_recipe = new_recipe;
+        this.recipe_in_history = recipe_in_history;
     }
 
     @NonNull
@@ -87,4 +94,7 @@ public class Recipe {
 
     @NonNull
     public Boolean getNew_recipe() { return new_recipe; }
+
+    @NonNull
+    public Boolean getRecipe_in_history() { return recipe_in_history; }
 }

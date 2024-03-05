@@ -34,6 +34,8 @@ public interface RecipeDAO {
 
     @Query("UPDATE recipe_table SET new_recipe = :newRecipe WHERE recipe = :recipe")
     void updateNewRecipe(String recipe, Boolean newRecipe);
+    @Query("UPDATE recipe_table SET recipe_in_history = :inHistory WHERE recipe = :recipe")
+    void updateHistory(String recipe, Boolean inHistory);
 
     // Shouldn't be necessary after testing is done
     // Removes all recipe entries from the DB
@@ -43,15 +45,18 @@ public interface RecipeDAO {
     // Returns a LiveData list of the rows in the DB
     // LiveData - updates the associated view when a change in the DB occurs
     // Could sort these by adding "ORDER BY [sort]" into query
-    @Query("SELECT * FROM recipe_table WHERE new_recipe = false")
+    @Query("SELECT * FROM recipe_table")
     LiveData<List<Recipe>> getRecipes();
 
     // Used for Saved Recipes screen
-    @Query("SELECT * FROM recipe_table WHERE recipe_saved = true AND new_recipe = false")
+    @Query("SELECT * FROM recipe_table WHERE recipe_saved = true")
     LiveData<List<Recipe>> getSavedRecipes();
 
     // Used for Recipe List screen - returns only the recipes which
     // have been marked as 'new'
     @Query("SELECT * FROM recipe_table WHERE new_recipe = true")
     LiveData<List<Recipe>> getNewRecipes();
+
+    @Query("SELECT * FROM recipe_table WHERE recipe_in_history = true")
+    LiveData<List<Recipe>> getRecipeHistory();
 }
