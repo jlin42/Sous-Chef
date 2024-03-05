@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -26,6 +27,7 @@ class RecipeViewHolder extends RecyclerView.ViewHolder implements View.OnClickLi
 
     ClickListener listener;
     ImageView trash;
+    Button viewBtn;
 
 
 
@@ -35,12 +37,14 @@ class RecipeViewHolder extends RecyclerView.ViewHolder implements View.OnClickLi
         this.recipe_description = itemView.findViewById(R.id.recipe_description_text);
         this.recipe_time = itemView.findViewById(R.id.recipe_time_text);
         this.recipe_saved = itemView.findViewById(R.id.favorite_recipe_img);
+        this.listener = listener;
 
         this.trash = itemView.findViewById(R.id.trash_recipe_btn);
-        this.listener = listener;
-        trash.setOnClickListener(this);
+        this.viewBtn = itemView.findViewById(R.id.view_btn);
 
+        trash.setOnClickListener(this);
         recipe_saved.setOnClickListener(this);
+        viewBtn.setOnClickListener(this);
     }
 
     @Override
@@ -52,7 +56,9 @@ class RecipeViewHolder extends RecyclerView.ViewHolder implements View.OnClickLi
             case R.id.favorite_recipe_img:
                 listener.onSave(this.getLayoutPosition());
                 break;
-                //TODO
+            case R.id.view_btn:
+                listener.onView(this.getLayoutPosition());
+                break;
         }
     }
 
@@ -118,8 +124,23 @@ class RecipeListAdapter extends ListAdapter<Recipe, RecipeViewHolder> {
 
             }
 
-            //TODO
-            // create listener for VIEW button
+            // When the user clicks 'VIEW' ->
+                // take user to a page with the description of the recipe
+                // move recipe from RecipeListActivity to RecipeHistoryActivity (when needed)
+            @Override
+            public void onView(int p) {
+                Recipe current = getItem(p);
+
+                // TODO - recipes in history will not show up on RecipeList screen - this may not be desired?
+                // if this recipe is on the RecipeList page - not history or favorites
+                if(current.getNew_recipe()){
+                    recipeViewModel.updateNewRecipe(current, false);
+                }
+
+                //TODO - add 'history' flag, and mark it true
+
+                //TODO - change intent to view recipe screen
+            }
         });
         return holder;
     }
