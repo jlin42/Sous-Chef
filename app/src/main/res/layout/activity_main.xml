@@ -66,6 +66,7 @@
         app:srcCompat="@drawable/line_1" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
@@ -140,5 +141,29 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/cameraIcon"
+        android:layout_width="70dp"
+        android:layout_height="51dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="32dp"
+        app:layout_constraintBottom_toTopOf="@+id/base_container"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/camera"
+        app:tint="@color/primary" />
+
+    <TextView
+        android:id="@+id/cameraText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="8dp"
+        android:text="Gallery"
+        android:textColor="@color/primary"
+        android:textSize="22dp"
+        app:layout_constraintBottom_toTopOf="@+id/base_container"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cameraIcon" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

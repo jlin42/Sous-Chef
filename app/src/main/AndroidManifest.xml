@@ -30,6 +30,7 @@
         <activity android:name=".RecipesListActivity"/>
         <activity android:name=".FavoriteRecipesActivity"/>
         <activity android:name=".SettingsActivity"/>
+        <activity android:name=".PhotosActivity"/>
 
     </application>
 
