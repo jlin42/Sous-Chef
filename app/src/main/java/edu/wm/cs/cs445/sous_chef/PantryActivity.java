@@ -34,7 +34,7 @@ public class PantryActivity extends AppCompatActivity {
                 .commit();
 
         //Cannot call storePrefs() or loadPrefs() above these line
-        pantryPrefs = PantryActivity.this.getPreferences(Context.MODE_PRIVATE);
+        pantryPrefs = PantryActivity.this.getSharedPreferences(getString(R.string.pantry_file_key), Context.MODE_PRIVATE);
         editor = pantryPrefs.edit();
 
         AutoCompleteTextView pantryTextView = (AutoCompleteTextView) findViewById(R.id.pantry_textview);
@@ -72,18 +72,18 @@ public class PantryActivity extends AppCompatActivity {
             }
             pantryPrefBuilder = pantryPrefBuilder.append(pantryIngredients.get(pantryIngredients.size()-1));
         }
-        editor.putString(getString(R.string.pantry_key), pantryPrefBuilder.toString());
+        editor.putString(getString(R.string.pantry_ingredients_key), pantryPrefBuilder.toString());
         editor.apply();
 
-        Log.i("PantryActivity:","Preferences stored [" + getString(R.string.pantry_key) + ": " + pantryPrefBuilder + "]");
+        Log.i("PantryActivity:","Preferences stored [" + getString(R.string.pantry_ingredients_key) + ": " + pantryPrefBuilder + "]");
     }
 
     private ArrayList<String> loadPrefs() {
-        String loadedPrefStr = pantryPrefs.getString(getString(R.string.pantry_key), "");
+        String loadedPrefStr = pantryPrefs.getString(getString(R.string.pantry_ingredients_key), "");
         //Without this step, the pantry will have a blank list item in it when activity starts
         if (loadedPrefStr.equals("")) { return new ArrayList<>(); }
         ArrayList<String> loadedPrefsList = new ArrayList<>(Arrays.asList(loadedPrefStr.split(",")));
-        Log.i("PantryActivity:", "Preferences loaded [" + getString(R.string.pantry_key) + ": "+ loadedPrefStr + "]");
+        Log.i("PantryActivity:", "Preferences loaded [" + getString(R.string.pantry_ingredients_key) + ": "+ loadedPrefStr + "]");
         return loadedPrefsList;
     }
 }

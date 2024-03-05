@@ -37,15 +37,10 @@ public class CreateActivity extends AppCompatActivity {
 
         AutoCompleteTextView ingredientsTextView = (AutoCompleteTextView) findViewById(R.id.ingredients_autocomplete);
 
-        /* TODO: connect autofill to array from pantryactivity
-         *  This is what I have so far for trying to read the sharedpreferences saved from PantryActivity
-         *  into here and using that as the autocomplete options for the input box.  Right now it does
-         *  not work and keeps returnAing the default value "".  As a fix this bug is handled by using the
-         *  user_ingredients array that is hardcoded into the xml.
-         */
-
-        SharedPreferences pantryPrefs = CreateActivity.this.getSharedPreferences(getString(R.string.pantry_key), Context.MODE_PRIVATE);
-        String loadedPrefs = pantryPrefs.getString(getString(R.string.pantry_key), "");
+        //This grabs the pantry ingredients from sharedpreferences and converts them to a string[],
+        //then uses the string[] as the autofill suggestions for the create input text viewC
+        SharedPreferences pantryPrefs = CreateActivity.this.getSharedPreferences(getString(R.string.pantry_file_key), Context.MODE_PRIVATE);
+        String loadedPrefs = pantryPrefs.getString(getString(R.string.pantry_ingredients_key), "");
         String[] ingredients;
         if (!loadedPrefs.equals("")) {
             ingredients = loadedPrefs.split(",");
