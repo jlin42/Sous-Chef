@@ -11,6 +11,10 @@ import com.google.gson.Gson;
 //for async
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 //okhttp, which is what we need for android
 import okhttp3.OkHttpClient;
@@ -18,7 +22,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.HttpUrl;
+
 
 public class SpoonacularAPICall {
     //class used for interacting with the API
