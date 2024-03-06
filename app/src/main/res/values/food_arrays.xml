@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--These arrays are probably temporary, currently just used for testing homepage textboxes-->
+<resources>
+    <string-array name="user_ingredients">
+        <item>Chicken</item>
+        <item>Cod</item>
+        <item>Duck</item>
+        <item>Ground beef</item>
+        <item>Lamb</item>
+        <item>Oysters</item>
+        <item>Salmon</item>
+        <item>Shrimp</item>
+        <item>Steak</item>
+        <item>Tofu</item>
+        <item>Apple</item>
+        <item>Banana</item>
+        <item>Beets/beetroot</item>
+        <item>Bell Pepper</item>
+        <item>Broccoli</item>
+        <item>Cabbage</item>
+        <item>Carrot</item>
+        <item>Cauliflower</item>
+        <item>Corn</item>
+        <item>Eggplant</item>
+        <item>Jalapenos</item>
+        <item>Lemon</item>
+        <item>Lime</item>
+        <item>Mushroom</item>
+        <item>Onion</item>
+        <item>Orange</item>
+        <item>Peas</item>
+        <item>Potato</item>
+        <item>Tomato</item>
+        <item>Basmati Rice</item>
+        <item>Beans</item>
+        <item>Brown Rice</item>
+        <item>Chickpeas</item>
+        <item>Couscous</item>
+        <item>Flour</item>
+        <item>Lentils</item>
+        <item>Pasta</item>
+        <item>Potatoes</item>
+        <item>Wheat Bread</item>
+        <item>White Bread</item>
+        <item>White Rice</item>
+        <item>Whole Wheat Pasta</item>
+    </string-array>
+    <string-array name="protein_array">
+        <item>Chicken</item>
+        <item>Cod</item>
+        <item>Duck</item>
+        <item>Ground beef</item>
+        <item>Lamb</item>
+        <item>Oysters</item>
+        <item>Salmon</item>
+        <item>Shrimp</item>
+        <item>Steak</item>
+        <item>Tofu</item>
+    </string-array>
+
+    <string-array name="veggie_array">
+        <item>Apple</item>
+        <item>Banana</item>
+        <item>Beets/beetroot</item>
+        <item>Bell Pepper</item>
+        <item>Broccoli</item>
+        <item>Cabbage</item>
+        <item>Carrot</item>
+        <item>Cauliflower</item>
+        <item>Corn</item>
+        <item>Eggplant</item>
+        <item>Jalapenos</item>
+        <item>Lemon</item>
+        <item>Lime</item>
+        <item>Mushroom</item>
+        <item>Onion</item>
+        <item>Orange</item>
+        <item>Peas</item>
+        <item>Potato</item>
+        <item>Tomato</item>
+    </string-array>
+
+    <string-array name="starch_array">
+        <item>Basmati Rice</item>
+        <item>Beans</item>
+        <item>Brown Rice</item>
+        <item>Chickpeas</item>
+        <item>Couscous</item>
+        <item>Flour</item>
+        <item>Lentils</item>
+        <item>Pasta</item>
+        <item>Potatoes</item>
+        <item>Wheat Bread</item>
+        <item>White Bread</item>
+        <item>White Rice</item>
+        <item>Whole Wheat Pasta</item>
+    </string-array>
+</resources>
