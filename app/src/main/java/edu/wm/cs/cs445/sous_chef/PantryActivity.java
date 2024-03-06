@@ -34,7 +34,7 @@ public class PantryActivity extends AppCompatActivity {
                 .commit();
 
         //Cannot call storePrefs() or loadPrefs() above these line
-        pantryPrefs = PantryActivity.this.getSharedPreferences(getString(R.string.pantry_file_key), Context.MODE_PRIVATE);
+        pantryPrefs = PantryActivity.this.getSharedPreferences(getString(R.string.preferences_file_key), Context.MODE_PRIVATE);
         editor = pantryPrefs.edit();
 
         AutoCompleteTextView pantryTextView = (AutoCompleteTextView) findViewById(R.id.pantry_textview);

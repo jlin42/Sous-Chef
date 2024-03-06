@@ -39,7 +39,7 @@ public class CreateActivity extends AppCompatActivity {
 
         //This grabs the pantry ingredients from sharedpreferences and converts them to a string[],
         //then uses the string[] as the autofill suggestions for the create input text viewC
-        SharedPreferences pantryPrefs = CreateActivity.this.getSharedPreferences(getString(R.string.pantry_file_key), Context.MODE_PRIVATE);
+        SharedPreferences pantryPrefs = CreateActivity.this.getSharedPreferences(getString(R.string.preferences_file_key), Context.MODE_PRIVATE);
         String loadedPrefs = pantryPrefs.getString(getString(R.string.pantry_ingredients_key), "");
         String[] ingredients;
         if (!loadedPrefs.equals("")) {

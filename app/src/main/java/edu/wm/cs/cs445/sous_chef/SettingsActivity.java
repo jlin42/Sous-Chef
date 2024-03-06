@@ -55,7 +55,7 @@ public class SettingsActivity extends AppCompatActivity {
                 .commit();
 
         //Cannot call storePrefs() or loadPrefs() above these line
-        settingsPrefs = SettingsActivity.this.getSharedPreferences(getString(R.string.settings_file_key), Context.MODE_PRIVATE);
+        settingsPrefs = SettingsActivity.this.getSharedPreferences(getString(R.string.preferences_file_key), Context.MODE_PRIVATE);
         editor = settingsPrefs.edit();
 
         pref_noSpice = findViewById(R.id.check_noSpice);
