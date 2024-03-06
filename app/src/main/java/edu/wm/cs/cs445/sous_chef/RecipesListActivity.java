@@ -31,7 +31,7 @@ public class RecipesListActivity extends AppCompatActivity {
                 .commit();
 
         settingsPrefs = RecipesListActivity.this.getSharedPreferences(
-                getString(R.string.settings_file_key), Context.MODE_PRIVATE);
+                getString(R.string.preferences_file_key), Context.MODE_PRIVATE);
 
         // Retrieve ingredients data
         ArrayList<String> ingredients = (ArrayList<String>) getIntent().getSerializableExtra("ingredients");
