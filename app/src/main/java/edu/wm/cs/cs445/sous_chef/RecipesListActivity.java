@@ -11,9 +11,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -38,7 +35,7 @@ public class RecipesListActivity extends AppCompatActivity {
         Log.v("filters",String.valueOf(ingredients));
 
         // Retrieve preferences
-        int prefs[] = loadPrefs();
+        int[] prefs = loadPrefs();
         Log.v("preferences", Arrays.toString(prefs));
 
         // TODO - figure out how to connect JSON output from API to RecyclerView
@@ -54,23 +51,18 @@ public class RecipesListActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
 
-        recipeViewModel.getNewRecipes().observe(this, recipes -> {
-            //update cached copy of recipes in the adapter
-            adapter.submitList(recipes);
-        });
+        //update cached copy of recipes in the adapter
+        recipeViewModel.getNewRecipes().observe(this, adapter::submitList);
 
         // How to add to the recipe list screen:
         // Format: String recipe_name,
         //         String recipe_description,
         //         String recipe_time,
         //         Boolean recipe_saved, (<- true for recipes on favorite_recipes screen, false otherwise)
-        //         String recipe_link,
+        //         String recipe_instructions,
         //         Boolean new_recipe (<- true for recipes on the recipe_list screen, false otherwise)
-        /*
-        Recipe recipe = new Recipe("Chicken Pot Pie", "Chicken, bread crumbs, assorted veggies, ...",
-                "30m", false, "recipe link", false);
-        recipeViewModel.insert(recipe);
-         */
+        //         Boolean recipe_in_history (<- true for recipes that have been viewed)
+        // recipeViewModel.insert(recipe);
 
     }
 
