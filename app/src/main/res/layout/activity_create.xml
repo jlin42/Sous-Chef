@@ -72,8 +72,8 @@
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView2"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/base_container"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -90,7 +90,6 @@
             android:textColor="@color/primary"
             android:textSize="16sp"
             app:layout_constraintBottom_toTopOf="@id/ingredients_autocomplete"
-            app:layout_constraintEnd_toStartOf="@+id/ingredientInfoButton"
             app:layout_constraintHorizontal_bias="0.012"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -104,26 +103,29 @@
             android:background="@drawable/textbox_border_background"
             android:backgroundTint="@color/primary"
             android:backgroundTintMode="src_atop"
-            android:hint="Input Ingredients"
+            android:hint="Search Your Pantry"
             android:inputType="textAutoCorrect"
             android:padding="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/selectIngredients"
             tools:ignore="LabelFor" />
-
+<!--
         <ImageButton
             android:id="@+id/ingredientInfoButton"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="80dp"
             android:layout_marginEnd="52dp"
             android:background="#00000000"
+            android:contentDescription="@string/ingredInputInfo"
             android:foreground="@android:drawable/ic_dialog_info"
             android:foregroundTint="@color/primary"
             android:src="@android:drawable/ic_dialog_info"
             app:layout_constraintBottom_toTopOf="@+id/ingredients_autocomplete"
-            app:layout_constraintEnd_toEndOf="parent" />
-
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/selectIngredients" />
+-->
         <Button
             android:id="@+id/addFilterBtn"
             android:layout_width="wrap_content"
@@ -143,7 +145,7 @@
             android:id="@+id/recipeFinder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="24dp"
             android:text="Recipe Finder"
             android:textColor="@color/accent"
             android:textSize="34sp"
@@ -153,53 +155,65 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigationView2"
+    <FrameLayout
+        android:id="@+id/base_container"
         android:layout_width="match_parent"
         android:layout_height="90dp"
-        app:backgroundTint="@color/accent"
-        app:itemIconSize="30dp"
-        app:itemIconTint="@color/white"
-        app:itemPaddingBottom="20dp"
-        app:itemPaddingTop="20dp"
-        app:itemTextColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/bottom_navigation_menu">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/createRecipeButton"
-                android:layout_width="129dp"
-                android:layout_height="60dp"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentBottom="true"
-                android:layout_marginStart="150dp"
-                android:layout_marginTop="7dp"
-                android:layout_marginEnd="150dp"
-                android:layout_marginBottom="27dp"
-                android:background="@drawable/rect_around_new_recipe"
-                android:backgroundTintMode="src_over"
-                app:iconTint="#FFFFFF" />
-
-        </RelativeLayout>
-
-    </com.google.android.material.bottomnavigation.BottomNavigationView>
+        app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/SelectedFilters"
-        android:layout_width="360dp"
-        android:layout_height="320dp"
-        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView2"
+        android:id="@+id/ingredientInputs"
+        android:layout_width="356dp"
+        android:layout_height="310dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/recyclerview_roundedbackground"
+        android:fadeScrollbars="false"
+        android:padding="4dp"
+        android:scrollIndicators="right"
+        android:scrollbarSize="8dp"
+        android:scrollbarThumbVertical="@color/accent2"
+        android:scrollbars="vertical"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Current Filters:"
+        android:textColor="@color/accent"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/ingredientInputs"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.114"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/findRecipeBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:backgroundTint="@color/tertiary"
+        android:backgroundTintMode="add"
+        android:fontFamily="sans-serif-medium"
+        android:text="Find"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.86"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ingredientInputs" />
+
+    <!--    <androidx.recyclerview.widget.RecyclerView-->
+    <!--        android:id="@+id/SelectedFilters"-->
+    <!--        android:layout_width="360dp"-->
+    <!--        android:layout_height="320dp"-->
+    <!--        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />-->
 
 
 

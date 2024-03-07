@@ -19,32 +19,52 @@ public class Recipe {
     @PrimaryKey
     @NonNull
     private String recipe;
+
     // "Chicken, bread crumbs, ..."
     @NonNull
     private String recipe_description;
+
     // The time text in the top right
     // Format: "2h10m"
     // because the text box is short so keep the abbreviations small
     @NonNull
     private String recipe_time;
+
     // Associated with the star ImageView
     // true = color in star, false = leave it white
     @NonNull
     private Boolean recipe_saved;
+
     // Could be useful for the "VIEW" button
     // Also might be needed for deciding if this recipe should go into the
     // users recipe history
     @NonNull
     private String recipe_link;
 
+    // Visible on recipe_list screen or not
+    // If true, this recipe should ONLY be visible on the recipe_list screen right after it was
+    // pulled from the API. It should not be anywhere else unless the user saves it or
+    // clicks "VIEW".
+    @NonNull
+    private Boolean new_recipe;
+
+    // If recipe should be visible on recipe history screen
+    // True if the user has clicked "VIEW" button
+    @NonNull
+    private boolean recipe_in_history;
+
+
     public Recipe(@NonNull String recipe, @NonNull String recipe_description,
                   @NonNull String recipe_time, @NonNull Boolean recipe_saved,
-                  @NonNull String recipe_link) {
+                  @NonNull String recipe_link, @NonNull Boolean new_recipe,
+                  @NonNull Boolean recipe_in_history) {
         this.recipe = recipe;
         this.recipe_description = recipe_description;
         this.recipe_time = recipe_time;
         this.recipe_saved = recipe_saved;
         this.recipe_link = recipe_link;
+        this.new_recipe = new_recipe;
+        this.recipe_in_history = recipe_in_history;
     }
 
     @NonNull
@@ -71,4 +91,10 @@ public class Recipe {
     public String getRecipe_link() {
         return recipe_link;
     }
+
+    @NonNull
+    public Boolean getNew_recipe() { return new_recipe; }
+
+    @NonNull
+    public Boolean getRecipe_in_history() { return recipe_in_history; }
 }

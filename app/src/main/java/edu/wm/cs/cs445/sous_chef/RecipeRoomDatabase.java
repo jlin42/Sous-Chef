@@ -37,38 +37,4 @@ public abstract class RecipeRoomDatabase extends RoomDatabase {
         }
         return INSTANCE;
     }
-    //TODO -
-    // The purpose of this in the tutorial is to clear the database and
-    // fill it with sample data
-    // Tried to do this, but it didn't work
-    // Currently this does not ever get called - but leaving it for now as a reference
-    private static RoomDatabase.Callback sRoomDatabaseCallback = new RoomDatabase.Callback() {
-        @Override
-        public void onCreate(@NonNull SupportSQLiteDatabase db) {
-            super.onCreate(db);
-
-            databaseWriteExecutor.execute(() -> {
-                //populate db in background with sample data
-                //only for testing - delete later
-                RecipeDAO dao = INSTANCE.recipeDAO();
-                dao.deleteAll();
-                Recipe recipe = new Recipe("Chicken Pot Pie", "Chicken, bread crumbs, assorted veggies, ...",
-                        "30min", false, "recipe link");
-                dao.insert(recipe);
-
-                recipe = new Recipe("Meatloaf", "Ground beef, bread crumbs, ketchup, onions, ...",
-                        "30min", false, "link");
-                dao.insert(recipe);
-
-                recipe = new Recipe("Mac and Cheese", "Macaroni noodles, milk, butter, flour, cheese",
-                        "1hr", true, "link");
-                dao.insert(recipe);
-
-                recipe = new Recipe("Easy Weeknight Spaghetti and Meat Sauce", "Spaghetti noodles, jarred sauce, ground beef, onions, garlic, ...",
-                        "2hr30m", false, "link");
-                dao.insert(recipe);
-
-            });
-        }
-    };
 }

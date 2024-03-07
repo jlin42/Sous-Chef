@@ -5,17 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/orange_line"
-        android:layout_width="wrap_content"
-        android:layout_height="2dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TitleBlock"
-        app:srcCompat="@drawable/line_1" />
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/TitleBlock"
         android:layout_width="wrap_content"
@@ -49,6 +38,7 @@
             android:textColor="@color/accent"
             android:textSize="34sp"
             android:textStyle="italic"
+            app:tint="@color/primary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageView"
@@ -63,31 +53,19 @@
             app:layout_constraintStart_toEndOf="@+id/SousChef1"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/carrot_512_1" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <TextView
-        android:id="@+id/favorite_text"
+    <ImageView
+        android:id="@+id/orange_line"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="90dp"
-        android:text="Saved Recipes"
-        android:textColor="@color/accent"
-        android:textSize="34sp"
+        android:layout_height="2dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/caption"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="45dp"
-        android:text="Click the star on recipes to add them to your favorites!"
-        android:textColor="@color/primary"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/favorite_text" />
+        app:layout_constraintTop_toBottomOf="@+id/TitleBlock"
+        app:srcCompat="@drawable/line_1" />
 
     <FrameLayout
         android:id="@+id/base_container"
@@ -97,15 +75,29 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerview"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <HorizontalScrollView
+        android:id="@+id/photoContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/takePhoto"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/caption"
-        app:layout_constraintBottom_toTopOf="@id/base_container"
-        tools:listitem="@layout/recycler_view_row" />
+        app:layout_constraintStart_toStartOf="parent">
+
+        <LinearLayout
+            android:id="@+id/photoPreview"
+            android:layout_width="100dp"
+            android:layout_height="400dp"
+            android:orientation="horizontal">
+
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <Button
+        android:id="@+id/takePhoto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Take Photo"
+        app:layout_constraintBottom_toTopOf="@+id/base_container"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

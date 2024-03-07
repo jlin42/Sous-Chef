@@ -2,9 +2,12 @@ package edu.wm.cs.cs445.sous_chef;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.TypeConverter;
+import androidx.room.Update;
 
 import java.util.List;
 
@@ -22,6 +25,18 @@ public interface RecipeDAO {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(Recipe recipe);
 
+    @Delete
+    void delete(Recipe recipe);
+
+    // Switch whether or not this recipe is 'saved'
+    @Query("UPDATE recipe_table SET recipe_saved = :recipeSaved WHERE recipe = :recipe")
+    void updateSaved(String recipe, Boolean recipeSaved);
+
+    @Query("UPDATE recipe_table SET new_recipe = :newRecipe WHERE recipe = :recipe")
+    void updateNewRecipe(String recipe, Boolean newRecipe);
+    @Query("UPDATE recipe_table SET recipe_in_history = :inHistory WHERE recipe = :recipe")
+    void updateHistory(String recipe, Boolean inHistory);
+
     // Shouldn't be necessary after testing is done
     // Removes all recipe entries from the DB
     @Query("DELETE FROM recipe_table")
@@ -33,6 +48,15 @@ public interface RecipeDAO {
     @Query("SELECT * FROM recipe_table")
     LiveData<List<Recipe>> getRecipes();
 
-    //TODO - implement a @Delete method
-    //TODO - only store the first 10-ish recipes, when inserting check how many are currently stored
+    // Used for Saved Recipes screen
+    @Query("SELECT * FROM recipe_table WHERE recipe_saved = true")
+    LiveData<List<Recipe>> getSavedRecipes();
+
+    // Used for Recipe List screen - returns only the recipes which
+    // have been marked as 'new'
+    @Query("SELECT * FROM recipe_table WHERE new_recipe = true")
+    LiveData<List<Recipe>> getNewRecipes();
+
+    @Query("SELECT * FROM recipe_table WHERE recipe_in_history = true")
+    LiveData<List<Recipe>> getRecipeHistory();
 }
