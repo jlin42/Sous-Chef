@@ -1,6 +1,7 @@
 package edu.wm.cs.cs445.sous_chef;
 
-import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,8 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
@@ -78,7 +77,7 @@ class RecipeViewHolder extends RecyclerView.ViewHolder implements View.OnClickLi
 }
 
 class RecipeListAdapter extends ListAdapter<Recipe, RecipeViewHolder> {
-    private RecipeViewModel recipeViewModel;
+    private final RecipeViewModel recipeViewModel;
 
 
     public RecipeListAdapter(@NonNull DiffUtil.ItemCallback<Recipe> diffCallback,
@@ -87,12 +86,15 @@ class RecipeListAdapter extends ListAdapter<Recipe, RecipeViewHolder> {
         this.recipeViewModel = recipeViewModel;
     }
 
+    @NonNull
     @Override
     public RecipeViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
-        //return RecipeViewHolder.create(parent);
+
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.recycler_view_row, parent, false);
-        RecipeViewHolder holder = new RecipeViewHolder(view, new ClickListener() {
+
+        RecipeViewHolder holder;
+        holder = new RecipeViewHolder(view, new ClickListener() {
             @Override
             public void onDelete(int p) {
                 Recipe current = getItem(p);
@@ -131,15 +133,23 @@ class RecipeListAdapter extends ListAdapter<Recipe, RecipeViewHolder> {
             public void onView(int p) {
                 Recipe current = getItem(p);
 
-                // TODO - recipes in history will not show up on RecipeList screen - this may not be desired?
-                // if this recipe is on the RecipeList page - not history or favorites
+                // if this recipe is on the RecipeList page, remove the 'new recipe' qualifier
                 if(current.getNew_recipe()){
                     recipeViewModel.updateNewRecipe(current, false);
                 }
 
-                //TODO - add 'history' flag, and mark it true
+                // otherwise, this recipe must be on either the 'history' or 'favorites' screen
+                // therefore we must add it to the history list if it is not already in it
+                if(!current.getRecipe_in_history()){
+                    recipeViewModel.updateHistory(current, true);
+                }
 
-                //TODO - change intent to view recipe screen
+                // Change intent to view recipe screen, passing in the
+                // recipe title through the intent
+                Context context = parent.getContext();
+                Intent intent = new Intent(context, RecipesListActivity.class);
+                intent.putExtra("recipe", current.getRecipe());
+                context.startActivity(intent);
             }
         });
         return holder;
