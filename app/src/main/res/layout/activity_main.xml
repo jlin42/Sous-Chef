@@ -166,14 +166,4 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cameraIcon" />
 
-    <Button
-        android:id="@+id/debugViewRecipe"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="23dp"
-        android:backgroundTintMode="src_over"
-        android:text="DEBUG"
-        app:layout_constraintBottom_toTopOf="@+id/base_container"
-        app:layout_constraintStart_toStartOf="parent" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -64,6 +64,7 @@ class RecipeViewHolder extends RecyclerView.ViewHolder implements View.OnClickLi
     public void bind(String name, String description, String time, Boolean favorite){
         recipe_name.setText(name);
         recipe_description.setText(description);
+        time += "min";
         recipe_time.setText(time);
         // If the recipe is one of the users favorites, color the star to be gold
         if (favorite){
@@ -147,7 +148,7 @@ class RecipeListAdapter extends ListAdapter<Recipe, RecipeViewHolder> {
                 // Change intent to view recipe screen, passing in the
                 // recipe title through the intent
                 Context context = parent.getContext();
-                Intent intent = new Intent(context, RecipesListActivity.class);
+                Intent intent = new Intent(context, ViewRecipeActivity.class);
                 intent.putExtra("recipe", current.getRecipe());
                 context.startActivity(intent);
             }

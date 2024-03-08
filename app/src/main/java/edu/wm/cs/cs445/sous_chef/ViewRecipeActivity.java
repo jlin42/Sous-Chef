@@ -1,5 +1,7 @@
 package edu.wm.cs.cs445.sous_chef;
 
+import static java.lang.Integer.parseInt;
+
 import android.Manifest;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -9,28 +11,25 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.ViewModelProvider;
 
 import java.util.Random;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class ViewRecipeActivity extends AppCompatActivity {
 
     Button timerButton;
-    private String recipeTitle;
-    private int cookTimeMins;
-
+    private int cookTimeMins = 0;
     private String CHANNEL_ID;
     private String channel_name;
     NotificationChannel channel;
@@ -44,6 +43,7 @@ public class ViewRecipeActivity extends AppCompatActivity {
 
         timerButton = (Button) findViewById(R.id.timerBtn);
 
+
         CHANNEL_ID = "recipeTimerChannel";
         createNotificationChannel();
 //        channel = new NotificationChannel(CHANNEL_ID, "TimerChannel", NotificationManager.IMPORTANCE_DEFAULT);
@@ -56,11 +56,30 @@ public class ViewRecipeActivity extends AppCompatActivity {
             }
         }
 
-        //TODO: Get recipe info and populate layouts with proper steps/ingredients
-        // cookTimeMins will be set to 0 for now so timer will instantly end when started
-        cookTimeMins = 0;
 
-        //maybe need to pass the bundle that came with this activity into this intent as well
+        // Find UI elements
+        TextView titleView = findViewById(R.id.recipeTitle);
+        TextView ingredientsView = findViewById(R.id.ingredientsUsed);
+        TextView instructionsView = findViewById(R.id.instructions);
+
+        // Get passed in recipe title
+        String recipeTitle = getIntent().getStringExtra("recipe");
+
+        // Get recipe info and populate layouts with proper steps/ingredients
+        // One small issue - this may happen slower than the UI, so if they push the timer button
+        // immediately or something it might bug out
+        RecipeViewModel recipeViewModel = new ViewModelProvider(this).get(RecipeViewModel.class);
+        recipeViewModel.findRecipe(recipeTitle).observe(this, recipe -> {
+            titleView.setText(recipe.getRecipe());
+            ingredientsView.setText(recipe.getRecipe_description());
+            instructionsView.setText(recipe.getRecipe_instructions());
+            cookTimeMins = parseInt(recipe.getRecipe_time());
+
+            Log.i("ViewRecipe", "Recipe found, views populated");
+        });
+
+
+
         Intent intent = new Intent(this, ViewRecipeActivity.class);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
         stackBuilder.addNextIntentWithParentStack(intent);
@@ -73,7 +92,7 @@ public class ViewRecipeActivity extends AppCompatActivity {
         timerButton.setOnClickListener(v -> {
             Toast timerStarted = Toast.makeText(ViewRecipeActivity.this, "Your timer for " + cookTimeMins + " minutes has started", Toast.LENGTH_SHORT);
             timerStarted.show();
-            Log.i("ViewRecipeActivity:", "Timer has been started");
+            Log.i("ViewRecipeActivity:", "Timer has been started for " + cookTimeMins);
 
             executor.execute(() -> {
                 try {
@@ -91,6 +110,10 @@ public class ViewRecipeActivity extends AppCompatActivity {
                 Log.i("ViewRecipeActivity:", "Timer has ended");
             });
         });
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.base_container, new BaseFrame())
+                .commit();
 
     }
 

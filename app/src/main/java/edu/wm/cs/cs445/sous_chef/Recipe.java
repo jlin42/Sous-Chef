@@ -24,8 +24,9 @@ public class Recipe {
     private final String recipe_description;
 
     // The time text in the top right
-    // Format: "2h10m"
+    // Format: "100" (mins)
     // because the text box is short so keep the abbreviations small
+    // THIS IS A CHANGE - do not include any characters because this must be cast to int
     @NonNull
     private final String recipe_time;
 

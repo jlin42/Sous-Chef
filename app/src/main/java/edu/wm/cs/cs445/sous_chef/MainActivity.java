@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
@@ -38,7 +37,9 @@ public class MainActivity extends AppCompatActivity {
                 .replace(R.id.base_container, new BaseFrame())
                 .commit();
 
-        Button debugBtn = (Button) findViewById(R.id.debugViewRecipe);
-        debugBtn.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, ViewRecipeActivity.class)));
+        // Debug button removed because it will cause a crash
+        // get to view screen by pressing view on a recipe
+        // crash happens cause ViewRecipe looks for the recipe that brought it there,
+        // but that does not exist
     }
 }

@@ -12,12 +12,12 @@ import java.util.List;
  * Generally this is supposed to coordinate multiple sources of data, like some local some server
  */
 class RecipeRepository {
-    private RecipeDAO recipeDAO;
+    private final RecipeDAO recipeDAO;
     // LiveData -> the data is automatically updated when DB is updated
-    private LiveData<List<Recipe>> allRecipes;
-    private LiveData<List<Recipe>> savedRecipes;
-    private LiveData<List<Recipe>> newRecipes;
-    private LiveData<List<Recipe>> recipeHistory;
+    private final LiveData<List<Recipe>> allRecipes;
+    private final LiveData<List<Recipe>> savedRecipes;
+    private final LiveData<List<Recipe>> newRecipes;
+    private final LiveData<List<Recipe>> recipeHistory;
 
     //
     RecipeRepository(Application application) {
@@ -47,40 +47,32 @@ class RecipeRepository {
     // Room operations cannot be called on UI
     // DAO acts as the middleman between app and the database, it holds all the r/w operations
     void insert(Recipe recipe) {
-        RecipeRoomDatabase.databaseWriteExecutor.execute(() -> {
-            recipeDAO.insert(recipe);
-        });
+        RecipeRoomDatabase.databaseWriteExecutor.execute(() -> recipeDAO.insert(recipe));
+    }
+
+    LiveData<Recipe> findRecipe(String title){
+        return recipeDAO.findRecipe(title);
     }
 
     void updateNewRecipe(Recipe recipe, Boolean newRecipe) {
-        RecipeRoomDatabase.databaseWriteExecutor.execute(() -> {
-            recipeDAO.updateNewRecipe(recipe.getRecipe(), newRecipe);
-        });
+        RecipeRoomDatabase.databaseWriteExecutor.execute(() -> recipeDAO.updateNewRecipe(recipe.getRecipe(), newRecipe));
     }
 
     void updateSaved(Recipe recipe, Boolean recipeSaved){
-        RecipeRoomDatabase.databaseWriteExecutor.execute(() -> {
-            recipeDAO.updateSaved(recipe.getRecipe(), recipeSaved);
-        });
+        RecipeRoomDatabase.databaseWriteExecutor.execute(() -> recipeDAO.updateSaved(recipe.getRecipe(), recipeSaved));
     }
 
     void updateHistory(Recipe recipe, Boolean inHistory){
-        RecipeRoomDatabase.databaseWriteExecutor.execute(() -> {
-            recipeDAO.updateHistory(recipe.getRecipe(), inHistory);
-        });
+        RecipeRoomDatabase.databaseWriteExecutor.execute(() -> recipeDAO.updateHistory(recipe.getRecipe(), inHistory));
     }
 
     // Shouldn't be necessary after testing is done
     // Removes all recipe entries from the DB
     void deleteAll() {
-        RecipeRoomDatabase.databaseWriteExecutor.execute(() -> {
-            recipeDAO.deleteAll();
-        });
+        RecipeRoomDatabase.databaseWriteExecutor.execute(() -> recipeDAO.deleteAll());
     }
 
     void delete(Recipe recipe) {
-        RecipeRoomDatabase.databaseWriteExecutor.execute(() -> {
-            recipeDAO.delete(recipe);
-        });
+        RecipeRoomDatabase.databaseWriteExecutor.execute(() -> recipeDAO.delete(recipe));
     }
 }
