@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class RecipesListActivity extends AppCompatActivity {
     SharedPreferences settingsPrefs;
@@ -72,7 +73,7 @@ public class RecipesListActivity extends AppCompatActivity {
         //START OF API CODE
         //This code does not update the recipes list, it only makes an example call to see if it
         //will return a recipe ID for the 3 ingredients below to see if the APIs are working
-        String[] newIngre = {"ground beef", "pork", "rice"};
+        String[] newIngre = {"chocolate", "flour", "sugar"};
         SpoonacularAPICall apiGet = new SpoonacularAPICall("b9b5e71ca3c740b8be89bd337d366ce0");
         List<SpoonacularAPIRecipe> sharedRecipeList = Collections.synchronizedList(new ArrayList<>());
         CompletableFuture<SpoonacularAPIRecipe[]> futureRecipes =
@@ -95,16 +96,70 @@ public class RecipesListActivity extends AppCompatActivity {
             System.err.println("An error occurred: " + ex.getMessage());
             return null;
         });
-        int recipeId;
-        synchronized(sharedRecipeList) {
-            if (sharedRecipeList.size() > 0) {
-                recipeId = sharedRecipeList.get(0).getId();
-            } else {
-                recipeId = 0;
+
+        System.out.println("Waiting for API...");
+        futureRecipes.join();
+
+        //a big brain while loop (scuffed as hell)
+        //keep checking if we got api output yet
+        //in my testing this doesnt add any lag
+        // -carlo
+        int recipeId = 0;
+        int while_loops = 0;
+        while (recipeId == 0) {
+            synchronized (sharedRecipeList) {
+                if (sharedRecipeList.size() > 0) {
+                    recipeId = sharedRecipeList.get(0).getId();
+                } else {
+                    recipeId = 0;
+                }
             }
+            while_loops += 1;
         }
+        System.out.println("Took " + while_loops + " while loops to get recipe ID");
         Log.i("RecipeListActivity", "RecipeID: " + recipeId);
 
+
+        //CALL 2: getting the instructions for a recipe using its ID
+        //we have the id from the api call above
+
+        //again we need to use a weird evil version of a String bc of threads
+        AtomicReference<String> sharedFormattedInstructions = new AtomicReference<>();
+
+        //check that we have a recipe ID to use, then make the api call
+        if (recipeId > 0) {
+            System.out.println("Getting recipe instructions...");
+
+            //here is where we make the API call
+            CompletableFuture<String> futureInstructions =
+                    apiGet.getInstructionsById(recipeId);
+
+            //once we get a response we handle it here
+            futureInstructions.thenAccept(instructions -> {
+                if (instructions != null && instructions.length() > 0) {
+                    System.out.println("Instructions found!");
+                    sharedFormattedInstructions.set(instructions);
+                } else {
+                    System.out.println("No recipes found or error occurred.");
+                }
+            }).exceptionally(ex -> {
+                System.err.println("An error occurred: " + ex.getMessage());
+                return null;
+            });
+
+            //wait until the call finishes, then resume the thread
+            System.out.println("Waiting for API...");
+            futureInstructions.join();
+
+            //anoher scuffed while loop im addicted now
+            int instruction_while_loops = 0;
+            while (sharedFormattedInstructions.get() == null) {
+                instruction_while_loops += 1;
+            }
+            System.out.println("Took " + instruction_while_loops + " while loops to get instructions");
+        }
+
+        System.out.println(sharedFormattedInstructions.get());
 
     }
 
