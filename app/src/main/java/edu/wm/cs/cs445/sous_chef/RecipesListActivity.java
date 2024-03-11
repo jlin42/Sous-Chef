@@ -13,6 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public class RecipesListActivity extends AppCompatActivity {
     SharedPreferences settingsPrefs;
@@ -64,6 +67,45 @@ public class RecipesListActivity extends AppCompatActivity {
         //         Boolean recipe_in_history (<- true for recipes that have been viewed)
         // recipeViewModel.insert(recipe);
 
+
+
+        //START OF API CODE
+        //This code does not update the recipes list, it only makes an example call to see if it
+        //will return a recipe ID for the 3 ingredients below to see if the APIs are working
+        String[] newIngre = {"ground beef", "pork", "rice"};
+        SpoonacularAPICall apiGet = new SpoonacularAPICall("b9b5e71ca3c740b8be89bd337d366ce0");
+        List<SpoonacularAPIRecipe> sharedRecipeList = Collections.synchronizedList(new ArrayList<>());
+        CompletableFuture<SpoonacularAPIRecipe[]> futureRecipes =
+                apiGet.getRecipeByIngredients(1, newIngre);
+        futureRecipes.thenAccept(recipes -> {
+            Log.v("RecipeListActivity", "Entered");
+            if (recipes != null && recipes.length > 0) {
+                //successful api call: add the recipes to the sync list
+                synchronized(sharedRecipeList) {
+                    Collections.addAll(sharedRecipeList, recipes);
+                }
+                Log.v("RecipeListActivity", "Recipe found and added to shared list!");
+                System.out.println("Recipe found and added to shared list!");
+            } else {
+                Log.v("RecipeListActivity", "No recipes found or error occurred.");
+                System.out.println("No recipes found or error occurred.");
+            }
+        }).exceptionally(ex -> {
+            Log.e("RecipeListActivity", "An error occurred: " + ex.getMessage());
+            System.err.println("An error occurred: " + ex.getMessage());
+            return null;
+        });
+        int recipeId;
+        synchronized(sharedRecipeList) {
+            if (sharedRecipeList.size() > 0) {
+                recipeId = sharedRecipeList.get(0).getId();
+            } else {
+                recipeId = 0;
+            }
+        }
+        Log.i("RecipeListActivity", "RecipeID: " + recipeId);
+
+
     }
 
     private int[] loadPrefs() {
@@ -86,11 +128,11 @@ public class RecipesListActivity extends AppCompatActivity {
 
         //If loaded settings string is empty, just return a default array
         if (loadedSettingPrefs.equals("")) {
-            Log.i("SettingsActivity:", "No saved preferences found");
+            Log.i("RecipeListActivity", "No saved preferences found");
             return prefs;
         }
         if (loadedSettingPrefs.length() != 8) {
-            Log.i("SettingsActivity:", "Error with saved preferences");
+            Log.i("RecipeListActivity", "Error with saved preferences");
             return prefs;
         }
 
@@ -98,7 +140,7 @@ public class RecipesListActivity extends AppCompatActivity {
             prefs[i] = loadedSettingPrefs.charAt(i) - '0';
         }
 
-        Log.i("SettingsActivity:", "Preferences loaded from string: " + loadedSettingPrefs);
+        Log.i("RecipeListActivity", "Preferences loaded from string: " + loadedSettingPrefs);
 
         return prefs;
     }

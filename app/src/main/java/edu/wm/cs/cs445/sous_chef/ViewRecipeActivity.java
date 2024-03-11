@@ -12,6 +12,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,9 +52,11 @@ public class ViewRecipeActivity extends AppCompatActivity {
 //        notificationManager.createNotificationChannel(channel);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            while (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.POST_NOTIFICATIONS }, 0);
-            }
+            Log.i("ViewRecipeActivity", "Permissions requested");
+            ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.POST_NOTIFICATIONS }, 0);
+//            while (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+//                ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.POST_NOTIFICATIONS }, 0);
+//            }
         }
 
 
@@ -90,9 +93,12 @@ public class ViewRecipeActivity extends AppCompatActivity {
 
         ExecutorService executor = Executors.newSingleThreadExecutor();
         timerButton.setOnClickListener(v -> {
-            Toast timerStarted = Toast.makeText(ViewRecipeActivity.this, "Your timer for " + cookTimeMins + " minutes has started", Toast.LENGTH_SHORT);
+//            boolean clicked = false;
+//            if (!clicked) {
+//            clicked = true;
+            Toast timerStarted = Toast.makeText(ViewRecipeActivity.this, "Your timer for " + cookTimeMins/10 + " minutes has started", Toast.LENGTH_SHORT);
             timerStarted.show();
-            Log.i("ViewRecipeActivity:", "Timer has been started for " + cookTimeMins);
+            Log.i("ViewRecipeActivity:", "Timer has been started for " + cookTimeMins/10 + " mins");
 
             executor.execute(() -> {
                 try {
@@ -109,6 +115,11 @@ public class ViewRecipeActivity extends AppCompatActivity {
                 notificationManager.notify(notifID, builder.build());
                 Log.i("ViewRecipeActivity:", "Timer has ended");
             });
+//            } else {
+//                Toast alreadyStarted = Toast.makeText(ViewRecipeActivity.this, "This timer has already been started", Toast.LENGTH_SHORT);
+//                alreadyStarted.show();
+//            }
+
         });
 
         getSupportFragmentManager().beginTransaction()
