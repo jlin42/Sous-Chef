@@ -110,6 +110,11 @@ public class SpoonacularAPICall {
         CompletableFuture<String> result = new CompletableFuture<>();
         OkHttpClient client = new OkHttpClient();
 
+        /*
+        example api all
+        https://api.spoonacular.com/recipes/632197/analyzedInstructions?apiKey=b9b5e71ca3c740b8be89bd337d366ce0
+        */
+
         //this url is a lot easier to build so lets one line it
         String url = String.format(
             "https://api.spoonacular.com/recipes/%d/analyzedInstructions?apiKey=%s",
@@ -168,7 +173,7 @@ public class SpoonacularAPICall {
 
 
 //the InstructionList and Instruction subclasses are used for Gson parsing
-//lowkey ignore them
+//low key ignore them
 class SpoonacularAPIInstructionList {
     public SpoonacularAPIInstruction[] steps;
 

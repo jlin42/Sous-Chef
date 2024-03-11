@@ -70,7 +70,7 @@ public class RecipesListActivity extends AppCompatActivity {
 
 
 
-        //START OF API CODE
+        //START OF API CODE =============================================
         //This code does not update the recipes list, it only makes an example call to see if it
         //will return a recipe ID for the 3 ingredients below to see if the APIs are working
         String[] newIngre = {"chocolate", "flour", "sugar"};
@@ -102,7 +102,7 @@ public class RecipesListActivity extends AppCompatActivity {
 
         //a big brain while loop (scuffed as hell)
         //keep checking if we got api output yet
-        //in my testing this doesnt add any lag
+        //in my testing this doesn't add any lag
         // -carlo
         int recipeId = 0;
         int while_loops = 0;
@@ -111,10 +111,9 @@ public class RecipesListActivity extends AppCompatActivity {
                 if (sharedRecipeList.size() > 0) {
                     recipeId = sharedRecipeList.get(0).getId();
                 } else {
-                    recipeId = 0;
+                    while_loops += 1;
                 }
             }
-            while_loops += 1;
         }
         System.out.println("Took " + while_loops + " while loops to get recipe ID");
         Log.i("RecipeListActivity", "RecipeID: " + recipeId);
@@ -151,7 +150,7 @@ public class RecipesListActivity extends AppCompatActivity {
             System.out.println("Waiting for API...");
             futureInstructions.join();
 
-            //anoher scuffed while loop im addicted now
+            //another scuffed while loop im addicted now
             int instruction_while_loops = 0;
             while (sharedFormattedInstructions.get() == null) {
                 instruction_while_loops += 1;
