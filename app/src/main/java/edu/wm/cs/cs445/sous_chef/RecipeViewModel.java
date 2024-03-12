@@ -43,5 +43,7 @@ public class RecipeViewModel extends AndroidViewModel {
                                                                     recipe, newRecipe); }
     public void deleteAll() { repository.deleteAll(); }
 
+    public void clearUnusedRecipes() { repository.clearUnusedRecipes(); }
+
     public void delete(Recipe recipe) { repository.delete(recipe); }
 }

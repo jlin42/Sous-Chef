@@ -58,6 +58,12 @@ class RecipeRepository {
         });
     }
 
+    void clearUnusedRecipes(){
+        RecipeRoomDatabase.databaseWriteExecutor.execute(() -> {
+            recipeDAO.clearUnusedRecipes();
+        });
+    }
+
     void updateSaved(Recipe recipe, Boolean recipeSaved){
         RecipeRoomDatabase.databaseWriteExecutor.execute(() -> {
             recipeDAO.updateSaved(recipe.getRecipe(), recipeSaved);

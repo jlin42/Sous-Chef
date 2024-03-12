@@ -28,6 +28,10 @@ public interface RecipeDAO {
     @Delete
     void delete(Recipe recipe);
 
+    // Used to remove the generated new recipes when they are not needed anymore
+    @Query("DELETE from recipe_table WHERE new_recipe = true AND recipe_in_history = false")
+    void clearUnusedRecipes();
+
     // Switch whether or not this recipe is 'saved'
     @Query("UPDATE recipe_table SET recipe_saved = :recipeSaved WHERE recipe = :recipe")
     void updateSaved(String recipe, Boolean recipeSaved);
