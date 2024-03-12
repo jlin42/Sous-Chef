@@ -17,6 +17,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class RecipesListActivity extends AppCompatActivity {
     SharedPreferences settingsPrefs;
@@ -124,20 +125,20 @@ public class RecipesListActivity extends AppCompatActivity {
 
         //again we need to use a weird evil version of a String bc of threads
         AtomicReference<String> sharedFormattedInstructions = new AtomicReference<>();
+        AtomicReference<String> sharedFormattedIngredients = new AtomicReference<>();
+        AtomicInteger sharedReadyInMinutes = new AtomicInteger(0);
 
         //check that we have a recipe ID to use, then make the api call
         if (recipeId > 0) {
             System.out.println("Getting recipe instructions...");
 
-            //here is where we make the API call
-            CompletableFuture<String> futureInstructions =
-                    apiGet.getInstructionsById(recipeId);
+            CompletableFuture<SpoonacularAPIRecipeInfo> futureRecipeInfo = apiGet.getRecipeInfoById(recipeId);
 
-            //once we get a response we handle it here
-            futureInstructions.thenAccept(instructions -> {
-                if (instructions != null && instructions.length() > 0) {
-                    System.out.println("Instructions found!");
-                    sharedFormattedInstructions.set(instructions);
+            futureRecipeInfo.thenAccept(info -> {
+                if (info != null && info.getReadyInMinutes() > 0) {
+                    sharedFormattedInstructions.set(info.getFormattedInstructions());
+                    sharedFormattedIngredients.set(info.getFormattedIngredients());
+                    sharedReadyInMinutes.set(info.getReadyInMinutes());
                 } else {
                     System.out.println("No recipes found or error occurred.");
                 }
@@ -146,22 +147,24 @@ public class RecipesListActivity extends AppCompatActivity {
                 return null;
             });
 
-            //wait until the call finishes, then resume the thread
             System.out.println("Waiting for API...");
-            futureInstructions.join();
-
-            //another scuffed while loop im addicted now
-            int instruction_while_loops = 0;
-            while (sharedFormattedInstructions.get() == null) {
-                instruction_while_loops += 1;
-            }
-            System.out.println("Took " + instruction_while_loops + " while loops to get instructions");
+            futureRecipeInfo.join(); //stop the main thread from ending until async is done
         }
 
+        int waiter = 0;
+        while (sharedFormattedInstructions.get() == null) {
+            waiter += 1;
+        }
+        System.out.println("Instructions!!!:");
         System.out.println(sharedFormattedInstructions.get());
+        System.out.println("Ingredients!!!:");
+        System.out.println(sharedFormattedIngredients.get());
+        System.out.println("ReadyInMinutes!!!:");
+        System.out.println(sharedReadyInMinutes.get());
+        System.out.println("Waited: " + waiter + " loops");
 
     }
-
+ 
     private int[] loadPrefs() {
 //        String filename = "preferences.txt";
 //        int[] prefs = null;
