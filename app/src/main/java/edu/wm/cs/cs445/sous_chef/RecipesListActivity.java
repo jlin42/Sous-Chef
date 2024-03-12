@@ -74,11 +74,40 @@ public class RecipesListActivity extends AppCompatActivity {
         //START OF API CODE =============================================
         //This code does not update the recipes list, it only makes an example call to see if it
         //will return a recipe ID for the 3 ingredients below to see if the APIs are working
-        String[] newIngre = {"chocolate", "flour", "sugar"};
+        //also takes the diet and intolerances listed into account
+
+        /*
+        List of diets we can use
+        - "vegan"
+        - "vegetarian"
+        - "gluten%20free" (%20 represents a space in the url)
+        - "ketogenic" (replace "spice free" with this; there's no spice free option in the api)
+
+        List of intolerances we can use
+        - "peanut"
+        - "shellfish"
+        - "egg"
+        - "dairy"
+
+        For full lists:
+        - https://spoonacular.com/food-api/docs#Diets
+        - https://spoonacular.com/food-api/docs#Intolerances
+         */
+
+        String[] ingredientsForAPI = {"chocolate", "flour", "sugar"};
+        String[] dietsForAPI = {"vegan"};
+        String[] intolerancesForAPI = {"peanut"};
+
         SpoonacularAPICall apiGet = new SpoonacularAPICall("b9b5e71ca3c740b8be89bd337d366ce0");
         List<SpoonacularAPIRecipe> sharedRecipeList = Collections.synchronizedList(new ArrayList<>());
-        CompletableFuture<SpoonacularAPIRecipe[]> futureRecipes =
-                apiGet.getRecipeByIngredients(1, newIngre);
+
+        CompletableFuture<SpoonacularAPIRecipe[]> futureRecipes = apiGet.getRecipeComplex(
+            10,
+            ingredientsForAPI,
+            dietsForAPI,
+            intolerancesForAPI
+        );
+
         futureRecipes.thenAccept(recipes -> {
             Log.v("RecipeListActivity", "Entered");
             if (recipes != null && recipes.length > 0) {
@@ -164,7 +193,7 @@ public class RecipesListActivity extends AppCompatActivity {
         System.out.println("Waited: " + waiter + " loops");
 
     }
- 
+
     private int[] loadPrefs() {
 //        String filename = "preferences.txt";
 //        int[] prefs = null;

@@ -1,5 +1,15 @@
 package edu.wm.cs.cs445.sous_chef;
 
+class SpoonacularAPIRecipeComplex {
+    //a wrapper class needed because of formatting
+    //in the complex recipe search API call
+    private SpoonacularAPIRecipe[] results;
+    public SpoonacularAPIRecipe[] getRecipes() {
+        return this.results;
+    }
+}
+
+
 class SpoonacularAPIRecipe {
     //just all the different fields we are extracting from the json,
     //and getters and setters for all of them bc java is awesome

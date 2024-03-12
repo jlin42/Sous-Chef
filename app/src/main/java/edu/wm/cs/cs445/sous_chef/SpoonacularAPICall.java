@@ -91,19 +91,86 @@ public class SpoonacularAPICall {
 		this is a bit crude but should be fine for our purposes
 		as long as theres no special characters and there arent a million ingredients
 		*/
-        String ingredient_substring = "";
+        StringBuilder ingredient_substring = new StringBuilder();
         for (String ingredient : ingredients) {
-            ingredient_substring += ingredient + ",+";
+            ingredient_substring.append(ingredient).append(",");
 
         }
 
         if (ingredient_substring.length() > 0) {
-            //remove the extra ",+" at the end
-            ingredient_substring = ingredient_substring.substring(0, ingredient_substring.length() - 2);
+            //remove the extra "," at the end
+            ingredient_substring = new StringBuilder(ingredient_substring.substring(0, ingredient_substring.length() - 1));
         }
 
-        return ingredient_substring;
+        return ingredient_substring.toString();
     }
+
+    public CompletableFuture<SpoonacularAPIRecipe[]> getRecipeComplex(int num_recipes,
+                                                                      String[] ingredients,
+                                                                      String[] diets,
+                                                                      String[] intolerances) {
+
+        CompletableFuture<SpoonacularAPIRecipe[]> result = new CompletableFuture<>();
+        OkHttpClient client = new OkHttpClient();
+
+        String ingredient_substring = this.buildCommaSeparatedSubstring(ingredients);
+        String diet_substring = this.buildCommaSeparatedSubstring(diets);
+        String intolerance_substring = this.buildCommaSeparatedSubstring(intolerances);
+
+
+        String url = String.format(
+                "https://api.spoonacular.com/recipes/complexSearch?query=&intolerances=%s&diet=%s&includeIngredients=%s&apiKey=%s",
+                intolerance_substring,
+                diet_substring,
+                ingredient_substring,
+                this.API_KEY
+        );
+
+
+        Request request = new Request.Builder()
+                .url(url)
+                .addHeader("Content-Type", "application/json")
+                .build();
+
+        // Enqueue the asynchronous call
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                // Complete the CompletableFuture exceptionally in case of failure
+                result.completeExceptionally(e);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (!response.isSuccessful()) {
+                    result.completeExceptionally(new IOException("Unexpected code " + response));
+                } else {
+                    // Use Gson to parse the response
+                    Gson gson = new Gson();
+                    SpoonacularAPIRecipeComplex complex = gson.fromJson(response.body().charStream(), SpoonacularAPIRecipeComplex.class);
+                    result.complete(complex.getRecipes()); // Complete the CompletableFuture with the result
+                }
+            }
+        });
+
+        return result;
+    }
+
+    private String buildCommaSeparatedSubstring(String[] ingredients) {
+        StringBuilder ingredient_substring = new StringBuilder();
+        for (String ingredient : ingredients) {
+            ingredient_substring.append(ingredient).append(",");
+        }
+
+        if (ingredient_substring.length() > 0) {
+            //remove the extra "," at the end
+            ingredient_substring = new StringBuilder(
+                    ingredient_substring.substring(0, ingredient_substring.length() - 1));
+        }
+
+        return ingredient_substring.toString();
+    }
+
 
     //instructions api call
     public CompletableFuture<String> getInstructionsById(int id) {
