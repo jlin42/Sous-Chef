@@ -58,9 +58,9 @@ class RecipeRepository {
         RecipeRoomDatabase.databaseWriteExecutor.execute(() -> recipeDAO.updateNewRecipe(recipe.getRecipe(), newRecipe));
     }
 
-    void clearUnusedRecipes(){
+    void clearUnusedNewRecipes(){
         RecipeRoomDatabase.databaseWriteExecutor.execute(() -> {
-            recipeDAO.clearUnusedRecipes();
+            recipeDAO.clearUnusedNewRecipes();
         });
     }
 

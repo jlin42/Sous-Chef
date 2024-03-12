@@ -43,7 +43,6 @@ public class RecipesListActivity extends AppCompatActivity {
         int[] prefs = loadPrefs();
         Log.v("preferences", Arrays.toString(prefs));
 
-        // TODO - figure out how to connect JSON output from API to RecyclerView
         // Add recipes to database (like how they are added in the history java file),
         // marking the "new_recipe" field as true. These recipes will only be shown in this screen
 
@@ -68,7 +67,6 @@ public class RecipesListActivity extends AppCompatActivity {
         //         Boolean new_recipe (<- true for recipes on the recipe_list screen, false otherwise)
         //         Boolean recipe_in_history (<- true for recipes that have been viewed)
         // recipeViewModel.insert(recipe);
-
 
 
         //START OF API CODE =============================================
@@ -164,6 +162,7 @@ public class RecipesListActivity extends AppCompatActivity {
         System.out.println("Waited: " + waiter + " loops");
 
     }
+
  
     private int[] loadPrefs() {
 //        String filename = "preferences.txt";
