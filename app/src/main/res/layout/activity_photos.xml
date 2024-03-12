@@ -106,9 +106,10 @@
 
     <Button
         android:id="@+id/takePhoto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="145dp"
+        android:layout_height="67dp"
         android:text="Take Photo"
+        android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/base_container"
         app:layout_constraintEnd_toEndOf="parent" />
 
