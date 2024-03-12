@@ -14,13 +14,18 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class BaseFrame extends Fragment {
+    RecipeViewModel recipeViewModel;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        recipeViewModel = new ViewModelProvider(this).get(RecipeViewModel.class);
+
         View rootView = inflater.inflate(R.layout.activity_base, container, false);
 
         BottomNavigationView bottomNav = rootView.findViewById(R.id.navbar);
@@ -29,6 +34,7 @@ public class BaseFrame extends Fragment {
                 case R.id.home_btn:
                     if (!(getActivity() instanceof MainActivity)) {
                         if (getActivity() instanceof PantryActivity) { ((PantryActivity) getActivity()).storePrefs(); }
+                        clearUnusedNewRecipes();
                         startActivity(new Intent(getActivity(), MainActivity.class));
                         return true;
                     }
@@ -51,5 +57,12 @@ public class BaseFrame extends Fragment {
         });
 
         return rootView;
+    }
+
+    private void clearUnusedNewRecipes(){
+        // remove generated new recipes from db when leaving recipes list or view recipe screens
+        if (getActivity() instanceof ViewRecipeActivity | getActivity() instanceof RecipesListActivity){
+            recipeViewModel.clearUnusedNewRecipes();
+        }
     }
 }

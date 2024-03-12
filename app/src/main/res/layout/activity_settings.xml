@@ -96,13 +96,13 @@
             app:layout_constraintStart_toStartOf="parent">
 
             <CheckBox
-                android:id="@+id/check_noSpice"
+                android:id="@+id/check_keto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
                 android:layoutDirection="rtl"
                 android:paddingRight="150dp"
-                android:text="No Spice"
+                android:text="Keto"
                 android:textAlignment="textStart"
                 android:textColor="@color/accent2"
                 android:textSize="24sp" />
