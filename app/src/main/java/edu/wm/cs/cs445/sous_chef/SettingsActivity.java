@@ -8,16 +8,11 @@ import android.widget.CheckBox;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.Arrays;
 
 public class SettingsActivity extends AppCompatActivity {
 
-    protected CheckBox pref_noSpice;
+    protected CheckBox pref_keto;
     protected CheckBox pref_glutenFree;
     protected CheckBox pref_vegetarian;
     protected CheckBox pref_vegan;
@@ -34,7 +29,7 @@ public class SettingsActivity extends AppCompatActivity {
      *   directly read from other classes??), and each cell is checked whether the preference is
      *   enabled or not to add to the api call along with any other filters that were specified.
      *
-     *  No Spices = index 0
+     *  Keto = index 0
      *  Gluten Free = index 1
      *  Vegetarian = index 2
      *  Vegan = index 3
@@ -58,7 +53,7 @@ public class SettingsActivity extends AppCompatActivity {
         settingsPrefs = SettingsActivity.this.getSharedPreferences(getString(R.string.preferences_file_key), Context.MODE_PRIVATE);
         editor = settingsPrefs.edit();
 
-        pref_noSpice = findViewById(R.id.check_noSpice);
+        pref_keto = findViewById(R.id.check_keto);
         Log.v("SettingsActivity:", "No Spices CheckBox initialized");
         pref_glutenFree = findViewById(R.id.check_glutenFree);
         Log.v("SettingsActivity:", "Gluten Free CheckBox initialized");
@@ -76,13 +71,13 @@ public class SettingsActivity extends AppCompatActivity {
         Log.v("SettingsActivity:", "Dairy Allergy CheckBox initialized");
 
         CheckBox[] options = {
-                pref_noSpice, pref_glutenFree, pref_vegetarian, pref_vegan,
+                pref_keto, pref_glutenFree, pref_vegetarian, pref_vegan,
                 alrg_peanuts, alrg_shellfish, alrg_eggs, alrg_dairy
         };
 
         prefsSelected = new int[8];
 
-        int prefs[] = loadPrefs();
+        int[] prefs = loadPrefs();
         Log.i("SettingsActivity:", "Preferences in storage: " + Arrays.toString(prefs));
 
         // Set onClickListeners and also load from storage
@@ -102,18 +97,6 @@ public class SettingsActivity extends AppCompatActivity {
     }
     // Preferences storage
     private void storePref() {
-//        String filename ="preferences.txt";
-//        Log.i("preferences: ", Arrays.toString(prefsSelected));
-
-//        try {
-//            FileOutputStream fStream = openFileOutput(filename, Context.MODE_PRIVATE);
-//            ObjectOutputStream oStream = new ObjectOutputStream(fStream);
-//            oStream.writeObject(prefsSelected);
-//            oStream.close();
-//            fStream.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
 
         StringBuilder settingsPrefBuilder = new StringBuilder();
         for (int i = 0; i < prefsSelected.length; i++) {
