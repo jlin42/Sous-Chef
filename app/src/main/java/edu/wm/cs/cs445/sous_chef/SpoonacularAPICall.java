@@ -311,9 +311,14 @@ class SpoonacularAPIRecipeInfo {
 
         for (SpoonacularAPIIngredient ingredient : ingredientList) {
             formattedInstructions
-                    .append("- ")
                     .append(ingredient.getName())
-                    .append("\n");
+                    .append(", ");
+        }
+
+        if (formattedInstructions.length() > 0) {
+            //remove the extra ", " at the end
+            formattedInstructions = new StringBuilder(
+                    formattedInstructions.substring(0, formattedInstructions.length() - 2));
         }
 
         //convert the StringBuilder content to a String and return it
