@@ -67,6 +67,18 @@
         app:layout_constraintTop_toBottomOf="@+id/TitleBlock"
         app:srcCompat="@drawable/line_1" />
 
+    <TextView
+        android:id="@+id/history_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="96dp"
+        android:text="Photos"
+        android:textColor="@color/accent"
+        android:textSize="34sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <FrameLayout
         android:id="@+id/base_container"
         android:layout_width="match_parent"
@@ -94,9 +106,10 @@
 
     <Button
         android:id="@+id/takePhoto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="145dp"
+        android:layout_height="67dp"
         android:text="Take Photo"
+        android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/base_container"
         app:layout_constraintEnd_toEndOf="parent" />
 

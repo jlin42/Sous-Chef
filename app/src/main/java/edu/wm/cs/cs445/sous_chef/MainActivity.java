@@ -37,24 +37,9 @@ public class MainActivity extends AppCompatActivity {
                 .replace(R.id.base_container, new BaseFrame())
                 .commit();
 
-
-//        BottomNavigationView bottomNav = findViewById(R.id.bottomNavigationView);
-//        bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-//            @Override
-//            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-//                switch (item.getItemId()) {
-//                    case R.id.home_btn:
-//                        startActivity(new Intent(MainActivity.this, MainActivity.class));
-//                        return true;
-//                    case R.id.create_btn:
-//                        startActivity(new Intent(MainActivity.this, CreateActivity.class));
-//                        return true;
-//                    case R.id.settings_btn:
-//                        startActivity(new Intent(MainActivity.this, SettingsActivity.class));
-//                        return true;
-//                }
-//                return false;
-//            }
-//        });
+        // Debug button removed because it will cause a crash
+        // get to view screen by pressing view on a recipe
+        // crash happens cause ViewRecipe looks for the recipe that brought it there,
+        // but that does not exist
     }
 }

@@ -6,8 +6,6 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
-import androidx.room.TypeConverter;
-import androidx.room.Update;
 
 import java.util.List;
 
@@ -28,9 +26,8 @@ public interface RecipeDAO {
     @Delete
     void delete(Recipe recipe);
 
-    // Used to remove the generated new recipes when they are not needed anymore
-    @Query("DELETE from recipe_table WHERE new_recipe = true AND recipe_in_history = false")
-    void clearUnusedRecipes();
+    @Query("SELECT * FROM recipe_table WHERE recipe = :title LIMIT 1")
+    LiveData<Recipe> findRecipe(String title);
 
     // Switch whether or not this recipe is 'saved'
     @Query("UPDATE recipe_table SET recipe_saved = :recipeSaved WHERE recipe = :recipe")

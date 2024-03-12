@@ -13,7 +13,7 @@ import java.util.List;
  * More information in the RecipeRepository class
  */
 public class RecipeViewModel extends AndroidViewModel {
-    private RecipeRepository repository;
+    private final RecipeRepository repository;
     private final LiveData<List<Recipe>> allRecipes;
     private final LiveData<List<Recipe>> savedRecipes;
     private final LiveData<List<Recipe>> newRecipes;
@@ -32,8 +32,10 @@ public class RecipeViewModel extends AndroidViewModel {
     LiveData<List<Recipe>> getSavedRecipes() { return savedRecipes; }
     LiveData<List<Recipe>> getNewRecipes() {return newRecipes; }
     LiveData<List<Recipe>> getRecipeHistory() {return recipeHistory; }
+    LiveData<Recipe> findRecipe(String title) { return repository.findRecipe(title); }
 
     public void insert(Recipe recipe) { repository.insert(recipe); }
+
     public void updateSaved(Recipe recipe, Boolean recipeSaved) { repository.updateSaved(
                                                                   recipe, recipeSaved); }
     public void updateHistory(Recipe recipe, Boolean inHistory) { repository.updateHistory(

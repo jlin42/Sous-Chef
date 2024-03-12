@@ -28,7 +28,7 @@ public class SpoonacularAPICall {
     //class used for interacting with the API
     //want to be able to input a SpoonacularAPIIngredient[] object
         //and get the SpoonacularAPIRecipe[] object back
-    private String API_KEY;
+    private final String API_KEY;
 
     public SpoonacularAPICall(String API_KEY) {
         this.API_KEY = API_KEY;
@@ -110,6 +110,11 @@ public class SpoonacularAPICall {
         CompletableFuture<String> result = new CompletableFuture<>();
         OkHttpClient client = new OkHttpClient();
 
+        /*
+        example api all
+        https://api.spoonacular.com/recipes/632197/analyzedInstructions?apiKey=b9b5e71ca3c740b8be89bd337d366ce0
+        */
+
         //this url is a lot easier to build so lets one line it
         String url = String.format(
             "https://api.spoonacular.com/recipes/%d/analyzedInstructions?apiKey=%s",
@@ -164,11 +169,95 @@ public class SpoonacularAPICall {
         // Convert the StringBuilder content to a String and return it
         return formattedInstructions.toString();
     }
+
+    public CompletableFuture<SpoonacularAPIRecipeInfo> getRecipeInfoById(int id) {
+        CompletableFuture<SpoonacularAPIRecipeInfo> result = new CompletableFuture<>();
+        OkHttpClient client = new OkHttpClient();
+
+        String url = String.format(
+                "https://api.spoonacular.com/recipes/%d/information?includeNutrition=false&apiKey=%s",
+                id,
+                this.API_KEY
+        );
+
+        Request request = new Request.Builder()
+                .url(url)
+                .addHeader("Content-Type", "application/json")
+                .build();
+
+        // Enqueue the asynchronous call
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                // Complete the CompletableFuture exceptionally in case of failure
+                result.completeExceptionally(e);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (!response.isSuccessful()) {
+                    result.completeExceptionally(new IOException("Unexpected code " + response));
+                } else {
+                    Gson gson = new Gson();
+                    SpoonacularAPIRecipeInfo recipeInfo
+                            = gson.fromJson(response.body().string(), SpoonacularAPIRecipeInfo.class);
+                    result.complete(recipeInfo);
+                }
+            }
+        });
+
+        return result;
+    }
+
+}
+
+class SpoonacularAPIRecipeInfo {
+    public int readyInMinutes;
+    public SpoonacularAPIInstructionList[] analyzedInstructions;
+    public SpoonacularAPIIngredient[] extendedIngredients;
+
+    public int getReadyInMinutes() {
+        return this.readyInMinutes;
+    }
+
+    public String getFormattedInstructions() {
+        Gson gson = new Gson();
+        SpoonacularAPIInstructionList[] instructionList = this.analyzedInstructions;
+        StringBuilder formattedInstructions = new StringBuilder();
+
+        for (SpoonacularAPIInstruction instruction : instructionList[0].getInstructions()) {
+            formattedInstructions
+                    .append(instruction.getNumber())
+                    .append(". ")
+                    .append(instruction.getStep())
+                    .append("\n");
+        }
+
+        //convert the StringBuilder content to a String and return it
+        return formattedInstructions.toString();
+    }
+
+    public String getFormattedIngredients() {
+        Gson gson = new Gson();
+        SpoonacularAPIIngredient[] ingredientList = this.extendedIngredients;
+        StringBuilder formattedInstructions = new StringBuilder();
+
+        for (SpoonacularAPIIngredient ingredient : ingredientList) {
+            formattedInstructions
+                    .append("- ")
+                    .append(ingredient.getName())
+                    .append("\n");
+        }
+
+        //convert the StringBuilder content to a String and return it
+        return formattedInstructions.toString();
+    }
+
 }
 
 
 //the InstructionList and Instruction subclasses are used for Gson parsing
-//lowkey ignore them
+//low key ignore them
 class SpoonacularAPIInstructionList {
     public SpoonacularAPIInstruction[] steps;
 
