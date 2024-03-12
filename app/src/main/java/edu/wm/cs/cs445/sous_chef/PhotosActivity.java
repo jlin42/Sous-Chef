@@ -11,7 +11,9 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import com.google.gson.Gson;
@@ -59,16 +61,13 @@ public class PhotosActivity extends AppCompatActivity {
         refreshView();
 
         takePhoto.setOnClickListener(v -> {
-            if (!checkCameraPermission()) {
+            if (checkCameraPermission()) {
                 startCamera();
             } else {
                 requestCameraPermission();
             }
         });
 
-        if (!checkCameraPermission()) {
-            requestCameraPermission();
-        }
     }
 
     private boolean checkCameraPermission() {
@@ -98,14 +97,6 @@ public class PhotosActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        if (!checkCameraPermission()) {
-            requestCameraPermission();
-        }
-    }
-
-    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
@@ -114,7 +105,7 @@ public class PhotosActivity extends AppCompatActivity {
             // Retrieve the captured photo as a Bitmap object
             photo = (Bitmap) extras.get("data");
 
-            Bitmap scaledPhoto = scaleBitmap(photo, 400);
+            Bitmap scaledPhoto = scaleBitmap(photo);
 
             savePhoto(scaledPhoto);
 
@@ -122,7 +113,7 @@ public class PhotosActivity extends AppCompatActivity {
         }
     }
 
-    private Bitmap scaleBitmap(Bitmap bitmap, int dp) {
+    private Bitmap scaleBitmap(Bitmap bitmap) {
         // Get the width of the device's screen
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
         int screenWidth = displayMetrics.widthPixels;
@@ -133,25 +124,34 @@ public class PhotosActivity extends AppCompatActivity {
     }
 
     private void createPhoto(Bitmap photo) {
-        // Create a new LinearLayout to hold the ImageView and Button
-        LinearLayout layout = new LinearLayout(this);
-        layout.setOrientation(LinearLayout.VERTICAL);
+        // Create a new FrameLayout to hold the ImageView and Delete Button
+        FrameLayout layout = new FrameLayout(this);
 
-        // Create the ImageView
+
+        Button deleteButton = new Button(this);
+        deleteButton.setText("Delete");
+
+
         ImageView imageView = new ImageView(this);
         imageView.setImageBitmap(photo);
 
         // Set layout parameters for the ImageView
-        LinearLayout.LayoutParams imageParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
+        FrameLayout.LayoutParams imageParams = new FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.WRAP_CONTENT,
+                FrameLayout.LayoutParams.WRAP_CONTENT
         );
         imageView.setLayoutParams(imageParams);
 
+        // Set layout parameters for the Button
+        FrameLayout.LayoutParams buttonParams = new FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.WRAP_CONTENT,
+                FrameLayout.LayoutParams.WRAP_CONTENT
+        );
 
-        // Create the Button
-        Button deleteButton = new Button(this);
-        deleteButton.setText("Delete");
+        deleteButton.setLayoutParams(buttonParams);
+        deleteButton.setBackgroundColor(
+                ContextCompat.getColor(this, R.color.accent)
+        );
 
         File directory = getDir("photos", Context.MODE_PRIVATE);
         File[] files = directory.listFiles();
@@ -159,21 +159,12 @@ public class PhotosActivity extends AppCompatActivity {
         deleteButton.setTag(files[photoPointer].getName());
         photoPointer += 1;
 
-        // Set layout parameters for the Button
-        LinearLayout.LayoutParams buttonParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-        );
-        deleteButton.setLayoutParams(buttonParams);
-
         deleteButton.setOnClickListener(v -> {
             photoPreview.removeView(layout);
             photosArr.remove(photo);
 
             for (int i = 0; i < files.length; i++) {
-                Log.i("File:", files[i].getName() + " " + v.getTag());
                 if (files[i].getName().equals(v.getTag())) {
-                    Log.i("W", "EE");
                     files[i].delete();
                     break;
                 }
@@ -190,8 +181,18 @@ public class PhotosActivity extends AppCompatActivity {
 
     private void savePhoto(Bitmap photo) {
         File directory = getDir("photos", Context.MODE_PRIVATE);
-        String id = getUniqueBitmapValue();
-        File path = new File(directory, "photo_" + id);
+        File path;
+
+        // Prevent overwriting files
+        while (true) {
+            String id = getUniqueBitmapValue();
+            path = new File(directory, "photo_" + id);
+            if (!path.exists()) {
+                break;
+            }
+        }
+
+
         try {
             FileOutputStream fileOutputStream = new FileOutputStream(path);
             photo.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream);
@@ -226,12 +227,15 @@ public class PhotosActivity extends AppCompatActivity {
         return loadedPhotos;
     }
 
+    // Generate a file name to store the photo
+    // This method is called again if the file exists already
     private String getUniqueBitmapValue() {
         Random random = new Random();
         int randomValue = random.nextInt(900000000) + 100000000;
         return String.valueOf(randomValue);
     }
 
+    // When data is updated, refresh the entire view
     private void refreshView() {
         photoPreview.removeAllViews();
         photoPointer = 0;
