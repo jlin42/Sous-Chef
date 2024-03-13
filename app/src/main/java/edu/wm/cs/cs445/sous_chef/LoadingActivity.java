@@ -203,6 +203,7 @@ public class LoadingActivity extends AppCompatActivity {
 
         //this array list will hold our valid recipes
         List<String> validRecipeIds = new ArrayList<>();
+        List<String> allRecipeIds = new ArrayList<>();
 
         //if there's nothing in the filters, then ignore this step
         if (filters.size() > 0) {
@@ -224,6 +225,7 @@ public class LoadingActivity extends AppCompatActivity {
                             System.out.println("Recipe " + id + " is valid!");
                             validRecipeIds.add(String.valueOf(id));
                         }
+                        allRecipeIds.add(String.valueOf(id));
                     }
                 }
             }
@@ -235,6 +237,7 @@ public class LoadingActivity extends AppCompatActivity {
                     id = sharedRecipeList.get(i).getId();
                     if (id > 0) {
                         validRecipeIds.add(String.valueOf(id));
+                        allRecipeIds.add(String.valueOf(id));
                     }
                 }
             }
@@ -248,86 +251,82 @@ public class LoadingActivity extends AppCompatActivity {
         AtomicInteger[] sharedReadyInMinutes;
 
         //if we have valid recipes, populate our storage objects
-        //if no valid recipes, create a dummy recipe with tips for the user (see else block)
-        if (validRecipeIdList.length > 0) {
-            //now we have the valid id's and we can move on to api call #2
-            //=====================
-            //CALL 2: getting the instructions, preptime, and ingredient list from recipe ids
-            //we use the bulk recipe info to process all the ids
-
-            //again we need to use a weird evil version of these objects bc of async thread stuff
-            sharedFormattedInstructions = new AtomicReference<>(new String[validRecipeIdList.length]);
-            sharedFormattedIngredients = new AtomicReference<>(new String[validRecipeIdList.length]);
-            sharedReadyInMinutes = new AtomicInteger[validRecipeIdList.length];
-            for (int i = 0; i < validRecipeIdList.length; i++) {
-                sharedReadyInMinutes[i] = new AtomicInteger();
-            }
-
-            Log.v(LOG_TAG, "Getting recipe instructions...");
-            CompletableFuture<SpoonacularAPIRecipeInfo[]> futureRecipeInfo = apiGet.getBulkRecipeInfoById(validRecipeIdList);
-
-            //once we get a response we handle it here
-            futureRecipeInfo.thenAccept(info -> {
-                if (info != null && info[0].getReadyInMinutes() > 0) {
-
-                    //here we loop through atomic references and update them with api data
-
-                    //init string arrays to hold instructions and ingredients
-                    String[] formattedInstructions = new String[info.length];
-                    String[] formattedIngredients = new String[info.length];
-
-                    for (int i = 0; i < info.length; i++) {
-                        formattedInstructions[i] = info[i].getFormattedInstructions();
-                        formattedIngredients[i] = info[i].getFormattedIngredients();
-                        sharedReadyInMinutes[i].set(info[i].getReadyInMinutes());
-                    }
-
-                    //update atomic references with the complete arrays
-                    sharedFormattedInstructions.set(formattedInstructions);
-                    sharedFormattedIngredients.set(formattedIngredients);
-
-                } else {
-                    System.out.println("No recipes found or error occurred.");
-                }
-            }).exceptionally(ex -> {
-                System.err.println("An error occurred: " + ex.getMessage());
-                return null;
-            });
-
-            //wait until the call finishes, then resume the thread
-            Log.v(LOG_TAG, "Waiting for API...");
-            futureRecipeInfo.join(); //stop the main thread from ending until async is done
-
-            //api should be done but do a while loop to really make sure
-            int waiter = 0;
-            while (sharedFormattedInstructions.get() == null) {
-                try {
-                    Thread.sleep(250);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-                waiter += 1;
-            }
-            Log.i(LOG_TAG, "API call #2 complete! Extra while loop iterations: " + waiter);
-        } else {
+        //if no valid recipes, create a dummy recipe, and then populate the next best recipes
+        if (validRecipeIdList.length == 0) {
             System.out.println("No valid recipes retrieved based on filters! Skill issue!");
-            //if we dont find anything, lets make a dummy recipe that says so
-
-            //ok dont actually need these here but
-            sharedFormattedInstructions = new AtomicReference<>(new String[1]);
-            sharedFormattedIngredients = new AtomicReference<>(new String[1]);
-            sharedReadyInMinutes = new AtomicInteger[1];
-
-            //now that im looking at this
-            //i could've just filled these variables with strings or whatever
-            //i didnt need to replicate the atomic variables for parity
+            //dummy recipe card
             String recipeTitle = "No recipes found matching required ingredients! Showing next best recipes...";
             String recipeDesc = "Spoonacular could not match your filters. Try a different filter on the last page, or try no filters to find all recipes compatible with your pantry.";
             int cookTime = 0;
             String recipeInstructions = "";
             Recipe foundRecipe = new Recipe(recipeTitle, recipeDesc, String.valueOf(cookTime), false, recipeInstructions, true, false);
             recipeViewModel.insert(foundRecipe);
+
+            //we've warned the user, let's go ahead and print the next best recipes
+            //aka ignore the filter
+            validRecipeIdList = allRecipeIds.toArray(new String[0]);
         }
+
+        //now we have the valid id's and we can move on to performing api call #2
+        //=====================
+        //CALL 2: getting the instructions, preptime, and ingredient list from recipe ids
+        //we use the bulk recipe info to process all the ids
+
+        //again we need to use a weird evil version of these objects bc of async thread stuff
+        sharedFormattedInstructions = new AtomicReference<>(new String[validRecipeIdList.length]);
+        sharedFormattedIngredients = new AtomicReference<>(new String[validRecipeIdList.length]);
+        sharedReadyInMinutes = new AtomicInteger[validRecipeIdList.length];
+        for (int i = 0; i < validRecipeIdList.length; i++) {
+            sharedReadyInMinutes[i] = new AtomicInteger();
+        }
+
+        Log.v(LOG_TAG, "Getting recipe instructions...");
+        CompletableFuture<SpoonacularAPIRecipeInfo[]> futureRecipeInfo = apiGet.getBulkRecipeInfoById(validRecipeIdList);
+
+        //once we get a response we handle it here
+        futureRecipeInfo.thenAccept(info -> {
+            if (info != null && info[0].getReadyInMinutes() > 0) {
+
+                //here we loop through atomic references and update them with api data
+
+                //init string arrays to hold instructions and ingredients
+                String[] formattedInstructions = new String[info.length];
+                String[] formattedIngredients = new String[info.length];
+
+                for (int i = 0; i < info.length; i++) {
+                    formattedInstructions[i] = info[i].getFormattedInstructions();
+                    formattedIngredients[i] = info[i].getFormattedIngredients();
+                    sharedReadyInMinutes[i].set(info[i].getReadyInMinutes());
+                }
+
+                //update atomic references with the complete arrays
+                sharedFormattedInstructions.set(formattedInstructions);
+                sharedFormattedIngredients.set(formattedIngredients);
+
+            } else {
+                System.out.println("No recipes found or error occurred.");
+            }
+        }).exceptionally(ex -> {
+            System.err.println("An error occurred: " + ex.getMessage());
+            return null;
+        });
+
+        //wait until the call finishes, then resume the thread
+        Log.v(LOG_TAG, "Waiting for API...");
+        futureRecipeInfo.join(); //stop the main thread from ending until async is done
+
+        //api should be done but do a while loop to really make sure
+        int waiter = 0;
+        while (sharedFormattedInstructions.get() == null) {
+            try {
+                Thread.sleep(250);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            waiter += 1;
+        }
+        Log.i(LOG_TAG, "API call #2 complete! Extra while loop iterations: " + waiter);
+
 
         //now we have all the info we need to populate the recipe view
         //add the recipes to recipeViewModel
