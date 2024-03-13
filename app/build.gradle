@@ -16,20 +16,20 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    signingConfigs {
-        release {
-            storeFile file('C:\\Users\\jlf23\\.android\\KeyStore\\sous_chef_app_key.jks')
-            storePassword '3OYNrcX22JuVLdH'
-            keyAlias 'sous_chef_app_key'
-            keyPassword '3OYNrcX22JuVLdH'
-            storePassword '3OYNrcX22JuVLdH'
-
-        }
+//    signingConfigs {
+//        release {
+//            storeFile file('C:\\Users\\jlf23\\.android\\KeyStore\\sous_chef_app_key.jks')
+//            storePassword '3OYNrcX22JuVLdH'
+//            keyAlias 'sous_chef_app_key'
+//            keyPassword '3OYNrcX22JuVLdH'
+//            storePassword '3OYNrcX22JuVLdH'
 //
-//        debug {
-////            buildConfigField("String", "API_KEY", "\"$API_KEY""")
 //        }
-    }
+////
+////        debug {
+//////            buildConfigField("String", "API_KEY", "\"$API_KEY""")
+////        }
+//    }
 
 
     buildTypes {
