@@ -76,13 +76,16 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="530dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/base_container"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logoLineView">
+        app:layout_constraintTop_toBottomOf="@+id/logoLineView"
+        app:layout_constraintVertical_bias="0.0">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -95,9 +98,10 @@
 
                 <TextView
                     android:id="@+id/recipeTitle"
-                    android:layout_width="wrap_content"
+                    android:layout_width="250dp"
                     android:layout_height="wrap_content"
                     android:text="RECIPE_TITLE"
+                    android:textColor="@color/primary"
                     android:textSize="34sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/timerBtn"
@@ -110,7 +114,6 @@
                     android:id="@+id/timerBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
                     android:text="Start Timer"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -119,26 +122,37 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
+                android:id="@+id/ingredientsTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ingredients:"
+                android:textColor="@color/primary"
+                android:textSize="20sp" />
+
+            <TextView
                 android:id="@+id/ingredientsUsed"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Ingredients:" />
+                android:text="TextView"
+                android:textColor="@color/primary"
+                android:textSize="16sp" />
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/instructionsTitle"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"></LinearLayout>
+                android:layout_height="wrap_content"
+                android:text="Instructions:"
+                android:textColor="@color/primary"
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/instructions"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Instructions:" />
+                android:text="TextView"
+                android:textColor="@color/primary"
+                android:textSize="16sp" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"></LinearLayout>
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

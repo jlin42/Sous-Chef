@@ -8,11 +8,9 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,7 +18,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
-import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import java.util.Random;
@@ -96,9 +93,9 @@ public class ViewRecipeActivity extends AppCompatActivity {
 //            boolean clicked = false;
 //            if (!clicked) {
 //            clicked = true;
-            Toast timerStarted = Toast.makeText(ViewRecipeActivity.this, "Your timer for " + cookTimeMins/10 + " minutes has started", Toast.LENGTH_SHORT);
+            Toast timerStarted = Toast.makeText(ViewRecipeActivity.this, "Your timer for " + cookTimeMins + " minutes has started", Toast.LENGTH_SHORT);
             timerStarted.show();
-            Log.i("ViewRecipeActivity:", "Timer has been started for " + cookTimeMins/10 + " mins");
+            Log.i("ViewRecipeActivity:", "Timer has been started for " + cookTimeMins + " mins");
 
             executor.execute(() -> {
                 try {

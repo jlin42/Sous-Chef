@@ -33,7 +33,7 @@ public class PantryActivity extends AppCompatActivity {
                 .replace(R.id.base_container, new BaseFrame())
                 .commit();
 
-        //Cannot call storePrefs() or loadPrefs() above these line
+        //Cannot call storePrefs() or loadPrefs() above these lines
         pantryPrefs = PantryActivity.this.getSharedPreferences(getString(R.string.preferences_file_key), Context.MODE_PRIVATE);
         editor = pantryPrefs.edit();
 
@@ -56,9 +56,32 @@ public class PantryActivity extends AppCompatActivity {
                 inputAdapter.notifyDataSetChanged();
                 pantryTextView.setText("");
             } else {
-                Toast alreadyAdded = Toast.makeText(PantryActivity.this, "Ingredient is already in your current filter", Toast.LENGTH_SHORT);
+                Log.i("PantryActivity", "Attempted to add ingredient that is already in pantry");
+                Toast alreadyAdded = Toast.makeText(PantryActivity.this, "This ingredient is already in your pantry", Toast.LENGTH_SHORT);
                 alreadyAdded.show();
             }
+        });
+
+        //This gives the user the option to manually save, just in case preferences don't save automatically
+        //This is because the pantry will not automatically save when an item is deleted
+        Button savePantry = (Button) findViewById(R.id.saveBtn);
+        savePantry.setOnClickListener(v -> {
+            storePrefs();
+        });
+
+        Button gradersPantry = (Button) findViewById(R.id.graderPantryBtn);
+        gradersPantry.setOnClickListener(v -> {
+            String[] pantryArr = getResources().getStringArray(R.array.user_ingredients);
+            pantryIngredients.clear();
+            for (int i = 0; i < pantryArr.length; i++) {
+                pantryIngredients.add(pantryArr[i]);
+                inputAdapter.notifyItemInserted(i);
+            }
+
+            pantryIngredients.sort(String::compareTo);
+            Log.i("PantryActivity", "Loaded default pantry: " + pantryIngredients);
+            Toast loadedGradePant = Toast.makeText(PantryActivity.this, "USED FOR GRADING: Grading pantry has been created", Toast.LENGTH_SHORT);
+            loadedGradePant.show();
         });
     }
 
@@ -85,5 +108,10 @@ public class PantryActivity extends AppCompatActivity {
         ArrayList<String> loadedPrefsList = new ArrayList<>(Arrays.asList(loadedPrefStr.split(",")));
         Log.i("PantryActivity:", "Preferences loaded [" + getString(R.string.pantry_ingredients_key) + ": "+ loadedPrefStr + "]");
         return loadedPrefsList;
+    }
+
+    private ArrayList<String> loadDebugPantry() {
+        Log.e("RecipeListActivity", "Error loading pantry. No pantry found, using default");
+        return new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.user_ingredients)));
     }
 }

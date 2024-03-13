@@ -53,6 +53,9 @@
         <activity
             android:name=".ViewRecipeActivity"
             android:exported="false"/>
+        <activity
+            android:name=".LoadingActivity"
+            android:exported="false"/>
 
     </application>
 

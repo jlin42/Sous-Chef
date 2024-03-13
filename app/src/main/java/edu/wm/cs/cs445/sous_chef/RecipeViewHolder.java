@@ -134,11 +134,6 @@ class RecipeListAdapter extends ListAdapter<Recipe, RecipeViewHolder> {
             public void onView(int p) {
                 Recipe current = getItem(p);
 
-                // if this recipe is on the RecipeList page, remove the 'new recipe' qualifier
-                if(current.getNew_recipe()){
-                    recipeViewModel.updateNewRecipe(current, false);
-                }
-
                 // otherwise, this recipe must be on either the 'history' or 'favorites' screen
                 // therefore we must add it to the history list if it is not already in it
                 if(!current.getRecipe_in_history()){

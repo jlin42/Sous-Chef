@@ -47,7 +47,7 @@ public class CreateActivity extends AppCompatActivity {
         } else {
             //This is just a temporary fix to populate the input autocomplete suggestions until
             // a debug pantry can be created
-            Log.v("create:", "didnt pull pantry properly");
+            Log.v("CreateActivity", "didnt pull pantry properly");
             ingredients = getResources().getStringArray(R.array.user_ingredients);
         }
         //String ingredients[] = getResources().getStringArray(R.array.user_ingredients);
@@ -90,14 +90,14 @@ public class CreateActivity extends AppCompatActivity {
             if (inputAdapter.getItemCount() == 0) {
                 //If user selects no filters, then the api call does not need to check the unused ingredients
                 //The filters are the just ingredients that cannot be listed as unused
-                Intent recipeIntent = new Intent(CreateActivity.this, RecipesListActivity.class);
+                Intent recipeIntent = new Intent(CreateActivity.this, LoadingActivity.class);
 
                 //passing a new arraylist is probably a temporary fix, but just checking if the list.size() > 0
                 // on the recipes end would also make this solution work
                 recipeIntent.putExtra("ingredients", new ArrayList<String>());
                 startActivity(recipeIntent);
             } else {
-                Intent recipeIntent = new Intent(CreateActivity.this, RecipesListActivity.class);
+                Intent recipeIntent = new Intent(CreateActivity.this, LoadingActivity.class);
                 recipeIntent.putExtra("ingredients", filtersList);
                 startActivity(recipeIntent);
             }

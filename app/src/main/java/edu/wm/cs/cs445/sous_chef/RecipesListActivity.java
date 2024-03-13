@@ -35,14 +35,14 @@ public class RecipesListActivity extends AppCompatActivity {
 
         settingsPrefs = RecipesListActivity.this.getSharedPreferences(
                 getString(R.string.preferences_file_key), Context.MODE_PRIVATE);
-
-        // Retrieve ingredients data
-        ArrayList<String> ingredients = (ArrayList<String>) getIntent().getSerializableExtra("ingredients");
-        Log.v("filters",String.valueOf(ingredients));
-
-        // Retrieve preferences
-        int[] prefs = loadPrefs();
-        Log.v("preferences", Arrays.toString(prefs));
+//
+//        // Retrieve ingredients data
+//        ArrayList<String> ingredients = (ArrayList<String>) getIntent().getSerializableExtra("ingredients");
+//        Log.v("filters",String.valueOf(ingredients));
+//
+//        // Retrieve preferences
+//        int[] prefs = loadPrefs();
+//        Log.v("preferences", Arrays.toString(prefs));
 
         // Add recipes to database (like how they are added in the history java file),
         // marking the "new_recipe" field as true. These recipes will only be shown in this screen
@@ -93,103 +93,103 @@ public class RecipesListActivity extends AppCompatActivity {
         - https://spoonacular.com/food-api/docs#Intolerances
          */
 
-        String[] ingredientsForAPI = {"chocolate", "flour", "sugar"};
-        String[] dietsForAPI = {"vegan"};
-        String[] intolerancesForAPI = {"peanut"};
-
-        SpoonacularAPICall apiGet = new SpoonacularAPICall(BuildConfig.API_KEY);
-        List<SpoonacularAPIRecipe> sharedRecipeList = Collections.synchronizedList(new ArrayList<>());
-
-        CompletableFuture<SpoonacularAPIRecipe[]> futureRecipes = apiGet.getRecipeComplex(
-            10,
-            ingredientsForAPI,
-            dietsForAPI,
-            intolerancesForAPI
-        );
-
-        futureRecipes.thenAccept(recipes -> {
-            Log.v("RecipeListActivity", "Entered");
-            if (recipes != null && recipes.length > 0) {
-                //successful api call: add the recipes to the sync list
-                synchronized(sharedRecipeList) {
-                    Collections.addAll(sharedRecipeList, recipes);
-                }
-                Log.v("RecipeListActivity", "Recipe found and added to shared list!");
-                System.out.println("Recipe found and added to shared list!");
-            } else {
-                Log.v("RecipeListActivity", "No recipes found or error occurred.");
-                System.out.println("No recipes found or error occurred.");
-            }
-        }).exceptionally(ex -> {
-            Log.e("RecipeListActivity", "An error occurred: " + ex.getMessage());
-            System.err.println("An error occurred: " + ex.getMessage());
-            return null;
-        });
-
-        System.out.println("Waiting for API...");
-        futureRecipes.join();
-
-        //a big brain while loop (scuffed as hell)
-        //keep checking if we got api output yet
-        //in my testing this doesn't add any lag
-        // -carlo
-        int recipeId = 0;
-        int while_loops = 0;
-        while (recipeId == 0) {
-            synchronized (sharedRecipeList) {
-                if (sharedRecipeList.size() > 0) {
-                    recipeId = sharedRecipeList.get(0).getId();
-                } else {
-                    while_loops += 1;
-                }
-            }
-        }
-        System.out.println("Took " + while_loops + " while loops to get recipe ID");
-        Log.i("RecipeListActivity", "RecipeID: " + recipeId);
-
-
-        //CALL 2: getting the instructions for a recipe using its ID
-        //we have the id from the api call above
-
-        //again we need to use a weird evil version of a String bc of threads
-        AtomicReference<String> sharedFormattedInstructions = new AtomicReference<>();
-        AtomicReference<String> sharedFormattedIngredients = new AtomicReference<>();
-        AtomicInteger sharedReadyInMinutes = new AtomicInteger(0);
-
-        //check that we have a recipe ID to use, then make the api call
-        if (recipeId > 0) {
-            System.out.println("Getting recipe instructions...");
-
-            CompletableFuture<SpoonacularAPIRecipeInfo> futureRecipeInfo = apiGet.getRecipeInfoById(recipeId);
-
-            futureRecipeInfo.thenAccept(info -> {
-                if (info != null && info.getReadyInMinutes() > 0) {
-                    sharedFormattedInstructions.set(info.getFormattedInstructions());
-                    sharedFormattedIngredients.set(info.getFormattedIngredients());
-                    sharedReadyInMinutes.set(info.getReadyInMinutes());
-                } else {
-                    System.out.println("No recipes found or error occurred.");
-                }
-            }).exceptionally(ex -> {
-                System.err.println("An error occurred: " + ex.getMessage());
-                return null;
-            });
-
-            System.out.println("Waiting for API...");
-            futureRecipeInfo.join(); //stop the main thread from ending until async is done
-        }
-
-        int waiter = 0;
-        while (sharedFormattedInstructions.get() == null) {
-            waiter += 1;
-        }
-        System.out.println("Instructions!!!:");
-        System.out.println(sharedFormattedInstructions.get());
-        System.out.println("Ingredients!!!:");
-        System.out.println(sharedFormattedIngredients.get());
-        System.out.println("ReadyInMinutes!!!:");
-        System.out.println(sharedReadyInMinutes.get());
-        System.out.println("Waited: " + waiter + " loops");
+//        String[] ingredientsForAPI = {"chocolate", "flour", "sugar"};
+//        String[] dietsForAPI = {"vegan"};
+//        String[] intolerancesForAPI = {"peanut"};
+//
+//        SpoonacularAPICall apiGet = new SpoonacularAPICall(BuildConfig.API_KEY);
+//        List<SpoonacularAPIRecipe> sharedRecipeList = Collections.synchronizedList(new ArrayList<>());
+//
+//        CompletableFuture<SpoonacularAPIRecipe[]> futureRecipes = apiGet.getRecipeComplex(
+//            10,
+//            ingredientsForAPI,
+//            dietsForAPI,
+//            intolerancesForAPI
+//        );
+//
+//        futureRecipes.thenAccept(recipes -> {
+//            Log.v("RecipeListActivity", "Entered");
+//            if (recipes != null && recipes.length > 0) {
+//                //successful api call: add the recipes to the sync list
+//                synchronized(sharedRecipeList) {
+//                    Collections.addAll(sharedRecipeList, recipes);
+//                }
+//                Log.v("RecipeListActivity", "Recipe found and added to shared list!");
+//                System.out.println("Recipe found and added to shared list!");
+//            } else {
+//                Log.v("RecipeListActivity", "No recipes found or error occurred.");
+//                System.out.println("No recipes found or error occurred.");
+//            }
+//        }).exceptionally(ex -> {
+//            Log.e("RecipeListActivity", "An error occurred: " + ex.getMessage());
+//            System.err.println("An error occurred: " + ex.getMessage());
+//            return null;
+//        });
+//
+//        System.out.println("Waiting for API...");
+//        futureRecipes.join();
+//
+//        //a big brain while loop (scuffed as hell)
+//        //keep checking if we got api output yet
+//        //in my testing this doesn't add any lag
+//        // -carlo
+//        int recipeId = 0;
+//        int while_loops = 0;
+//        while (recipeId == 0) {
+//            synchronized (sharedRecipeList) {
+//                if (sharedRecipeList.size() > 0) {
+//                    recipeId = sharedRecipeList.get(0).getId();
+//                } else {
+//                    while_loops += 1;
+//                }
+//            }
+//        }
+//        System.out.println("Took " + while_loops + " while loops to get recipe ID");
+//        Log.i("RecipeListActivity", "RecipeID: " + recipeId);
+//
+//
+//        //CALL 2: getting the instructions for a recipe using its ID
+//        //we have the id from the api call above
+//
+//        //again we need to use a weird evil version of a String bc of threads
+//        AtomicReference<String> sharedFormattedInstructions = new AtomicReference<>();
+//        AtomicReference<String> sharedFormattedIngredients = new AtomicReference<>();
+//        AtomicInteger sharedReadyInMinutes = new AtomicInteger(0);
+//
+//        //check that we have a recipe ID to use, then make the api call
+//        if (recipeId > 0) {
+//            System.out.println("Getting recipe instructions...");
+//
+//            CompletableFuture<SpoonacularAPIRecipeInfo> futureRecipeInfo = apiGet.getRecipeInfoById(recipeId);
+//
+//            futureRecipeInfo.thenAccept(info -> {
+//                if (info != null && info.getReadyInMinutes() > 0) {
+//                    sharedFormattedInstructions.set(info.getFormattedInstructions());
+//                    sharedFormattedIngredients.set(info.getFormattedIngredients());
+//                    sharedReadyInMinutes.set(info.getReadyInMinutes());
+//                } else {
+//                    System.out.println("No recipes found or error occurred.");
+//                }
+//            }).exceptionally(ex -> {
+//                System.err.println("An error occurred: " + ex.getMessage());
+//                return null;
+//            });
+//
+//            System.out.println("Waiting for API...");
+//            futureRecipeInfo.join(); //stop the main thread from ending until async is done
+//        }
+//
+//        int waiter = 0;
+//        while (sharedFormattedInstructions.get() == null) {
+//            waiter += 1;
+//        }
+//        System.out.println("Instructions!!!:");
+//        System.out.println(sharedFormattedInstructions.get());
+//        System.out.println("Ingredients!!!:");
+//        System.out.println(sharedFormattedIngredients.get());
+//        System.out.println("ReadyInMinutes!!!:");
+//        System.out.println(sharedReadyInMinutes.get());
+//        System.out.println("Waited: " + waiter + " loops");
 
     }
 

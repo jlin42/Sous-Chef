@@ -33,21 +33,21 @@ public class HistoryActivity extends AppCompatActivity {
         // For testing:
         // Adds 4 recipes
         // use recipeViewModel.deleteAll() to clear them if needed
-        Recipe recipe = new Recipe("Chicken Pot Pie", "Chicken, bread crumbs, assorted veggies, ...",
-                "30", false, "recipe_instructions", true, true);
-        recipeViewModel.insert(recipe);
-
-        recipe = new Recipe("Meatloaf", "Ground beef, bread crumbs, ketchup, onions, ...",
-                "30", false, "recipe_instructions", false, true);
-        recipeViewModel.insert(recipe);
-
-        recipe = new Recipe("Mac and Cheese", "Macaroni noodles, milk, butter, flour, cheese",
-                "60", true, "recipe_instructions", true, true);
-        recipeViewModel.insert(recipe);
-
-        recipe = new Recipe("Easy Weeknight Spaghetti and Meat Sauce", "Spaghetti noodles, jarred sauce, ground beef, onions, garlic, ...",
-                "150", false, "recipe_instructions", false, true);
-        recipeViewModel.insert(recipe);
+//        Recipe recipe = new Recipe("Chicken Pot Pie", "Chicken, bread crumbs, assorted veggies, ...",
+//                "30", false, "recipe_instructions", true, true);
+//        recipeViewModel.insert(recipe);
+//
+//        recipe = new Recipe("Meatloaf", "Ground beef, bread crumbs, ketchup, onions, ...",
+//                "30", false, "recipe_instructions", false, true);
+//        recipeViewModel.insert(recipe);
+//
+//        recipe = new Recipe("Mac and Cheese", "Macaroni noodles, milk, butter, flour, cheese",
+//                "60", true, "recipe_instructions", true, true);
+//        recipeViewModel.insert(recipe);
+//
+//        recipe = new Recipe("Easy Weeknight Spaghetti and Meat Sauce", "Spaghetti noodles, jarred sauce, ground beef, onions, garlic, ...",
+//                "150", false, "recipe_instructions", false, true);
+//        recipeViewModel.insert(recipe);
 
     }
 }
