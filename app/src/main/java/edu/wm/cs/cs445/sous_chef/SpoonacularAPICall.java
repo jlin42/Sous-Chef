@@ -119,13 +119,15 @@ public class SpoonacularAPICall {
 
 
         String url = String.format(
-                "https://api.spoonacular.com/recipes/complexSearch?query=&intolerances=%s&diet=%s&includeIngredients=%s&apiKey=%s",
-                intolerance_substring,
-                diet_substring,
-                ingredient_substring,
-                this.API_KEY
+            "https://api.spoonacular.com/recipes/complexSearch?query=&intolerances=%s&diet=%s&includeIngredients=%s&apiKey=%s&fillIngredients=true&ignorePantry=true&sort=max-used-ingredients&number=%d",
+            intolerance_substring,
+            diet_substring,
+            ingredient_substring,
+            this.API_KEY,
+            num_recipes
         );
 
+        System.out.println("API call #1 URL: " + url);
 
         Request request = new Request.Builder()
                 .url(url)
@@ -268,6 +270,52 @@ public class SpoonacularAPICall {
                     Gson gson = new Gson();
                     SpoonacularAPIRecipeInfo recipeInfo
                             = gson.fromJson(response.body().string(), SpoonacularAPIRecipeInfo.class);
+                    result.complete(recipeInfo);
+                }
+            }
+        });
+
+        return result;
+    }
+
+    public CompletableFuture<SpoonacularAPIRecipeInfo[]> getBulkRecipeInfoById(String[] idList) {
+        CompletableFuture<SpoonacularAPIRecipeInfo[]> result = new CompletableFuture<>();
+        OkHttpClient client = new OkHttpClient();
+
+        //example url https://api.spoonacular.com/recipes/informationBulk?ids=715538,716429
+        // https://api.spoonacular.com/recipes/informationBulk?ids=715538,716429
+
+        String id_substring = this.buildCommaSeparatedSubstring(idList);
+
+        String url = String.format(
+                "https://api.spoonacular.com/recipes/informationBulk?ids=%s&includeNutrition=false&apiKey=%s",
+                id_substring,
+                this.API_KEY
+        );
+
+        System.out.println("API call #2 URL: " + url);
+
+        Request request = new Request.Builder()
+                .url(url)
+                .addHeader("Content-Type", "application/json")
+                .build();
+
+        // Enqueue the asynchronous call
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                // Complete the CompletableFuture exceptionally in case of failure
+                result.completeExceptionally(e);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (!response.isSuccessful()) {
+                    result.completeExceptionally(new IOException("Unexpected code " + response));
+                } else {
+                    Gson gson = new Gson();
+                    SpoonacularAPIRecipeInfo[] recipeInfo
+                            = gson.fromJson(response.body().string(), SpoonacularAPIRecipeInfo[].class);
                     result.complete(recipeInfo);
                 }
             }

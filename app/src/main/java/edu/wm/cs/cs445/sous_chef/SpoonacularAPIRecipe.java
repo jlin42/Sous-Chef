@@ -1,5 +1,8 @@
 package edu.wm.cs.cs445.sous_chef;
 
+import java.util.ArrayList;
+import java.util.List;
+
 class SpoonacularAPIRecipeComplex {
     //a wrapper class needed because of formatting
     //in the complex recipe search API call
@@ -65,6 +68,22 @@ class SpoonacularAPIRecipe {
     public SpoonacularAPIIngredient[] getUnusedIngredients() {
         return unusedIngredients;
     }
+
+    public String[] getUnusedIngredientsNames() {
+        List<String> namesList = new ArrayList<>();
+        for (SpoonacularAPIIngredient ingredient : unusedIngredients) {
+            //there are two name fields, one is lemmatized
+            //we want to add both for the purposes of our checks
+            namesList.add(ingredient.getName());
+            namesList.add(ingredient.getOriginal());
+        }
+        // Convert namesList to an array and return it
+        String[] names; // Using 0 as size lets the toArray method determine the array size automatically
+        names = namesList.toArray(new String[0]);
+
+        return names;
+    }
+
 
     // awesome setters
     public void setId(int id) {

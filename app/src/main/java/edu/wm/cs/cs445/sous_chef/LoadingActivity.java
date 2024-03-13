@@ -14,7 +14,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
@@ -72,59 +74,80 @@ public class LoadingActivity extends AppCompatActivity {
 
 
 
-        int NUM_RECIPES = 1;
+        int NUM_RECIPES = 4;
 
         ArrayList<String> dietsForAPIList = new ArrayList<>();
         ArrayList<String> intolerancesForAPIList = new ArrayList<>();
 
         //Preferences Array order: Keto, GF, Vegetarian, Vegan, Peanuts, Shellfish, Egg, Dairy
+        int num_intolerances = 0;
+        int num_diets = 0;
         if (prefs[0] == 1) {
             dietsForAPIList.add("ketogenic");
+            num_diets += 1;
         }
         if (prefs[1] == 1) {
             dietsForAPIList.add("gluten%20free");
+            num_diets += 1;
         }
         if (prefs[2] == 1) {
             dietsForAPIList.add("vegetarian");
+            num_diets += 1;
         }
         if (prefs[3] == 1) {
             dietsForAPIList.add("vegan");
+            num_diets += 1;
         }
         if (prefs[4] == 1) {
             intolerancesForAPIList.add("peanut");
+            num_intolerances += 1;
         }
         if (prefs[5] == 1) {
             intolerancesForAPIList.add("shellfish");
+            num_intolerances += 1;
         }
         if (prefs[6] == 1) {
             intolerancesForAPIList.add("egg");
+            num_intolerances += 1;
         }
         if (prefs[7] == 1) {
             intolerancesForAPIList.add("dairy");
+            num_intolerances += 1;
         }
 
-        String[] dietsForAPI = new String[4];
+        String[] dietsForAPI = new String[num_diets];
         dietsForAPIList.toArray(dietsForAPI);
-        String[] intolerancesForAPI = new String[4];
+
+        String[] intolerancesForAPI = new String[num_intolerances];
         intolerancesForAPIList.toArray(intolerancesForAPI);
+
         Log.i(LOG_TAG, "DietsForAPI arr: " + dietsForAPI);
         Log.i(LOG_TAG, "IntolerancesForAPI arr: " + intolerancesForAPI);
 
         //START OF API CODE
         //This code does not update the recipes list, it only makes an example call to see if it
         //will return a recipe ID for the 3 ingredients below to see if the APIs are working
-//        String[] newIngre = {"chocolate", "flour", "sugar"};
-        SpoonacularAPICall apiGet = new SpoonacularAPICall("b9b5e71ca3c740b8be89bd337d366ce0");
+
+        //api key 1: b9b5e71ca3c740b8be89bd337d366ce0
+        //api key 2: 06170498fac84749ad52e4f6c48b2785
+        SpoonacularAPICall apiGet = new SpoonacularAPICall("06170498fac84749ad52e4f6c48b2785");
         List<SpoonacularAPIRecipe> sharedRecipeList = Collections.synchronizedList(new ArrayList<>());
-        CompletableFuture<SpoonacularAPIRecipe[]> futureRecipes =
-                apiGet.getRecipeByIngredients(NUM_RECIPES, pantry);
+
+        //this method performs the api call
+        CompletableFuture<SpoonacularAPIRecipe[]> futureRecipes = apiGet.getRecipeComplex(
+            NUM_RECIPES,
+            pantry,
+            dietsForAPI,
+            intolerancesForAPI
+        );
+
         futureRecipes.thenAccept(recipes -> {
             if (recipes != null && recipes.length > 0) {
                 //successful api call: add the recipes to the sync list
                 synchronized(sharedRecipeList) {
                     Collections.addAll(sharedRecipeList, recipes);
                 }
-                Log.i(LOG_TAG, "Recipe found and added to shared list!");
+                Log.i(LOG_TAG, "Recipe(s) found and added to shared list!");
             } else {
                 Log.i(LOG_TAG, "No recipes found or error occurred.");
             }
@@ -133,104 +156,191 @@ public class LoadingActivity extends AppCompatActivity {
             return null;
         });
 
-        Log.i(LOG_TAG, "Waiting for API...");
+        Log.i(LOG_TAG, "Waiting for API call #1...");
         futureRecipes.join();
 
-        for (int i = 0; i < NUM_RECIPES; i++) {
-
-            //a big brain while loop (scuffed as hell)
-            //keep checking if we got api output yet
-            //in my testing this doesnt add any lag
-            // -carlo
-            int recipeId = 0;
-            int while_loops = 0;
-            while (recipeId == 0) {
-                synchronized (sharedRecipeList) {
-                    if (sharedRecipeList.size() > 0) {
-                        recipeId = sharedRecipeList.get(i).getId();
-                    } else {
-                        try {
-                            Thread.sleep(1000);
-                        } catch (InterruptedException e) {
-                            throw new RuntimeException(e);
-                        }
-                        while_loops += 1;
-                    }
-                }
-            }
-            boolean failed = false;
-            assert filters != null;
-            if (filters.size() > 0) {
-                for (int j = 0; j < filters.size(); j++) {
-                    for (int k = 0; k < sharedRecipeList.get(i).getUnusedIngredients().length; k++) {
-                        Log.v(LOG_TAG, "Unused ingredient: " + sharedRecipeList.get(i).getUnusedIngredients()[k].getName());
-                        if (sharedRecipeList.get(i).getUnusedIngredients()[k].getName().equalsIgnoreCase(filters.get(j))) {
-                            failed = true;
-                        }
-                    }
-                }
-                if (failed) {
-                    Log.i(LOG_TAG, "Missing required ingredient, skip adding to RecipeList");
-                    continue;
-                }
-            }
-            Log.i(LOG_TAG, "Took " + while_loops + " while loops to get recipe ID");
-            Log.i(LOG_TAG, "RecipeID: " + recipeId);
-
-
-
-            //CALL 2: getting the instructions for a recipe using its ID
-            //we have the id from the api call above
-
-            //again we need to use a weird evil version of a String bc of threads
-            AtomicReference<String> sharedFormattedInstructions = new AtomicReference<>();
-            AtomicReference<String> sharedFormattedIngredients = new AtomicReference<>();
-            AtomicInteger sharedReadyInMinutes = new AtomicInteger(0);
-
-            //check that we have a recipe ID to use, then make the api call
-            if (recipeId > 0) {
-                Log.v(LOG_TAG, "Getting recipe instructions...");
-
-                //here is where we make the API call
-                CompletableFuture<SpoonacularAPIRecipeInfo> futureRecipeInfo = apiGet.getRecipeInfoById(recipeId);
-
-                //once we get a response we handle it here
-                futureRecipeInfo.thenAccept(info -> {
-                    if (info != null && info.getReadyInMinutes() > 0) {
-                        sharedFormattedInstructions.set(info.getFormattedInstructions());
-                        sharedFormattedIngredients.set(info.getFormattedIngredients());
-                        sharedReadyInMinutes.set(info.getReadyInMinutes());
-                    } else {
-                        System.out.println("No recipes found or error occurred.");
-                    }
-                }).exceptionally(ex -> {
-                    System.err.println("An error occurred: " + ex.getMessage());
-                    return null;
-                });
-
-                //wait until the call finishes, then resume the thread
-                Log.v(LOG_TAG, "Waiting for API...");
-                futureRecipeInfo.join(); //stop the main thread from ending until async is done
-
-                int waiter = 0;
-                while (sharedFormattedInstructions.get() == null) {
+        //api call #1 should be complete at this point but just to make sure
+        //lets use a classic while loop
+        int testRecipeId = 0;
+        int testWhileLoops = 0;
+        while (testRecipeId == 0) {
+            synchronized (sharedRecipeList) {
+                if (sharedRecipeList.size() > 0) {
+                    testRecipeId = sharedRecipeList.get(0).getId();
+                } else {
                     try {
-                        Thread.sleep(1000);
+                        Thread.sleep(250);
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     }
-                    waiter += 1;
+                    testWhileLoops += 1;
                 }
-                Log.i(LOG_TAG, "Took " + waiter + " loops");
+            }
+        }
+        Log.i(LOG_TAG, "API call #1 complete! Extra while loop iterations: " + testWhileLoops);
+
+        /*=============== step 1.5: filter recipes by required ingredients
+        iterating through all recipes
+        we want a list of all the recipe IDs that fit our filters
+        spoonacular already filters by diet and intolerances
+        but our api call only grabs ingredients based on pantry inventory,
+        which does not give special preference to the ingredients that
+        the user selected in the create screen.
+        if the user types "chicken," then every recipe that comes up
+        should contain chicken.
+
+        we can perform this filter by iterating through all of the recipes,
+        and checking if their "unusedIngredients" list contains any of our
+        required items. if it does, we remove it from the list.
+
+        by the end we will have a String[] containing the IDs of
+        valid recipes. this will be passed to the Bulk Recipe Info API call.
+        */
+
+        //need filters to be a String[] object for this
+        assert filters != null;
+        String[] filtersList = filters.toArray(new String[0]);
+
+        //this array list will hold our valid recipes
+        List<String> validRecipeIds = new ArrayList<>();
+
+        //if there's nothing in the filters, then ignore this step
+        if (filters.size() > 0) {
+            //iterate through all found recipes, get the valid recipes' ids
+            System.out.println("Filtering recipes...");
+            for (int i = 0; i < NUM_RECIPES; i++) {
+                int id = 0;
+                synchronized (sharedRecipeList) {
+                    id = sharedRecipeList.get(i).getId();
+
+                    if (id > 0) {
+                        //check if unusedIngredients contains filters
+                        boolean recipeIsValid = !checkIfFiltersAreUnused(
+                                filtersList,
+                                sharedRecipeList.get(i).getUnusedIngredientsNames()
+                        );
+                        //if filters are not unused, add id to valid list
+                        if (recipeIsValid) {
+                            System.out.println("Recipe " + id + " is valid!");
+                            validRecipeIds.add(String.valueOf(id));
+                        }
+                    }
+                }
+            }
+        } else {
+            System.out.println("No required ingredients, skipping filter step");
+            for (int i = 0; i < NUM_RECIPES; i++) {
+                int id = 0;
+                synchronized (sharedRecipeList) {
+                    id = sharedRecipeList.get(i).getId();
+                    if (id > 0) {
+                        validRecipeIds.add(String.valueOf(id));
+                    }
+                }
+            }
+        }
+        String[] validRecipeIdList = validRecipeIds.toArray(new String[0]);
+
+
+        //initialize storage objects for api call #2
+        AtomicReference<String[]> sharedFormattedInstructions;
+        AtomicReference<String[]> sharedFormattedIngredients;
+        AtomicInteger[] sharedReadyInMinutes;
+
+        //if we have valid recipes, populate our storage objects
+        //if no valid recipes, create a dummy recipe with tips for the user (see else block)
+        if (validRecipeIdList.length > 0) {
+            //now we have the valid id's and we can move on to api call #2
+            //=====================
+            //CALL 2: getting the instructions, preptime, and ingredient list from recipe ids
+            //we use the bulk recipe info to process all the ids
+
+            //again we need to use a weird evil version of these objects bc of async thread stuff
+            sharedFormattedInstructions = new AtomicReference<>(new String[validRecipeIdList.length]);
+            sharedFormattedIngredients = new AtomicReference<>(new String[validRecipeIdList.length]);
+            sharedReadyInMinutes = new AtomicInteger[validRecipeIdList.length];
+            for (int i = 0; i < validRecipeIdList.length; i++) {
+                sharedReadyInMinutes[i] = new AtomicInteger();
             }
 
-//        System.out.println(sharedFormattedInstructions.get());
+            Log.v(LOG_TAG, "Getting recipe instructions...");
+            CompletableFuture<SpoonacularAPIRecipeInfo[]> futureRecipeInfo = apiGet.getBulkRecipeInfoById(validRecipeIdList);
+
+            //once we get a response we handle it here
+            futureRecipeInfo.thenAccept(info -> {
+                if (info != null && info[0].getReadyInMinutes() > 0) {
+
+                    //here we loop through atomic references and update them with api data
+
+                    //init string arrays to hold instructions and ingredients
+                    String[] formattedInstructions = new String[info.length];
+                    String[] formattedIngredients = new String[info.length];
+
+                    for (int i = 0; i < info.length; i++) {
+                        formattedInstructions[i] = info[i].getFormattedInstructions();
+                        formattedIngredients[i] = info[i].getFormattedIngredients();
+                        sharedReadyInMinutes[i].set(info[i].getReadyInMinutes());
+                    }
+
+                    //update atomic references with the complete arrays
+                    sharedFormattedInstructions.set(formattedInstructions);
+                    sharedFormattedIngredients.set(formattedIngredients);
+
+                } else {
+                    System.out.println("No recipes found or error occurred.");
+                }
+            }).exceptionally(ex -> {
+                System.err.println("An error occurred: " + ex.getMessage());
+                return null;
+            });
+
+            //wait until the call finishes, then resume the thread
+            Log.v(LOG_TAG, "Waiting for API...");
+            futureRecipeInfo.join(); //stop the main thread from ending until async is done
+
+            //api should be done but do a while loop to really make sure
+            int waiter = 0;
+            while (sharedFormattedInstructions.get() == null) {
+                try {
+                    Thread.sleep(250);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                waiter += 1;
+            }
+            Log.i(LOG_TAG, "API call #2 complete! Extra while loop iterations: " + waiter);
+        } else {
+            System.out.println("No valid recipes retrieved based on filters! Skill issue!");
+            //if we dont find anything, lets make a dummy recipe that says so
+
+            //ok dont actually need these here but
+            sharedFormattedInstructions = new AtomicReference<>(new String[1]);
+            sharedFormattedIngredients = new AtomicReference<>(new String[1]);
+            sharedReadyInMinutes = new AtomicInteger[1];
+
+            //now that im looking at this
+            //i could've just filled these variables with strings or whatever
+            //i didnt need to replicate the atomic variables for parity
+            String recipeTitle = "No recipes found matching required ingredients! Showing next best recipes...";
+            String recipeDesc = "Spoonacular could not match your filters. Try a different filter on the last page, or try no filters to find all recipes compatible with your pantry.";
+            int cookTime = 0;
+            String recipeInstructions = "";
+            Recipe foundRecipe = new Recipe(recipeTitle, recipeDesc, String.valueOf(cookTime), false, recipeInstructions, true, false);
+            recipeViewModel.insert(foundRecipe);
+        }
+
+        //now we have all the info we need to populate the recipe view
+        //add the recipes to recipeViewModel
+        for (int i = 0; i < validRecipeIdList.length; i++) {
+            System.out.println("Recipe name!!" + sharedRecipeList.get(i).getTitle());
 
             String recipeTitle = sharedRecipeList.get(i).getTitle();
-            String recipeDesc = sharedFormattedIngredients.get(); //NEED REQUIRED INGREDIENTS FROM API
-            int cooktime = sharedReadyInMinutes.get(); //NEED TO GET TIME FROM API (TIME IS IN MINUTES)
-            String recipeInstructions = sharedFormattedInstructions.get();
-            Recipe foundRecipe = new Recipe(recipeTitle, recipeDesc, String.valueOf(cooktime), false, recipeInstructions, true, false);
+            String recipeDesc = sharedFormattedIngredients.get()[i]; //NEED REQUIRED INGREDIENTS FROM API
+            int cookTime = sharedReadyInMinutes[i].get(); //NEED TO GET TIME FROM API (TIME IS IN MINUTES)
+            String recipeInstructions = sharedFormattedInstructions.get()[i];
+
+            //create a Recipe object and insert into view
+            Recipe foundRecipe = new Recipe(recipeTitle, recipeDesc, String.valueOf(cookTime), false, recipeInstructions, true, false);
 
             recipeViewModel.insert(foundRecipe);
 
@@ -274,5 +384,21 @@ public class LoadingActivity extends AppCompatActivity {
         String[] loadedPantry = loadedPantryStr.split(",");
         Log.i(LOG_TAG, "Pantry loaded [" + getString(R.string.pantry_ingredients_key) + ": "+ loadedPantryStr + "]");
         return loadedPantry;
+    }
+
+    private boolean checkIfFiltersAreUnused(String[] filters, String[] unusedIngredients) {
+        // Convert the unusedIngredients array to a set for faster lookups
+        Set<String> unusedSet = new HashSet<>(Arrays.asList(unusedIngredients));
+
+        // Check each filter ingredient to see if it's in the set of unused ingredients
+        for (String filter : filters) {
+            if (unusedSet.contains(filter)) {
+                // If any filter ingredient is found in the unused ingredients, return true
+                return true;
+            }
+        }
+
+        // If we get through all the filters without a match, return false
+        return false;
     }
 }
