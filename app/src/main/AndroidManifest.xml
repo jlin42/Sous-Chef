@@ -18,27 +18,41 @@
         tools:targetApi="31">
 
 
-
         <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <activity
             android:name=".CreateActivity"
-            android:windowSoftInputMode="adjustNothing"/>
-        <activity android:name=".HistoryActivity" />
-        <activity android:name=".PantryActivity"/>
-        <activity android:name=".RecipesListActivity"/>
-        <activity android:name=".FavoriteRecipesActivity"/>
-        <activity android:name=".SettingsActivity"/>
-        <activity android:name=".PhotosActivity"/>
-        <activity android:name=".ViewRecipeActivity"/>
+            android:windowSoftInputMode="adjustNothing"
+            android:exported="false"/>
+        <activity
+            android:name=".HistoryActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".PantryActivity"
+            android:exported="false"
+            />
+        <activity
+            android:name=".RecipesListActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".FavoriteRecipesActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".SettingsActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".PhotosActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".ViewRecipeActivity"
+            android:exported="false"/>
 
     </application>
 

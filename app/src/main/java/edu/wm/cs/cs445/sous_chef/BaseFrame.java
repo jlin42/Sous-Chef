@@ -42,6 +42,7 @@ public class BaseFrame extends Fragment {
                 case R.id.create_btn:
                     if (!(getActivity() instanceof CreateActivity)) {
                         if (getActivity() instanceof PantryActivity) { ((PantryActivity) getActivity()).storePrefs(); }
+                        clearUnusedNewRecipes();
                         startActivity(new Intent(getActivity(), CreateActivity.class));
                         return true;
                     }
@@ -49,6 +50,7 @@ public class BaseFrame extends Fragment {
                 case R.id.settings_btn:
                     if (!(getActivity() instanceof SettingsActivity)) {
                         if (getActivity() instanceof PantryActivity) { ((PantryActivity) getActivity()).storePrefs(); }
+                        clearUnusedNewRecipes();
                         startActivity(new Intent(getActivity(), SettingsActivity.class));
                         return true;
                     }
