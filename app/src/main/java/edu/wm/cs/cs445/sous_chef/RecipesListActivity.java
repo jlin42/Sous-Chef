@@ -23,6 +23,7 @@ public class RecipesListActivity extends AppCompatActivity {
     SharedPreferences settingsPrefs;
 
     RecipeViewModel recipeViewModel;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,7 +97,7 @@ public class RecipesListActivity extends AppCompatActivity {
         String[] dietsForAPI = {"vegan"};
         String[] intolerancesForAPI = {"peanut"};
 
-        SpoonacularAPICall apiGet = new SpoonacularAPICall("b9b5e71ca3c740b8be89bd337d366ce0");
+        SpoonacularAPICall apiGet = new SpoonacularAPICall(BuildConfig.API_KEY);
         List<SpoonacularAPIRecipe> sharedRecipeList = Collections.synchronizedList(new ArrayList<>());
 
         CompletableFuture<SpoonacularAPIRecipe[]> futureRecipes = apiGet.getRecipeComplex(
