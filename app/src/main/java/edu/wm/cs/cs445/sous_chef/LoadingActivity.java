@@ -51,6 +51,7 @@ public class LoadingActivity extends AppCompatActivity {
         // marking the "new_recipe" field as true. These recipes will only be shown in this screen
 
         recipeViewModel = new ViewModelProvider(this).get(RecipeViewModel.class);
+        recipeViewModel.clearUnusedNewRecipes();
 
 //        RecyclerView recyclerView = findViewById(R.id.recyclerview);
 //        final RecipeListAdapter adapter = new RecipeListAdapter(new RecipeListAdapter.RecipeDiff(),
@@ -224,6 +225,8 @@ public class LoadingActivity extends AppCompatActivity {
                         if (recipeIsValid) {
                             System.out.println("Recipe " + id + " is valid!");
                             validRecipeIds.add(String.valueOf(id));
+                        } else {
+                            Log.i(LOG_TAG, "Recipe " + id + " is not valid");
                         }
                         allRecipeIds.add(String.valueOf(id));
                     }

@@ -16,7 +16,7 @@
         <item>Banana</item>
         <item>Beets</item>
         <item>Beetroot</item>
-        <item>Bell Pepper</item>
+        <item>Bell pepper</item>
         <item>Broccoli</item>
         <item>Cabbage</item>
         <item>Carrot</item>
@@ -32,20 +32,28 @@
         <item>Peas</item>
         <item>Potato</item>
         <item>Tomato</item>
-        <item>Basmati Rice</item>
+        <item>Basmati rice</item>
         <item>Beans</item>
-        <item>Brown Rice</item>
+        <item>Brown rice</item>
         <item>Chickpeas</item>
         <item>Couscous</item>
         <item>Flour</item>
         <item>Lentils</item>
         <item>Pasta</item>
-        <item>Potatoes</item>
-        <item>Wheat Bread</item>
-        <item>White Bread</item>
-        <item>White Rice</item>
-        <item>Whole Wheat Pasta</item>
+        <item>Wheat bread</item>
+        <item>White bread</item>
+        <item>White rice</item>
+        <item>Whole wheat pasta</item>
         <item>Chocolate</item>
         <item>Sugar</item>
+        <item>Beef stock</item>
+        <item>Beef broth</item>
+        <item>Chicken stock</item>
+        <item>Chicken broth</item>
+        <item>Garlic</item>
+        <item>Basil</item>
+        <item>Chicken breast</item>
+        <item>Chicken thighs</item>
+        <item>Shallots</item>
     </string-array>
 </resources>

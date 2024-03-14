@@ -79,6 +79,7 @@ public class CreateActivity extends AppCompatActivity {
                     alreadyAdded.show();
                 }
             } else {
+                Log.i("CreateActivity", newFilter + " is not in your pantry\nYour Pantry: " + ingredientsList);
                 Toast ingredNotFound = Toast.makeText(CreateActivity.this, "Ingredient is not in your list", Toast.LENGTH_SHORT);
                 ingredNotFound.show();
             }
