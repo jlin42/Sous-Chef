@@ -112,13 +112,6 @@ class RecipeListAdapter extends ListAdapter<Recipe, RecipeViewHolder> {
             public void onSave(int p) {
                 Recipe current = getItem(p);
 
-                // check if recipe is a 'new' recipe
-                // if it is, remove it from the 'new' section
-                // so it can be added to the 'saved' section
-                if (current.getNew_recipe()){
-                    recipeViewModel.updateNewRecipe(current, false);
-                }
-
                 // update this recipe to switch it between being saved or not saved
                 // updateSaved takes the recipe to be changed and the Boolean value
                 // that it WILL be set to - so send it the opposite of what

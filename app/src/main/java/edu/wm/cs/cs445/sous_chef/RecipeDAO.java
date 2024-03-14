@@ -28,7 +28,7 @@ public interface RecipeDAO {
 
     // self explanatory
     // used in recipes_list and view_recipe when the user exits the screen
-    @Query("DELETE FROM recipe_table WHERE new_recipe = true")
+    @Query("DELETE FROM recipe_table WHERE new_recipe = true AND recipe_in_history = false AND recipe_saved = false")
     void clearUnusedNewRecipes();
 
     @Query("SELECT * FROM recipe_table WHERE recipe = :title LIMIT 1")
