@@ -48,25 +48,20 @@ public class PantryActivity extends AppCompatActivity {
 
         Button addPantry = (Button) findViewById(R.id.addPantryBtn);
         addPantry.setOnClickListener(v -> {
-            //First letter capitalized, all else lowercase
-            String newIngredient = pantryTextView.getText().toString().toUpperCase().charAt(0) + pantryTextView.getText().toString().toLowerCase().substring(1);
-            if (!pantryIngredients.contains(newIngredient)) {
-                pantryIngredients.add(newIngredient);
-                pantryIngredients.sort(String::compareTo);
-                inputAdapter.notifyDataSetChanged();
-                pantryTextView.setText("");
-            } else {
-                Log.i("PantryActivity", "Attempted to add ingredient that is already in pantry");
-                Toast alreadyAdded = Toast.makeText(PantryActivity.this, "This ingredient is already in your pantry", Toast.LENGTH_SHORT);
-                alreadyAdded.show();
+            if (!pantryTextView.getText().toString().equals("")) {
+                //First letter capitalized, all else lowercase
+                String newIngredient = pantryTextView.getText().toString().toUpperCase().charAt(0) + pantryTextView.getText().toString().toLowerCase().substring(1);
+                if (!pantryIngredients.contains(newIngredient)) {
+                    pantryIngredients.add(newIngredient);
+                    pantryIngredients.sort(String::compareTo);
+                    inputAdapter.notifyDataSetChanged();
+                    pantryTextView.setText("");
+                } else {
+                    Log.i("PantryActivity", "Attempted to add ingredient that is already in pantry");
+                    Toast alreadyAdded = Toast.makeText(PantryActivity.this, "This ingredient is already in your pantry", Toast.LENGTH_SHORT);
+                    alreadyAdded.show();
+                }
             }
-        });
-
-        //This gives the user the option to manually save, just in case preferences don't save automatically
-        //This is because the pantry will not automatically save when an item is deleted
-        Button savePantry = (Button) findViewById(R.id.saveBtn);
-        savePantry.setOnClickListener(v -> {
-            storePrefs();
         });
 
         Button gradersPantry = (Button) findViewById(R.id.graderPantryBtn);

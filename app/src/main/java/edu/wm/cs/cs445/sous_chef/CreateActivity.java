@@ -67,21 +67,23 @@ public class CreateActivity extends AppCompatActivity {
 
         Button addFilter = (Button) findViewById(R.id.addFilterBtn);
         addFilter.setOnClickListener(v -> {
-            //First letter capitalized, all else lowercase
-            String newFilter = ingredientsTextView.getText().toString().toUpperCase().charAt(0) + ingredientsTextView.getText().toString().toLowerCase().substring(1);
-            if (ingredientsList.contains(newFilter)) {
-                if (!filtersList.contains(newFilter)) {
-                    filtersList.add((ingredientsTextView.getText().toString()));
-                    inputAdapter.notifyDataSetChanged();
-                    ingredientsTextView.setText("");
+            if (!ingredientsTextView.getText().toString().equals("")) {
+                //First letter capitalized, all else lowercase
+                String newFilter = ingredientsTextView.getText().toString().toUpperCase().charAt(0) + ingredientsTextView.getText().toString().toLowerCase().substring(1);
+                if (ingredientsList.contains(newFilter)) {
+                    if (!filtersList.contains(newFilter)) {
+                        filtersList.add((ingredientsTextView.getText().toString()));
+                        inputAdapter.notifyDataSetChanged();
+                        ingredientsTextView.setText("");
+                    } else {
+                        Toast alreadyAdded = Toast.makeText(CreateActivity.this, "Ingredient is already in your current filter", Toast.LENGTH_SHORT);
+                        alreadyAdded.show();
+                    }
                 } else {
-                    Toast alreadyAdded = Toast.makeText(CreateActivity.this, "Ingredient is already in your current filter", Toast.LENGTH_SHORT);
-                    alreadyAdded.show();
+                    Log.i("CreateActivity", newFilter + " is not in your pantry\nYour Pantry: " + ingredientsList);
+                    Toast ingredNotFound = Toast.makeText(CreateActivity.this, "Ingredient is not in your list", Toast.LENGTH_SHORT);
+                    ingredNotFound.show();
                 }
-            } else {
-                Log.i("CreateActivity", newFilter + " is not in your pantry\nYour Pantry: " + ingredientsList);
-                Toast ingredNotFound = Toast.makeText(CreateActivity.this, "Ingredient is not in your list", Toast.LENGTH_SHORT);
-                ingredNotFound.show();
             }
         });
 
