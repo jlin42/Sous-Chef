@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -45,7 +46,6 @@ public class LoadingActivity extends AppCompatActivity {
 
         // Retrieve pantry
         String[] pantry = loadPantry();
-
         // TODO - figure out how to connect JSON output from API to RecyclerView
         // Add recipes to database (like how they are added in the history java file),
         // marking the "new_recipe" field as true. These recipes will only be shown in this screen
@@ -74,8 +74,8 @@ public class LoadingActivity extends AppCompatActivity {
         // recipeViewModel.insert(recipe);
 
 
-
-        int NUM_RECIPES = 4;
+        // Recipes may be hard to find because of API call limits
+        int NUM_RECIPES = 16;
 
         ArrayList<String> dietsForAPIList = new ArrayList<>();
         ArrayList<String> intolerancesForAPIList = new ArrayList<>();
@@ -131,7 +131,7 @@ public class LoadingActivity extends AppCompatActivity {
 
         //api key 1: b9b5e71ca3c740b8be89bd337d366ce0
         //api key 2: 06170498fac84749ad52e4f6c48b2785
-        SpoonacularAPICall apiGet = new SpoonacularAPICall("06170498fac84749ad52e4f6c48b2785");
+        SpoonacularAPICall apiGet = new SpoonacularAPICall(BuildConfig.API_KEY);
         List<SpoonacularAPIRecipe> sharedRecipeList = Collections.synchronizedList(new ArrayList<>());
 
         //this method performs the api call
