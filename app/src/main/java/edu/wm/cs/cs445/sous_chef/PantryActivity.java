@@ -68,6 +68,7 @@ public class PantryActivity extends AppCompatActivity {
         gradersPantry.setOnClickListener(v -> {
             String[] pantryArr = getResources().getStringArray(R.array.user_ingredients);
             pantryIngredients.clear();
+            inputAdapter.notifyDataSetChanged();
             for (int i = 0; i < pantryArr.length; i++) {
                 pantryIngredients.add(pantryArr[i]);
                 inputAdapter.notifyItemInserted(i);
