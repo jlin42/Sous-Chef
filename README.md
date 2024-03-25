@@ -49,9 +49,11 @@ With our security measures and these assumptions in mind, we conclude that our a
 
 ## Screenshots
 
-[<img src="/readme/sc_home.png" align="left" width="200" hspace="10" vspace="10">](/readme/sc_home.png)
-[<img src="/readme/sc_pantry.png" align="left" width="200" hspace="10" vspace="10">](/readme/sc_pantry.png)
-[<img src="/readme/sc_preferences.png" align="center" width="200" hspace="10" vspace="10">](/readme/sc_preferences.png)
-[<img src="/readme/sc_create.png" align="center" width="200" hspace="10" vspace="10">](/readme/sc_create.png)
-[<img src="/readme/sc_history.png" align="center" width="200" hspace="10" vspace="10">](/readme/sc_history.png)
+[<img src="/readme/sc_home.png" width="200" hspace="10" vspace="10">](/readme/sc_home.png)
+[<img src="/readme/sc_pantry.png" width="200" hspace="10" vspace="10">](/readme/sc_pantry.png)
+[<img src="/readme/sc_preferences.png" width="200" hspace="10" vspace="10">](/readme/sc_preferences.png)
+
+
+[<img src="/readme/sc_create.png" width="200" hspace="10" vspace="10">](/readme/sc_create.png)
+[<img src="/readme/sc_history.png" width="200" hspace="10" vspace="10">](/readme/sc_history.png)
 
